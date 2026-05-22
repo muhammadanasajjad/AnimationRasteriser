@@ -1,0 +1,3 @@
+/home/infimous/Documents/Programming/AnimationRasteriserNew/build/CMakeFiles/AnimationRasteriser.dir
+/home/infimous/Documents/Programming/AnimationRasteriserNew/build/CMakeFiles/edit_cache.dir
+/home/infimous/Documents/Programming/AnimationRasteriserNew/build/CMakeFiles/rebuild_cache.dir
