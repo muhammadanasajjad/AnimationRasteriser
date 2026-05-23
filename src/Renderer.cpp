@@ -1,15 +1,18 @@
 #include <glad/glad.h>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+
 #include <Renderer.h>
 #include <FileLoader.h>
-#include <iostream>
-#include <fstream>
-#include <string>
+#include <RendererStructs.h>
 
 void Renderer::load() {
     FileLoader fileLoader = FileLoader();
     
     // vertex shader load
-    fileLoader.loadFile("./shaders/triangleVertex.vert");
+    fileLoader.loadFile("./shaders/screenVertex.vert");
     std::string vertexShaderSource = fileLoader.getFileAsString();
     const char* vertexShaderChars = vertexShaderSource.c_str();
     
@@ -29,7 +32,7 @@ void Renderer::load() {
     }
     
     // fragment shader load
-    fileLoader.loadFile("./shaders/triangleFragment.frag");
+    fileLoader.loadFile("./shaders/screenFragment.frag");
     std::string fragmentShaderSource = fileLoader.getFileAsString();
     const char* fragmentShaderChars = fragmentShaderSource.c_str();
     
@@ -61,10 +64,11 @@ void Renderer::load() {
     
     glUseProgram(mainShaderProgram);
     
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
+    std::vector<float> screenVertices = {
+        -1.0f, -1.0f, 0.0f,
+         1.0f, -1.0f, 0.0f,
+        -1.0f,  1.0f, 0.0f,
+         1.0f,  1.0f, 0.0f
     };
     
     glGenVertexArrays(1, &VAO);
@@ -72,23 +76,57 @@ void Renderer::load() {
     
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, screenVertices.size() * sizeof(float), screenVertices.data(), GL_STATIC_DRAW);
     
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+    
+    int n = 500;
+    std::vector<ProjectedTriangle> projectedTriangles;
+    for (int i = 0; i < n; i++) {
+        projectedTriangles.push_back({ {dist(gen), dist(gen)} });
+    }
+    
+    glGenBuffers(1, &projectedTrianglesSSBO);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, projectedTrianglesSSBO);
+    glBufferData(GL_SHADER_STORAGE_BUFFER,
+                projectedTriangles.size() * sizeof(ProjectedTriangle),
+                projectedTriangles.data(),
+                GL_DYNAMIC_DRAW);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, projectedTrianglesSSBO);
 }
 
 void Renderer::render() {
-    std::cout << "frame rendering should be done now";
-    std::cout << " " << frame << std::endl;
     frame++;
     
     glUseProgram(mainShaderProgram);
+    
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, projectedTrianglesSSBO);
+    
+    if (frame % 100 == 0) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+        
+        int n = 500;
+        std::vector<ProjectedTriangle> projectedTriangles;
+        for (int i = 0; i < n; i++) {
+            projectedTriangles.push_back({ {dist(gen), dist(gen)} });
+        }
+        glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0,
+                        projectedTriangles.size() * sizeof(ProjectedTriangle),
+                        projectedTriangles.data());
+    }
+    
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 void Renderer::offload() {

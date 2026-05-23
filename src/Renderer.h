@@ -9,4 +9,5 @@ class Renderer {
         unsigned int fragmentShader;
         unsigned int mainShaderProgram;
         unsigned int VAO, VBO;
+        unsigned int projectedTrianglesSSBO;
 };
