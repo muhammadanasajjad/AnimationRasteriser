@@ -129,6 +129,78 @@ AnimationRasteriser/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/build
 .PHONY : AnimationRasteriser/fast
 
+glad/src/glad.o: glad/src/glad.c.o
+.PHONY : glad/src/glad.o
+
+# target to build an object file
+glad/src/glad.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o
+.PHONY : glad/src/glad.c.o
+
+glad/src/glad.i: glad/src/glad.c.i
+.PHONY : glad/src/glad.i
+
+# target to preprocess a source file
+glad/src/glad.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.i
+.PHONY : glad/src/glad.c.i
+
+glad/src/glad.s: glad/src/glad.c.s
+.PHONY : glad/src/glad.s
+
+# target to generate assembly for a file
+glad/src/glad.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.s
+.PHONY : glad/src/glad.c.s
+
+src/FileLoader.o: src/FileLoader.cpp.o
+.PHONY : src/FileLoader.o
+
+# target to build an object file
+src/FileLoader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o
+.PHONY : src/FileLoader.cpp.o
+
+src/FileLoader.i: src/FileLoader.cpp.i
+.PHONY : src/FileLoader.i
+
+# target to preprocess a source file
+src/FileLoader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.i
+.PHONY : src/FileLoader.cpp.i
+
+src/FileLoader.s: src/FileLoader.cpp.s
+.PHONY : src/FileLoader.s
+
+# target to generate assembly for a file
+src/FileLoader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.s
+.PHONY : src/FileLoader.cpp.s
+
+src/Renderer.o: src/Renderer.cpp.o
+.PHONY : src/Renderer.o
+
+# target to build an object file
+src/Renderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o
+.PHONY : src/Renderer.cpp.o
+
+src/Renderer.i: src/Renderer.cpp.i
+.PHONY : src/Renderer.i
+
+# target to preprocess a source file
+src/Renderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.i
+.PHONY : src/Renderer.cpp.i
+
+src/Renderer.s: src/Renderer.cpp.s
+.PHONY : src/Renderer.s
+
+# target to generate assembly for a file
+src/Renderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.s
+.PHONY : src/Renderer.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -162,6 +234,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... AnimationRasteriser"
+	@echo "... glad/src/glad.o"
+	@echo "... glad/src/glad.i"
+	@echo "... glad/src/glad.s"
+	@echo "... src/FileLoader.o"
+	@echo "... src/FileLoader.i"
+	@echo "... src/FileLoader.s"
+	@echo "... src/Renderer.o"
+	@echo "... src/Renderer.i"
+	@echo "... src/Renderer.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
