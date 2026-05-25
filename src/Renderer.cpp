@@ -88,7 +88,7 @@ void Renderer::load() {
     std::mt19937 gen(rd());
     std::uniform_real_distribution<float> dist(0.0f, 1.0f);
     
-    int n = 500;
+    int n = 250;
     std::vector<ProjectedTriangle> projectedTriangles;
     for (int i = 0; i < n; i++) {
         projectedTriangles.push_back({ {dist(gen), dist(gen)} });
@@ -101,6 +101,9 @@ void Renderer::load() {
                 projectedTriangles.data(),
                 GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, projectedTrianglesSSBO);
+    
+    projectedTriangleCountLoc = glGetUniformLocation(mainShaderProgram, "projectedTriangleCount");
+    glUniform1i(projectedTriangleCountLoc, projectedTriangles.size());
 }
 
 void Renderer::render() {
@@ -116,14 +119,17 @@ void Renderer::render() {
         std::mt19937 gen(rd());
         std::uniform_real_distribution<float> dist(0.0f, 1.0f);
         
-        int n = 500;
+        
+        int n = 5;
         std::vector<ProjectedTriangle> projectedTriangles;
         for (int i = 0; i < n; i++) {
-            projectedTriangles.push_back({ {dist(gen), dist(gen)} });
+            projectedTriangles.push_back({ {dist(gen), dist(gen)}, {dist(gen), dist(gen)}, {dist(gen), dist(gen)} });
         }
+        
         glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0,
                         projectedTriangles.size() * sizeof(ProjectedTriangle),
                         projectedTriangles.data());
+        glUniform1i(projectedTriangleCountLoc, projectedTriangles.size());
     }
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
