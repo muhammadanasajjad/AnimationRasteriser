@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "AnimationRasteriser.pdb"
   "CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o"
   "CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o.d"
+  "CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o"
+  "CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o.d"
   "CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o"
   "CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o.d"
   "CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o"

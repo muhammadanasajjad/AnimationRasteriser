@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 project(AnimationRasteriser)
 
+option(USE_TRACY "Enable Tracy profiling" OFF)
+
 file(GLOB_RECURSE SRC_FILES
     "${CMAKE_SOURCE_DIR}/src/*.cpp"
 )
@@ -27,3 +29,13 @@ target_link_libraries(${PROJECT_NAME}
     glfw
     OpenGL::GL
 )
+
+# ── Tracy ──────────────────────────────────────────────────
+set(TRACY_DIR "/home/infimous/customApps/tracy")
+target_include_directories(${PROJECT_NAME} PRIVATE ${TRACY_DIR}/public)
+
+if(USE_TRACY)
+    message(STATUS "Tracy profiling ENABLED")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE TRACY_ENABLE)
+    target_sources(${PROJECT_NAME} PRIVATE ${TRACY_DIR}/public/TracyClient.cpp)
+endif()

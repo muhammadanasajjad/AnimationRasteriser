@@ -1,0 +1,28 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  )
+
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/infimous/Documents/Programming/AnimationRasteriserNew/glad/src/glad.c" "CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o.d"
+  "/home/infimous/customApps/tracy/public/TracyClient.cpp" "CMakeFiles/AnimationRasteriser.dir/home/infimous/customApps/tracy/public/TracyClient.cpp.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/home/infimous/customApps/tracy/public/TracyClient.cpp.o.d"
+  "/home/infimous/Documents/Programming/AnimationRasteriserNew/src/Camera.cpp" "CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o.d"
+  "/home/infimous/Documents/Programming/AnimationRasteriserNew/src/FileLoader.cpp" "CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o.d"
+  "/home/infimous/Documents/Programming/AnimationRasteriserNew/src/Renderer.cpp" "CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o.d"
+  "/home/infimous/Documents/Programming/AnimationRasteriserNew/src/main.cpp" "CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o.d"
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_FORWARD_LINKED_INFO_FILES
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")

@@ -153,6 +153,30 @@ glad/src/glad.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.s
 .PHONY : glad/src/glad.c.s
 
+src/Camera.o: src/Camera.cpp.o
+.PHONY : src/Camera.o
+
+# target to build an object file
+src/Camera.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o
+.PHONY : src/Camera.cpp.o
+
+src/Camera.i: src/Camera.cpp.i
+.PHONY : src/Camera.i
+
+# target to preprocess a source file
+src/Camera.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.i
+.PHONY : src/Camera.cpp.i
+
+src/Camera.s: src/Camera.cpp.s
+.PHONY : src/Camera.s
+
+# target to generate assembly for a file
+src/Camera.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.s
+.PHONY : src/Camera.cpp.s
+
 src/FileLoader.o: src/FileLoader.cpp.o
 .PHONY : src/FileLoader.o
 
@@ -237,6 +261,9 @@ help:
 	@echo "... glad/src/glad.o"
 	@echo "... glad/src/glad.i"
 	@echo "... glad/src/glad.s"
+	@echo "... src/Camera.o"
+	@echo "... src/Camera.i"
+	@echo "... src/Camera.s"
 	@echo "... src/FileLoader.o"
 	@echo "... src/FileLoader.i"
 	@echo "... src/FileLoader.s"

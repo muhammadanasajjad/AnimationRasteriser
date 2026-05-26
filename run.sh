@@ -2,12 +2,13 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
+BUILD="$ROOT/build"
 
 echo "==> Configuring..."
-cmake -B "$ROOT/build" -S "$ROOT"
+cmake -B "$BUILD" -S "$ROOT" -DUSE_TRACY=OFF
 
 echo "==> Building..."
-cmake --build "$ROOT/build"
+cmake --build "$BUILD"
 
 echo "==> Running..."
-"$ROOT/build/AnimationRasteriser"
+"$BUILD/AnimationRasteriser"

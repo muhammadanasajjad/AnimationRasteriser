@@ -190,8 +190,7 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
  /usr/include/c++/13/pstl/glue_numeric_defs.h \
  /usr/include/c++/13/pstl/execution_defs.h \
  /home/infimous/Documents/Programming/AnimationRasteriserNew/src/Renderer.h \
- /home/infimous/Documents/Programming/AnimationRasteriserNew/src/FileLoader.h \
- /home/infimous/Documents/Programming/AnimationRasteriserNew/src/RendererStructs.h \
+ /home/infimous/Documents/Programming/AnimationRasteriserNew/src/Camera.h \
  /usr/include/glm/glm.hpp /usr/include/glm/detail/_fixes.hpp \
  /usr/include/glm/detail/setup.hpp /usr/include/c++/13/cassert \
  /usr/include/assert.h /usr/include/glm/simd/platform.h \
@@ -315,4 +314,10 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
  /usr/include/glm/packing.hpp /usr/include/glm/detail/func_packing.inl \
  /usr/include/glm/detail/type_half.hpp \
  /usr/include/glm/detail/type_half.inl /usr/include/glm/integer.hpp \
- /usr/include/glm/detail/func_integer.inl
+ /usr/include/glm/detail/func_integer.inl \
+ /home/infimous/Documents/Programming/AnimationRasteriserNew/src/FileLoader.h \
+ /home/infimous/Documents/Programming/AnimationRasteriserNew/src/RendererStructs.h \
+ /home/infimous/customApps/tracy/public/tracy/Tracy.hpp \
+ /home/infimous/customApps/tracy/public/tracy/../common/TracyColor.hpp \
+ /home/infimous/customApps/tracy/public/tracy/../common/TracySystem.hpp \
+ /home/infimous/customApps/tracy/public/tracy/../common/TracyApi.h

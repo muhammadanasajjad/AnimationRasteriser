@@ -6,10 +6,54 @@
 
 #include <Renderer.h>
 #include <FileLoader.h>
+#include <Camera.h>
 #include <RendererStructs.h>
+#include <tracy/Tracy.hpp>
+
+void checkShaderCompilation(unsigned int shader, std::string errorMessage) {
+    ZoneScoped;
+    int success;
+    char infoLog[512];
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    
+    if (!success) {
+        glGetShaderInfoLog(shader, 512, NULL, infoLog);
+        std::cout << errorMessage << "\n" << infoLog << std::endl;
+    }
+}
+
+void checkShaderProgramLink(unsigned int shaderProgram, std::string errorMessage) {
+    ZoneScoped;
+    int success;
+    char infoLog[512];
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    
+    if(!success) {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << errorMessage << "\n" << infoLog << std::endl;
+    }
+}
 
 void Renderer::load() {
+    ZoneScoped;
     FileLoader fileLoader = FileLoader();
+    
+    // projection compute setup
+    fileLoader.loadFile("./shaders/projection.glsl");
+    std::string projectionShaderSource = fileLoader.getFileAsString();
+    const char* projectionShaderChars = projectionShaderSource.c_str();
+    
+    projectionShader = glCreateShader(GL_COMPUTE_SHADER);
+    glShaderSource(projectionShader, 1, &projectionShaderChars, NULL);
+    glCompileShader(projectionShader);
+    
+    checkShaderCompilation(projectionShader, "Error compiling projection shader");
+    
+    projectionProgram = glCreateProgram();
+    glAttachShader(projectionProgram, projectionShader);
+    glLinkProgram(projectionProgram);
+    
+    checkShaderProgramLink(projectionProgram, "Error linking projection shader program");
     
     // vertex shader load
     fileLoader.loadFile("./shaders/screenVertex.vert");
@@ -21,15 +65,7 @@ void Renderer::load() {
     glShaderSource(vertexShader, 1, &vertexShaderChars, NULL);
     glCompileShader(vertexShader);
     
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    
-    if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "Error vertex shader compilation failed \n" << infoLog << std::endl;
-        return;
-    }
+    checkShaderCompilation(vertexShader, "Error compiling vertex shader");
     
     // fragment shader load
     fileLoader.loadFile("./shaders/screenFragment.frag");
@@ -41,13 +77,7 @@ void Renderer::load() {
     glShaderSource(fragmentShader, 1, &fragmentShaderChars, NULL);
     glCompileShader(fragmentShader);
     
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    
-    if (!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "Error fragment shader compilation failed \n" << infoLog << std::endl;
-        return;
-    }
+    checkShaderCompilation(fragmentShader, "Error compiling fragment shader");
     
     // Link vertex and fragment shader
     mainShaderProgram = glCreateProgram();
@@ -55,12 +85,9 @@ void Renderer::load() {
     glAttachShader(mainShaderProgram, fragmentShader);
     glLinkProgram(mainShaderProgram);
     
-    glGetProgramiv(mainShaderProgram, GL_LINK_STATUS, &success);
-    if(!success) {
-        glGetProgramInfoLog(mainShaderProgram, 512, NULL, infoLog);
-        std::cout << "Linking main shader program failed \n" << infoLog << std::endl;
-        return;
-    }
+    checkShaderProgramLink(mainShaderProgram, "Error linking main shader program");
+    
+    camera = Camera({-2, -2, 0}, {+1, +1, 0});
     
     glUseProgram(mainShaderProgram);
     
@@ -84,14 +111,36 @@ void Renderer::load() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     
+    const std::vector<Triangle> cube = {
+        // Front (z = 0.5)
+        {{-0.5, -0.5, 0.5}, { 0.5, -0.5, 0.5}, { 0.5,  0.5, 0.5}},
+        {{-0.5, -0.5, 0.5}, { 0.5,  0.5, 0.5}, {-0.5,  0.5, 0.5}},
+        // Back  (z = -0.5)
+        {{ 0.5, -0.5, -0.5}, {-0.5, -0.5, -0.5}, {-0.5,  0.5, -0.5}},
+        {{ 0.5, -0.5, -0.5}, {-0.5,  0.5, -0.5}, { 0.5,  0.5, -0.5}},
+        // Right (x = 0.5)
+        {{ 0.5, -0.5, -0.5}, { 0.5, -0.5,  0.5}, { 0.5,  0.5,  0.5}},
+        {{ 0.5, -0.5, -0.5}, { 0.5,  0.5,  0.5}, { 0.5,  0.5, -0.5}},
+        // Left  (x = -0.5)
+        {{-0.5, -0.5,  0.5}, {-0.5, -0.5, -0.5}, {-0.5,  0.5, -0.5}},
+        {{-0.5, -0.5,  0.5}, {-0.5,  0.5, -0.5}, {-0.5,  0.5,  0.5}},
+        // Top   (y = 0.5)
+        {{-0.5,  0.5,  0.5}, { 0.5,  0.5,  0.5}, { 0.5,  0.5, -0.5}},
+        {{-0.5,  0.5,  0.5}, { 0.5,  0.5, -0.5}, {-0.5,  0.5, -0.5}},
+        // Bottom (y = -0.5)
+        {{-0.5, -0.5, -0.5}, { 0.5, -0.5, -0.5}, { 0.5, -0.5,  0.5}},
+        {{-0.5, -0.5, -0.5}, { 0.5, -0.5,  0.5}, {-0.5, -0.5,  0.5}},
+    };
+    
+    
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<float> dist(0.0f, 1.0f);
     
-    int n = 250;
+    int n = 1;
     std::vector<ProjectedTriangle> projectedTriangles;
     for (int i = 0; i < n; i++) {
-        projectedTriangles.push_back({ {dist(gen), dist(gen)} });
+        projectedTriangles.push_back({ {dist(gen), dist(gen)}, {dist(gen), dist(gen)}, {dist(gen), dist(gen)} });
     }
     
     glGenBuffers(1, &projectedTrianglesSSBO);
@@ -107,6 +156,7 @@ void Renderer::load() {
 }
 
 void Renderer::render() {
+    ZoneScoped;
     frame++;
     
     glUseProgram(mainShaderProgram);
@@ -114,13 +164,13 @@ void Renderer::render() {
     glBindVertexArray(VAO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, projectedTrianglesSSBO);
     
-    if (frame % 100 == 0) {
+    if (frame % 100000 == 0) {
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_real_distribution<float> dist(0.0f, 1.0f);
         
         
-        int n = 5;
+        int n = 0;
         std::vector<ProjectedTriangle> projectedTriangles;
         for (int i = 0; i < n; i++) {
             projectedTriangles.push_back({ {dist(gen), dist(gen)}, {dist(gen), dist(gen)}, {dist(gen), dist(gen)} });
@@ -136,6 +186,7 @@ void Renderer::render() {
 }
 
 void Renderer::offload() {
+    ZoneScoped;
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }
