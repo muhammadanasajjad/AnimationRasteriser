@@ -8,10 +8,15 @@
 #include <FileLoader.h>
 #include <Camera.h>
 #include <RendererStructs.h>
+#include <glm/gtc/matrix_transform.hpp>
+#ifdef TRACY_ENABLE
 #include <tracy/Tracy.hpp>
+#endif
 
 void checkShaderCompilation(unsigned int shader, std::string errorMessage) {
+    #ifdef TRACY_ENABLE
     ZoneScoped;
+    #endif
     int success;
     char infoLog[512];
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
@@ -23,7 +28,9 @@ void checkShaderCompilation(unsigned int shader, std::string errorMessage) {
 }
 
 void checkShaderProgramLink(unsigned int shaderProgram, std::string errorMessage) {
+    #ifdef TRACY_ENABLE
     ZoneScoped;
+    #endif
     int success;
     char infoLog[512];
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
@@ -35,7 +42,9 @@ void checkShaderProgramLink(unsigned int shaderProgram, std::string errorMessage
 }
 
 void Renderer::load() {
+    #ifdef TRACY_ENABLE
     ZoneScoped;
+    #endif
     FileLoader fileLoader = FileLoader();
     
     // projection compute setup
@@ -87,7 +96,7 @@ void Renderer::load() {
     
     checkShaderProgramLink(mainShaderProgram, "Error linking main shader program");
     
-    camera = Camera({-2, -2, 0}, {+1, +1, 0});
+    camera = Camera({-10, 0, 0}, {+1, 0, 0});
     
     glUseProgram(mainShaderProgram);
     
@@ -111,82 +120,85 @@ void Renderer::load() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     
+    glm::mat4 rot = glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    glm::vec3 cubeOffset(-7.5f, 0.0f, 0.0f);
     const std::vector<Triangle> cube = {
         // Front (z = 0.5)
-        {{-0.5, -0.5, 0.5}, { 0.5, -0.5, 0.5}, { 0.5,  0.5, 0.5}},
-        {{-0.5, -0.5, 0.5}, { 0.5,  0.5, 0.5}, {-0.5,  0.5, 0.5}},
+        {rot * glm::vec4(-0.5, -0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
+        {rot * glm::vec4(-0.5, -0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
         // Back  (z = -0.5)
-        {{ 0.5, -0.5, -0.5}, {-0.5, -0.5, -0.5}, {-0.5,  0.5, -0.5}},
-        {{ 0.5, -0.5, -0.5}, {-0.5,  0.5, -0.5}, { 0.5,  0.5, -0.5}},
+        {rot * glm::vec4( 0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
+        {rot * glm::vec4( 0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
         // Right (x = 0.5)
-        {{ 0.5, -0.5, -0.5}, { 0.5, -0.5,  0.5}, { 0.5,  0.5,  0.5}},
-        {{ 0.5, -0.5, -0.5}, { 0.5,  0.5,  0.5}, { 0.5,  0.5, -0.5}},
+        {rot * glm::vec4( 0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
+        {rot * glm::vec4( 0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
         // Left  (x = -0.5)
-        {{-0.5, -0.5,  0.5}, {-0.5, -0.5, -0.5}, {-0.5,  0.5, -0.5}},
-        {{-0.5, -0.5,  0.5}, {-0.5,  0.5, -0.5}, {-0.5,  0.5,  0.5}},
+        {rot * glm::vec4(-0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
+        {rot * glm::vec4(-0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
         // Top   (y = 0.5)
-        {{-0.5,  0.5,  0.5}, { 0.5,  0.5,  0.5}, { 0.5,  0.5, -0.5}},
-        {{-0.5,  0.5,  0.5}, { 0.5,  0.5, -0.5}, {-0.5,  0.5, -0.5}},
+        {rot * glm::vec4(-0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
+        {rot * glm::vec4(-0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
         // Bottom (y = -0.5)
-        {{-0.5, -0.5, -0.5}, { 0.5, -0.5, -0.5}, { 0.5, -0.5,  0.5}},
-        {{-0.5, -0.5, -0.5}, { 0.5, -0.5,  0.5}, {-0.5, -0.5,  0.5}},
+        {rot * glm::vec4(-0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
+        {rot * glm::vec4(-0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
     };
     
+    glGenBuffers(1, &worldTrianglesSSBO);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, worldTrianglesSSBO);
+    glBufferData(GL_SHADER_STORAGE_BUFFER,
+                 cube.size() * sizeof(Triangle),
+                 cube.data(),
+                 GL_STATIC_DRAW);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, worldTrianglesSSBO);
     
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
-    
-    int n = 1;
-    std::vector<ProjectedTriangle> projectedTriangles;
-    for (int i = 0; i < n; i++) {
-        projectedTriangles.push_back({ {dist(gen), dist(gen)}, {dist(gen), dist(gen)}, {dist(gen), dist(gen)} });
-    }
+    glUseProgram(projectionProgram);
+    worldTriangleCountLoc = glGetUniformLocation(projectionProgram, "triangleCount");
+    worldTriangleCount = cube.size();
+    glUniform1i(worldTriangleCountLoc, worldTriangleCount);
     
     glGenBuffers(1, &projectedTrianglesSSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, projectedTrianglesSSBO);
     glBufferData(GL_SHADER_STORAGE_BUFFER,
-                projectedTriangles.size() * sizeof(ProjectedTriangle),
-                projectedTriangles.data(),
-                GL_DYNAMIC_DRAW);
+                 worldTriangleCount * sizeof(ProjectedTriangle),
+                 NULL,
+                 GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, projectedTrianglesSSBO);
     
+    glUseProgram(projectionProgram);
+    camPosLoc = glGetUniformLocation(projectionProgram, "cameraPosition");
+    camFwdLoc = glGetUniformLocation(projectionProgram, "cameraForward");
+    camUpLoc = glGetUniformLocation(projectionProgram, "cameraUp");
+    
+    glUseProgram(mainShaderProgram);
     projectedTriangleCountLoc = glGetUniformLocation(mainShaderProgram, "projectedTriangleCount");
-    glUniform1i(projectedTriangleCountLoc, projectedTriangles.size());
+    glUniform1i(projectedTriangleCountLoc, worldTriangleCount);
 }
 
 void Renderer::render() {
+    #ifdef TRACY_ENABLE
     ZoneScoped;
+    #endif
     frame++;
+    
+    glUseProgram(projectionProgram);
+    glUniform3fv(camPosLoc, 1, &camera.position[0]);
+    glUniform3fv(camFwdLoc, 1, &camera.forward[0]);
+    glUniform3fv(camUpLoc, 1, &camera.up[0]);
+    glDispatchCompute(worldTriangleCount, 1, 1);
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
     
     glUseProgram(mainShaderProgram);
     
     glBindVertexArray(VAO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, projectedTrianglesSSBO);
     
-    if (frame % 100000 == 0) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<float> dist(0.0f, 1.0f);
-        
-        
-        int n = 0;
-        std::vector<ProjectedTriangle> projectedTriangles;
-        for (int i = 0; i < n; i++) {
-            projectedTriangles.push_back({ {dist(gen), dist(gen)}, {dist(gen), dist(gen)}, {dist(gen), dist(gen)} });
-        }
-        
-        glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0,
-                        projectedTriangles.size() * sizeof(ProjectedTriangle),
-                        projectedTriangles.data());
-        glUniform1i(projectedTriangleCountLoc, projectedTriangles.size());
-    }
-    
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 void Renderer::offload() {
+    #ifdef TRACY_ENABLE
     ZoneScoped;
+    #endif
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }

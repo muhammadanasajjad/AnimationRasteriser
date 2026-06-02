@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/AnimationRasteriser.dir/link.d"
   "AnimationRasteriser"
   "AnimationRasteriser.pdb"
   "CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o"

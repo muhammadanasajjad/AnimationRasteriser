@@ -31,10 +31,9 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 # ── Tracy ──────────────────────────────────────────────────
-set(TRACY_DIR "/home/infimous/customApps/tracy")
-target_include_directories(${PROJECT_NAME} PRIVATE ${TRACY_DIR}/public)
-
 if(USE_TRACY)
+    set(TRACY_DIR "/home/infimous/customApps/tracy")
+    target_include_directories(${PROJECT_NAME} PRIVATE ${TRACY_DIR}/public)
     message(STATUS "Tracy profiling ENABLED")
     target_compile_definitions(${PROJECT_NAME} PRIVATE TRACY_ENABLE)
     target_sources(${PROJECT_NAME} PRIVATE ${TRACY_DIR}/public/TracyClient.cpp)

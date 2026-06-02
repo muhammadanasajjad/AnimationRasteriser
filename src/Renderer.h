@@ -5,9 +5,6 @@
 class Renderer {
     public:
         void load();
-        void loadShaders();
-        void initBuffers();
-        void initScene();
         void render();
         void offload();
     private:
@@ -23,5 +20,9 @@ class Renderer {
         unsigned int projectionProgram;
         unsigned int VAO, VBO;
         unsigned int projectedTrianglesSSBO;
+        unsigned int worldTrianglesSSBO;
+        unsigned int worldTriangleCount;
         unsigned int projectedTriangleCountLoc;
+        unsigned int worldTriangleCountLoc;
+        unsigned int camPosLoc, camFwdLoc, camUpLoc;
 };
