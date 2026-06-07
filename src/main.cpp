@@ -51,7 +51,18 @@ int main() {
     Renderer renderer = Renderer();
     renderer.load();
     
-    while(!glfwWindowShouldClose(window)) {
+    float lastTime = 0.0f;
+    int frameCount = 0;
+    while (!glfwWindowShouldClose(window)) {
+        float currentTime = glfwGetTime();
+        frameCount++;
+
+        if (currentTime - lastTime >= 0.3f) {
+            std::cout << "FPS: " << frameCount / (currentTime - lastTime) << std::endl;
+            frameCount = 0;
+            lastTime = currentTime;
+        }
+        
         processInput(window);
         
         glClear(GL_COLOR_BUFFER_BIT);
