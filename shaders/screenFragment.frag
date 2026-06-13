@@ -30,7 +30,7 @@ layout(std430, binding = 5) buffer TileTriangles {
     int tileTriangles[];
 };
 
-float ANTIALISING_SCALE = 0.0001;
+float ANTIALIASING_SCALE = 0.01;
 
 in vec2 textureCoords;
 
@@ -42,8 +42,23 @@ float rightOfLine(vec2 p1, vec2 p2, vec2 point) {
     vec2 perpendicular = p2 - p1;
     perpendicular = vec2(-perpendicular.y, perpendicular.x);
     vec2 diff = point - p1;
-    
-    return clamp(dot(perpendicular, diff) * (1.0 / ANTIALISING_SCALE) + 0.5, 0.0, 1.0);
+
+    float aaScale = perpendicular.x*perpendicular.x + perpendicular.y*perpendicular.y;
+    aaScale *= ANTIALIASING_SCALE;
+    aaScale = clamp(aaScale, 0.1, 0.00001);
+    return clamp(dot(perpendicular, diff) * (1.0 / ANTIALIASING_SCALE) + 0.5, 0.0, 1.0);
+}
+
+void getBarycentric(ProjectedTriangle tri, vec2 P, inout float w1, inout float w2) {
+    vec2 A = tri.p1;
+    vec2 B = tri.p2;
+    vec2 C = tri.p3;
+
+    w1 = A.x * (C.y - A.y) + (P.y - A.y) * (C.x - A.x) - P.x * (C.y - A.y);
+    w1 *= 1.0 / ( (B.y - A.y) * (C.x - A.x) - (B.x - A.x) * (C.y - A.y) );
+
+    w2 = P.y - A.y - w1 * (B.y - A.y);
+    w2 *= 1.0 / ( C.y - A.y );
 }
 
 void main() {
@@ -60,39 +75,19 @@ void main() {
     float maxRadius = 0.06;
     
     float colour = 0.0;
-    float redColour = 0.0;
-    for (int i = start; i < end; i++) {
-        int triIdx = tileTriangles[i];
-        vec2 diff = uv - projectedTriangles[triIdx].p1;
-        float distSquared = dot(diff, diff);
-        
-        float inside = smoothstep(maxRadius*maxRadius, minRadius*minRadius, distSquared);
-        redColour = max(redColour, inside);
-        
-        diff = uv - projectedTriangles[triIdx].p2;
-        distSquared = dot(diff, diff);
-        
-        inside = smoothstep(maxRadius*maxRadius, minRadius*minRadius, distSquared);
-        redColour = max(redColour, inside);
-        
-        diff = uv - projectedTriangles[triIdx].p3;
-        distSquared = dot(diff, diff);
-        
-        inside = smoothstep(maxRadius*maxRadius, minRadius*minRadius, distSquared);
-        redColour = max(redColour, inside);
-    }
     
     for (int i = start; i < end; i++) {
         int triIdx = tileTriangles[i];
         ProjectedTriangle tri = projectedTriangles[triIdx];
-        float right1 = rightOfLine(tri.p1, tri.p2, uv);
-        float right2 = rightOfLine(tri.p2, tri.p3, uv);
-        float right3 = rightOfLine(tri.p3, tri.p1, uv);
-        float inside = right1 * right2 * right3;
-        inside += (1.0-right1) * (1.0-right2) * (1.0-right3);
+        
+        float w1 = 0;
+        float w2 = 0;
+        getBarycentric(tri, uv, w1, w2);
+        
+        float inside = smoothstep(0.0, ANTIALIASING_SCALE, w1) * smoothstep(0.0, ANTIALIASING_SCALE, w2) * smoothstep(0.0, ANTIALIASING_SCALE, 1.0 - (w1 + w2));
         inside = clamp(inside, 0.0, 1.0);
         colour = max(colour, inside);
     }
     
-    FragColor = vec4(redColour, colour, float(countInTile) / 4, 1.0);
+    FragColor = vec4(vec3(colour), 1.0);
 }
