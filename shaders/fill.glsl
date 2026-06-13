@@ -38,29 +38,17 @@ void main() {
 
     ProjectedTriangle tri = projectedTriangles[idx];
 
-    vec2 tileSize = vec2(1.0 / float(tileColumns), 1.0 / float(tileRows));
+    ivec2 minTile = ivec2(max(0, int(ceil(((tri.min.x + 1.0) / 2.0) * tileColumns - 1.0))),
+                          max(0, int(ceil(((1.0 - tri.max.y) / 2.0) * tileRows - 1.0))));
+    ivec2 maxTile = ivec2(min(tileColumns - 1, int(floor(((tri.max.x + 1.0) / 2.0) * tileColumns))),
+                          min(tileRows - 1, int(floor(((1.0 - tri.min.y) / 2.0) * tileRows))));
 
-    for (int ty = 0; ty < tileRows; ty++) {
-        for (int tx = 0; tx < tileColumns; tx++) {
-            vec2 tileMin = vec2(tx, ty) * tileSize;
-            vec2 tileMax = tileMin + tileSize;
-            tileMin.x = tileMin.x * 2.0 - 1.0;
-            tileMin.y = 1.0 - tileMin.y * 2.0;
-            tileMax.x = tileMax.x * 2.0 - 1.0;
-            tileMax.y = 1.0 - tileMax.y * 2.0;
-
-            float hit =
-                step(tileMin.x, tri.max.x) *
-                step(tri.min.x, tileMax.x) *
-                step(tileMax.y, tri.max.y) *
-                step(tri.min.y, tileMin.y);
-
-            if (hit > 0.0) {
-                int tileIdx = ty * tileColumns + tx;
-                int base = tileOffsets[tileIdx];
-                int counter = atomicAdd(tileCounters[tileIdx], 1);
-                tileTriangles[base + counter] = int(idx);
-            }
+    for (int ty = minTile.y; ty <= maxTile.y; ty++) {
+        for (int tx = minTile.x; tx <= maxTile.x; tx++) {
+            int tileIdx = ty * tileColumns + tx;
+            int base = tileOffsets[tileIdx];
+            int counter = atomicAdd(tileCounters[tileIdx], 1);
+            tileTriangles[base + counter] = int(idx);
         }
     }
 }
