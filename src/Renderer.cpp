@@ -147,7 +147,7 @@ void Renderer::load() {
     
     checkShaderProgramLink(mainShaderProgram, "Error linking main shader program");
     
-    camera = Camera({-10, 0, 0}, {+1, 0, 0});
+    camera = Camera({-25, 0, 0}, {+1, 0, 0});
     
     glUseProgram(mainShaderProgram);
     
@@ -194,9 +194,9 @@ void Renderer::load() {
         {rot * glm::vec4(-0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f)},
     };
 
-    int cubeCount = 500;
+    int cubeCount = 10000;
     std::mt19937 rng(std::random_device{}());
-    std::uniform_real_distribution<float> posDist(-5.0f, 10.0f);
+    std::uniform_real_distribution<float> posDist(-20.0f, 20.0f);
     std::uniform_real_distribution<float> rotDist(0.0f, 360.0f);
     for (int i = 0; i < cubeCount; i++) {
 
@@ -334,6 +334,10 @@ void Renderer::render() {
     glDispatchCompute((worldTriangleCount / 64) + 1, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
+    int zero = 0;
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileTriangleCountSSBO);
+    glClearBufferSubData(GL_SHADER_STORAGE_BUFFER, GL_R32I, 0, tileCount * sizeof(int), GL_RED_INTEGER, GL_INT, &zero);
+
     glUseProgram(countProgram);
     
     int countTriangleCountLoc = glGetUniformLocation(countProgram, "projectedTriangleCount");
@@ -343,7 +347,7 @@ void Renderer::render() {
     glUniform1i(tileRowsLoc, tileRows);
     glUniform1i(tileColumnsLoc, tileColumns);
     
-    glDispatchCompute(tileColumns / 8, tileRows / 8, 1);
+    glDispatchCompute((worldTriangleCount / 64) + 1, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
     glUseProgram(prefixProgram);
@@ -351,7 +355,6 @@ void Renderer::render() {
     glDispatchCompute(1, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
-    int zero = 0;
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileCountersSSBO);
     glClearBufferSubData(GL_SHADER_STORAGE_BUFFER, GL_R32I, 0, tileCount * sizeof(int), GL_RED_INTEGER, GL_INT, &zero);
 
