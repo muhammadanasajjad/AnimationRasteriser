@@ -23,36 +23,22 @@ layout(std430, binding = 2) buffer TileCount {
     int tileCounts[];
 };
 
-layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
 void main() {
-    float x = float(gl_GlobalInvocationID.x);
-    float y = float(gl_GlobalInvocationID.y);
-
-    if (x >= tileRows || y >= tileColumns)
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= projectedTriangleCount)
         return;
 
-    int count = 0;
-    
-    vec2 tileSize = vec2(1.0 / float(tileColumns), 1.0 / float(tileRows));
+    ProjectedTriangle tri = projectedTriangles[idx];
 
-    vec2 tileMin = vec2(x, y) * tileSize;
-    vec2 tileMax = tileMin + tileSize;
-    tileMin.x = tileMin.x * 2.0 - 1.0;
-    tileMin.y = 1.0 - tileMin.y * 2.0;
-    tileMax.x = tileMax.x * 2.0 - 1.0;
-    tileMax.y = 1.0 - tileMax.y * 2.0;
+    ivec2 minTile = ivec2(max(0, int(ceil(((tri.min.x + 1.0) / 2.0) * tileColumns - 1.0))),
+                          max(0, int(ceil(((1.0 - tri.max.y) / 2.0) * tileRows - 1.0))));
+    ivec2 maxTile = ivec2(min(tileColumns - 1, int(floor(((tri.max.x + 1.0) / 2.0) * tileColumns))),
+                          min(tileRows - 1, int(floor(((1.0 - tri.min.y) / 2.0) * tileRows))));
 
-    for (int i = 0; i < projectedTriangleCount; i++) {
-        ProjectedTriangle triangle = projectedTriangles[i];
-
-        float hit =
-            step(tileMin.x, triangle.max.x) *
-            step(triangle.min.x, tileMax.x) *
-            step(tileMax.y, triangle.max.y) *
-            step(triangle.min.y, tileMin.y);
-
-        count += int(round(hit));
+    for (int ty = minTile.y; ty <= maxTile.y; ty++) {
+        for (int tx = minTile.x; tx <= maxTile.x; tx++) {
+            atomicAdd(tileCounts[ty * tileColumns + tx], 1);
+        }
     }
-
-    tileCounts[int(y) * tileColumns + int(x)] = count;
 }
