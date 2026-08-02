@@ -1,13 +1,7 @@
 #include <fstream>
 #include <FileLoader.h>
-#ifdef TRACY_ENABLE
-#include <tracy/Tracy.hpp>
-#endif
 
 void FileLoader::loadFile(std::string path) {
-    #ifdef TRACY_ENABLE
-    ZoneScoped;
-    #endif
     fileString = "";
     std::fstream readFile(path);
     
@@ -20,8 +14,5 @@ void FileLoader::loadFile(std::string path) {
 }
 
 std::string FileLoader::getFileAsString() {
-    #ifdef TRACY_ENABLE
-    ZoneScoped;
-    #endif
     return fileString;
 }

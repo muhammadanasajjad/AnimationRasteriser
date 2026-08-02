@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 BUILD="$ROOT/build"
 
 echo "==> Configuring..."
-cmake -B "$BUILD" -S "$ROOT" -DUSE_TRACY=OFF
+cmake -B "$BUILD" -S "$ROOT"
 
 echo "==> Building..."
 cmake --build "$BUILD"

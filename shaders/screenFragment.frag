@@ -80,6 +80,8 @@ void main() {
         int triIdx = tileTriangles[i];
         ProjectedTriangle tri = projectedTriangles[triIdx];
         
+        //if (uv.x < tri.min.x || uv.x > tri.max.x || uv.y < tri.min.y || uv.y > tri.max.y) continue;
+        
         float w1 = 0;
         float w2 = 0;
         getBarycentric(tri, uv, w1, w2);

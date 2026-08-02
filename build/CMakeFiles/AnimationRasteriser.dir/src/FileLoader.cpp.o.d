@@ -1,5 +1,5 @@
 CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o: \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/FileLoader.cpp \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/16/fstream \
  /usr/include/c++/16/bits/requires_hosted.h \
  /usr/include/c++/16/x86_64-redhat-linux/bits/c++config.h \
@@ -147,4 +147,4 @@ CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o: \
  /usr/include/c++/16/x86_64-redhat-linux/bits/basic_file.h \
  /usr/include/c++/16/x86_64-redhat-linux/bits/c++io.h \
  /usr/include/c++/16/bits/fstream.tcc \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/FileLoader.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.h

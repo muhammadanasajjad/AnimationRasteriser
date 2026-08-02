@@ -1,8 +1,8 @@
 CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/main.cpp \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp \
  /usr/include/stdc-predef.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/glad/glad.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/KHR/khrplatform.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/glad/glad.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/KHR/khrplatform.h \
  /usr/lib/gcc/x86_64-redhat-linux/16/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -14,8 +14,8 @@ CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: \
  /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
  /usr/include/bits/stdint-least.h /usr/include/GLFW/glfw3.h \
  /usr/lib/gcc/x86_64-redhat-linux/16/include/stddef.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Renderer.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Camera.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.h \
  /usr/include/glm/glm.hpp /usr/include/glm/detail/_fixes.hpp \
  /usr/include/c++/16/cmath /usr/include/c++/16/bits/requires_hosted.h \
  /usr/include/c++/16/x86_64-redhat-linux/bits/c++config.h \

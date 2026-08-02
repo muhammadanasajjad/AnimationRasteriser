@@ -1,7 +1,7 @@
 CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o: \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Camera.cpp \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.cpp \
  /usr/include/stdc-predef.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Camera.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.h \
  /usr/include/glm/glm.hpp /usr/include/glm/detail/_fixes.hpp \
  /usr/include/c++/16/cmath /usr/include/c++/16/bits/requires_hosted.h \
  /usr/include/c++/16/x86_64-redhat-linux/bits/c++config.h \

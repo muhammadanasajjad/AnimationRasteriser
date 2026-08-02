@@ -1,5 +1,5 @@
 CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o: \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/src/glad.c \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/src/glad.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/features-time64.h /usr/include/bits/wordsize.h \
@@ -34,8 +34,8 @@ CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o: \
  /usr/include/bits/types/once_flag.h /usr/include/bits/stdlib-float.h \
  /usr/include/string.h /usr/include/bits/types/locale_t.h \
  /usr/include/bits/types/__locale_t.h /usr/include/strings.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/glad/glad.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/KHR/khrplatform.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/glad/glad.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/KHR/khrplatform.h \
  /usr/lib/gcc/x86_64-redhat-linux/16/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h \
  /usr/include/bits/stdint-uintn.h /usr/include/bits/stdint-least.h \

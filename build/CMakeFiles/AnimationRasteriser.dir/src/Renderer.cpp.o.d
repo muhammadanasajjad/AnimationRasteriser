@@ -1,8 +1,8 @@
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Renderer.cpp \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp \
  /usr/include/stdc-predef.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/glad/glad.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/KHR/khrplatform.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/glad/glad.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/KHR/khrplatform.h \
  /usr/lib/gcc/x86_64-redhat-linux/16/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -178,8 +178,8 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
  /usr/include/c++/16/bits/stl_numeric.h \
  /usr/include/c++/16/pstl/glue_numeric_defs.h \
  /usr/include/c++/16/pstl/execution_defs.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Renderer.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Camera.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.h \
  /usr/include/glm/glm.hpp /usr/include/glm/detail/_fixes.hpp \
  /usr/include/glm/detail/setup.hpp /usr/include/c++/16/cassert \
  /usr/include/assert.h /usr/include/glm/simd/platform.h \
@@ -302,8 +302,8 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
  /usr/include/glm/detail/type_half.hpp \
  /usr/include/glm/detail/type_half.inl /usr/include/glm/integer.hpp \
  /usr/include/glm/detail/func_integer.inl \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/FileLoader.h \
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/RendererStructs.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/RendererStructs.h \
  /usr/include/glm/gtc/matrix_transform.hpp \
  /usr/include/glm/ext/matrix_projection.hpp \
  /usr/include/glm/gtc/constants.hpp \

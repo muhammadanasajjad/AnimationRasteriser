@@ -9,14 +9,8 @@
 #include <Camera.h>
 #include <RendererStructs.h>
 #include <glm/gtc/matrix_transform.hpp>
-#ifdef TRACY_ENABLE
-#include <tracy/Tracy.hpp>
-#endif
 
 void checkShaderCompilation(unsigned int shader, std::string errorMessage) {
-    #ifdef TRACY_ENABLE
-    ZoneScoped;
-    #endif
     int success;
     char infoLog[512];
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
@@ -28,9 +22,6 @@ void checkShaderCompilation(unsigned int shader, std::string errorMessage) {
 }
 
 void checkShaderProgramLink(unsigned int shaderProgram, std::string errorMessage) {
-    #ifdef TRACY_ENABLE
-    ZoneScoped;
-    #endif
     int success;
     char infoLog[512];
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
@@ -42,9 +33,6 @@ void checkShaderProgramLink(unsigned int shaderProgram, std::string errorMessage
 }
 
 void Renderer::load() {
-    #ifdef TRACY_ENABLE
-    ZoneScoped;
-    #endif
     FileLoader fileLoader = FileLoader();
     
     // projection compute setup
@@ -322,9 +310,6 @@ void Renderer::load() {
 }
 
 void Renderer::render() {
-    #ifdef TRACY_ENABLE
-    ZoneScoped;
-    #endif
     frame++;
 
     glUseProgram(projectionProgram);
@@ -374,9 +359,6 @@ void Renderer::render() {
 }
 
 void Renderer::offload() {
-    #ifdef TRACY_ENABLE
-    ZoneScoped;
-    #endif
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }

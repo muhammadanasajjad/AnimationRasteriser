@@ -30,16 +30,16 @@ AnimationRasteriser
  /usr/lib64/libc_nonshared.a
  /usr/lib64/libglfw.so.3.4
  /usr/lib64/libxcb.so.1
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/build/CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/build/CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/build/CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/build/CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/build/CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/build/CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/build/CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/build/CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/build/CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/build/CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o
 
 CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/src/glad.c
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/KHR/khrplatform.h
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/glad/glad.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/src/glad.c
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/KHR/khrplatform.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/glad/glad.h
  /usr/include/alloca.h
  /usr/include/bits/atomic_wide_counter.h
  /usr/include/bits/byteswap.h
@@ -108,8 +108,8 @@ CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o
  /usr/lib/gcc/x86_64-redhat-linux/16/include/stdint.h
 
 CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Camera.cpp
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Camera.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.cpp
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.h
  /usr/include/alloca.h
  /usr/include/assert.h
  /usr/include/bits/atomic_wide_counter.h
@@ -376,8 +376,8 @@ CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o
  /usr/lib/gcc/x86_64-redhat-linux/16/include/syslimits.h
 
 CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/FileLoader.cpp
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/FileLoader.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.cpp
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.h
  /usr/include/alloca.h
  /usr/include/asm-generic/bitsperlong.h
  /usr/include/asm-generic/errno-base.h
@@ -598,13 +598,13 @@ CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o
  /usr/lib/gcc/x86_64-redhat-linux/16/include/stddef.h
 
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Renderer.cpp
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/KHR/khrplatform.h
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/glad/glad.h
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Camera.h
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/FileLoader.h
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Renderer.h
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/RendererStructs.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/KHR/khrplatform.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/glad/glad.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/RendererStructs.h
  /usr/include/alloca.h
  /usr/include/asm-generic/bitsperlong.h
  /usr/include/asm-generic/errno-base.h
@@ -1024,11 +1024,11 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o
  /usr/lib/gcc/x86_64-redhat-linux/16/include/syslimits.h
 
 CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/main.cpp
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/KHR/khrplatform.h
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/glad/include/glad/glad.h
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Camera.h
- /home/muhammadanassajjad/Documents/Programming/AnimationRasteriserNew/src/Renderer.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/KHR/khrplatform.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/glad/glad.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.h
  /usr/include/GLFW/glfw3.h
  /usr/include/alloca.h
  /usr/include/asm-generic/bitsperlong.h

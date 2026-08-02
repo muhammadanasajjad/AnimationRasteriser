@@ -1,3 +1,0 @@
-/home/infimous/Documents/Programming/AnimationRasteriserNew/build-tracy/CMakeFiles/AnimationRasteriser.dir
-/home/infimous/Documents/Programming/AnimationRasteriserNew/build-tracy/CMakeFiles/edit_cache.dir
-/home/infimous/Documents/Programming/AnimationRasteriserNew/build-tracy/CMakeFiles/rebuild_cache.dir
