@@ -31,7 +31,7 @@ void Camera::updateVectors() {
 
 void Camera::look(float dx, float dy) {
     yaw -= dx * lookSensitivity;
-    pitch -= dy * lookSensitivity;
+    pitch += dy * lookSensitivity;
 
     float maxPitch = glm::radians(89.0f);
     pitch = glm::clamp(pitch, -maxPitch, maxPitch);

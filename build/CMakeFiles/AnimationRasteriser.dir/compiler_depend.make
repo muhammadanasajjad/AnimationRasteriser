@@ -302,6 +302,8 @@ CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o: /home/muhammadanasajjad/Doc
   /usr/include/glm/ext/matrix_float4x3_precision.hpp \
   /usr/include/glm/ext/matrix_float4x4.hpp \
   /usr/include/glm/ext/matrix_float4x4_precision.hpp \
+  /usr/include/glm/ext/scalar_constants.hpp \
+  /usr/include/glm/ext/scalar_constants.inl \
   /usr/include/glm/ext/scalar_int_sized.hpp \
   /usr/include/glm/ext/scalar_uint_sized.hpp \
   /usr/include/glm/ext/vector_bool2.hpp \
@@ -337,6 +339,8 @@ CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o: /home/muhammadanasajjad/Doc
   /usr/include/glm/fwd.hpp \
   /usr/include/glm/geometric.hpp \
   /usr/include/glm/glm.hpp \
+  /usr/include/glm/gtc/constants.hpp \
+  /usr/include/glm/gtc/constants.inl \
   /usr/include/glm/integer.hpp \
   /usr/include/glm/mat2x2.hpp \
   /usr/include/glm/mat2x3.hpp \
@@ -1421,12 +1425,6 @@ CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: /home/muhammadanasajjad/Docum
 
 /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp:
 
-/usr/include/glm/gtc/constants.inl:
-
-/usr/include/glm/gtc/constants.hpp:
-
-/usr/include/glm/ext/scalar_constants.hpp:
-
 /usr/include/glm/ext/matrix_projection.hpp:
 
 /usr/include/glm/ext/matrix_clip_space.hpp:
@@ -1486,10 +1484,6 @@ CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: /home/muhammadanasajjad/Docum
 /usr/include/c++/16/cstdio:
 
 /usr/include/c++/16/cerrno:
-
-/usr/include/glm/ext/scalar_constants.inl:
-
-/usr/include/c++/16/cctype:
 
 /usr/include/c++/16/bits/uses_allocator_args.h:
 
@@ -1651,6 +1645,10 @@ CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: /home/muhammadanasajjad/Docum
 
 /usr/include/glm/integer.hpp:
 
+/usr/include/glm/gtc/constants.inl:
+
+/usr/include/glm/gtc/constants.hpp:
+
 /usr/include/glm/glm.hpp:
 
 /usr/include/glm/geometric.hpp:
@@ -1700,6 +1698,12 @@ CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: /home/muhammadanasajjad/Docum
 /usr/include/glm/ext/vector_bool2_precision.hpp:
 
 /usr/include/glm/ext/scalar_uint_sized.hpp:
+
+/usr/include/c++/16/cctype:
+
+/usr/include/glm/ext/scalar_constants.inl:
+
+/usr/include/glm/ext/scalar_constants.hpp:
 
 /usr/include/glm/ext/matrix_float4x4_precision.hpp:
 
