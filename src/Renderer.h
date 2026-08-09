@@ -7,10 +7,10 @@ class Renderer {
         void load();
         void render();
         void offload();
-    private:
-        int frame = 0;
         
         Camera camera;
+    private:
+        int frame = 0;
         
         unsigned int VAO, VBO;
 
