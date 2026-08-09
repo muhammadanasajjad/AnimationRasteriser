@@ -63,6 +63,60 @@ vec2 project(vec3 point, vec3 cameraRight) {
     return vec2(x, y);
 }
 
+void clipTriangle(vec3 v0, vec3 v1, vec3 v2, out vec3 c0, out vec3 c1, out vec3 c2, out vec3 c3, out int count) {
+    float nearPlane = 0.1;
+
+    vec3 verts[3] = vec3[](v0, v1, v2);
+    float dists[3];
+    for (int i = 0; i < 3; i++) {
+        dists[i] = dot(verts[i] - cameraPosition, cameraForward) - nearPlane;
+    }
+
+    vec3 outVerts[4] = vec3[](vec3(0.0), vec3(0.0), vec3(0.0), vec3(0.0));
+    int outCount = 0;
+    for (int i = 0; i < 3; i++) {
+        vec3 a = verts[i];
+        vec3 b = verts[(i + 1) % 3];
+        float da = dists[i];
+        float db = dists[(i + 1) % 3];
+
+        if (da >= 0.0) {
+            outVerts[outCount] = a;
+            outCount++;
+        }
+        if ((da >= 0.0) != (db >= 0.0)) {
+            float t = da / (da - db);
+            outVerts[outCount] = a + t * (b - a);
+            outCount++;
+        }
+    }
+
+    count = outCount;
+    c0 = outVerts[0];
+    c1 = outVerts[1];
+    c2 = outVerts[2];
+    c3 = outVerts[3];
+}
+
+void writeProjectedTriangle(vec2 p1, vec2 p2, vec2 p3, float d1, float d2, float d3, int material, uint slot) {
+    ProjectedTriangle outTri;
+    outTri.p1 = p1;
+    outTri.p2 = p2;
+    outTri.p3 = p3;
+    outTri.min = min(p1, min(p2, p3));
+    outTri.max = max(p1, max(p2, p3));
+    outTri.depths[0] = d1;
+    outTri.depths[1] = d2;
+    outTri.depths[2] = d3;
+    outTri.materialIndex = material;
+    outTri.padding = 0.0;
+    projectedTriangles[slot] = outTri;
+}
+
+bool offScreen(vec2 minB, vec2 maxB) {
+    return maxB.x < -1.0 || minB.x > 1.0 || maxB.y < -1.0 || minB.y > 1.0;
+}
+
 layout (local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
 void main() {
     uint idx = gl_GlobalInvocationID.x;
@@ -72,34 +126,47 @@ void main() {
     vec3 cameraRight = normalize(cross(cameraForward, cameraUp));
 
     vec3 verts[3] = vec3[](tri.p1.xyz, tri.p2.xyz, tri.p3.xyz);
-    vec2 screenVerts[3];
-    float dists[3];
 
-    screenVerts[0] = project(verts[0], cameraRight);
-    dists[0] = distance(cameraPosition, verts[0]);
-    
-    vec2 minBounds = screenVerts[0];
-    vec2 maxBounds = screenVerts[0];
+    vec3 cv0, cv1, cv2, cv3;
+    int clipCount;
+    clipTriangle(verts[0], verts[1], verts[2], cv0, cv1, cv2, cv3, clipCount);
 
-    for (int i = 1; i < 3; i++) {
-        screenVerts[i] = project(verts[i], cameraRight);
-        dists[i] = distance(cameraPosition, verts[i]);
-        minBounds.x = min(screenVerts[i].x, minBounds.x);
-        minBounds.y = min(screenVerts[i].y, minBounds.y);
-        maxBounds.x = max(screenVerts[i].x, maxBounds.x);
-        maxBounds.y = max(screenVerts[i].y, maxBounds.y);
+    uint slot0 = idx * 2;
+    uint slot1 = idx * 2 + 1;
+
+    if (clipCount == 0) {
+        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), 0.0, 0.0, 0.0, tri.materialIndex, slot0);
+        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), 0.0, 0.0, 0.0, tri.materialIndex, slot1);
+        return;
     }
 
-    ProjectedTriangle outTri;
-    outTri.p1 = screenVerts[0];
-    outTri.p2 = screenVerts[1];
-    outTri.p3 = screenVerts[2];
-    outTri.min = minBounds;
-    outTri.max = maxBounds;
-    outTri.depths[0] = dists[0];
-    outTri.depths[1] = dists[1];
-    outTri.depths[2] = dists[2];
-    outTri.materialIndex = tri.materialIndex;
-    outTri.padding = 0.0;
-    projectedTriangles[idx] = outTri;
+    vec2 s0 = project(cv0, cameraRight);
+    vec2 s1 = project(cv1, cameraRight);
+    vec2 s2 = project(cv2, cameraRight);
+    vec2 s3 = project(cv3, cameraRight);
+
+    float dd0 = distance(cameraPosition, cv0);
+    float dd1 = distance(cameraPosition, cv1);
+    float dd2 = distance(cameraPosition, cv2);
+    float dd3 = distance(cameraPosition, cv3);
+
+    vec2 minB = min(s0, min(s1, s2));
+    vec2 maxB = max(s0, max(s1, s2));
+    if (offScreen(minB, maxB)) {
+        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), 0.0, 0.0, 0.0, tri.materialIndex, slot0);
+    } else {
+        writeProjectedTriangle(s0, s1, s2, dd0, dd1, dd2, tri.materialIndex, slot0);
+    }
+
+    if (clipCount == 4) {
+        vec2 minB2 = min(s0, min(s2, s3));
+        vec2 maxB2 = max(s0, max(s2, s3));
+        if (offScreen(minB2, maxB2)) {
+            writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), 0.0, 0.0, 0.0, tri.materialIndex, slot1);
+        } else {
+            writeProjectedTriangle(s0, s2, s3, dd0, dd2, dd3, tri.materialIndex, slot1);
+        }
+    } else {
+        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), 0.0, 0.0, 0.0, tri.materialIndex, slot1);
+    }
 }

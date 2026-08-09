@@ -40,12 +40,7 @@ void Camera::look(float dx, float dy) {
 }
 
 void Camera::moveForward(float amount) {
-    glm::vec3 flat(forward.x, forward.y, 0.0f);
-    if (glm::length(flat) < 0.0001f) {
-        position += forward * amount;
-    } else {
-        position += glm::normalize(flat) * amount;
-    }
+    position += forward * amount;
 }
 
 void Camera::moveBackward(float amount) {
@@ -53,12 +48,7 @@ void Camera::moveBackward(float amount) {
 }
 
 void Camera::moveLeft(float amount) {
-    glm::vec3 flat(right.x, right.y, 0.0f);
-    if (glm::length(flat) < 0.0001f) {
-        position -= right * amount;
-    } else {
-        position -= glm::normalize(flat) * amount;
-    }
+    position -= right * amount;
 }
 
 void Camera::moveRight(float amount) {

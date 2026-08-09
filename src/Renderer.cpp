@@ -185,7 +185,7 @@ void Renderer::load() {
         {{1.0, 1.0, 1.0, 1.0}, -1},
     };
     
-    int cubeCount = 10000;
+    int cubeCount = 1000;
     std::mt19937 rng(std::random_device{}());
     std::uniform_real_distribution<float> posDist(-20.0f, 20.0f);
     std::uniform_real_distribution<float> rotDist(0.0f, 360.0f);
@@ -268,7 +268,7 @@ void Renderer::load() {
     glGenBuffers(1, &tileTrianglesSSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileTrianglesSSBO);
     glBufferData(GL_SHADER_STORAGE_BUFFER,
-                 tileCount * worldTriangleCount * sizeof(int),
+                 tileCount * worldTriangleCount * 2 * sizeof(int),
                  NULL,
                  GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, tileTrianglesSSBO);
@@ -296,7 +296,7 @@ void Renderer::load() {
     glGenBuffers(1, &projectedTrianglesSSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, projectedTrianglesSSBO);
     glBufferData(GL_SHADER_STORAGE_BUFFER,
-                 worldTriangleCount * sizeof(ProjectedTriangle),
+                 worldTriangleCount * 2 * sizeof(ProjectedTriangle),
                  NULL,
                  GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, projectedTrianglesSSBO);
@@ -318,7 +318,7 @@ void Renderer::load() {
     
     glUseProgram(mainShaderProgram);
     projectedTriangleCountLoc = glGetUniformLocation(mainShaderProgram, "projectedTriangleCount");
-    glUniform1i(projectedTriangleCountLoc, worldTriangleCount);
+    glUniform1i(projectedTriangleCountLoc, worldTriangleCount * 2);
     fragTileRowsLoc = glGetUniformLocation(mainShaderProgram, "tileRows");
     fragTileColumnsLoc = glGetUniformLocation(mainShaderProgram, "tileColumns");
     glUniform1i(fragTileRowsLoc, tileRows);
@@ -344,11 +344,11 @@ void Renderer::render() {
     int countTriangleCountLoc = glGetUniformLocation(countProgram, "projectedTriangleCount");
     int tileRowsLoc = glGetUniformLocation(countProgram, "tileRows");
     int tileColumnsLoc = glGetUniformLocation(countProgram, "tileColumns");
-    glUniform1i(countTriangleCountLoc, worldTriangleCount);
+    glUniform1i(countTriangleCountLoc, worldTriangleCount * 2);
     glUniform1i(tileRowsLoc, tileRows);
     glUniform1i(tileColumnsLoc, tileColumns);
     
-    glDispatchCompute((worldTriangleCount / 64) + 1, 1, 1);
+    glDispatchCompute((worldTriangleCount * 2 / 64) + 1, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
     glUseProgram(prefixProgram);
@@ -360,10 +360,10 @@ void Renderer::render() {
     glClearBufferSubData(GL_SHADER_STORAGE_BUFFER, GL_R32I, 0, tileCount * sizeof(int), GL_RED_INTEGER, GL_INT, &zero);
 
     glUseProgram(fillProgram);
-    glUniform1i(fillTriangleCountLoc, worldTriangleCount);
+    glUniform1i(fillTriangleCountLoc, worldTriangleCount * 2);
     glUniform1i(fillTileRowsLoc, tileRows);
     glUniform1i(fillTileColumnsLoc, tileColumns);
-    glDispatchCompute((worldTriangleCount / 64) + 1, 1, 1);
+    glDispatchCompute((worldTriangleCount * 2 / 64) + 1, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
     glUseProgram(mainShaderProgram);
