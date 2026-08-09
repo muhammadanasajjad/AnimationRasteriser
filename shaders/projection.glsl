@@ -4,17 +4,20 @@ struct ProjectedTriangle {
     vec2 p1;
     vec2 p2;
     vec2 p3;
-    
-    vec2 minBounds;
-    vec2 maxBounds;
-    
-    vec2 padding;
+
+    vec2 min;
+    vec2 max;
+
+    int materialIndex;
+    float padding;
 };
 
 struct WorldTriangle {
     vec4 p1;
     vec4 p2;
     vec4 p3;
+    
+    int materialIndex;
 };
 
 uniform int triangleCount;
@@ -82,5 +85,5 @@ void main() {
         maxBounds.y = max(screenVerts[i].y, maxBounds.y);
     }
 
-    projectedTriangles[idx] = ProjectedTriangle(screenVerts[0], screenVerts[1], screenVerts[2], minBounds, maxBounds, vec2(0));
+    projectedTriangles[idx] = ProjectedTriangle(screenVerts[0], screenVerts[1], screenVerts[2], minBounds, maxBounds, tri.materialIndex, 0);
 }

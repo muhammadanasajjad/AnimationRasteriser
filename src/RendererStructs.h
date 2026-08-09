@@ -10,11 +10,21 @@ struct ProjectedTriangle {
     glm::vec2 minBounds;
     glm::vec2 maxBounds;
     
-    glm::vec2 padding;
+    int materialIndex;
+    float padding;
 };
 
 struct Triangle {
     glm::vec4 p1;
     glm::vec4 p2;
     glm::vec4 p3;
+    int materialIndex;
+    glm::vec3 padding;
+};
+
+struct Material {
+    glm::vec4 colour;
+    int textureIndex = -1;
+    
+    glm::vec3 padding;
 };

@@ -8,7 +8,13 @@ struct ProjectedTriangle {
     vec2 min;
     vec2 max;
 
-    vec2 padding;
+    int materialIndex;
+    float padding;
+};
+
+struct Material {
+    vec4 colour;
+    int textureIndex;
 };
 
 uniform int projectedTriangleCount;
@@ -28,6 +34,10 @@ layout(std430, binding = 3) buffer TileOffsets {
 
 layout(std430, binding = 5) buffer TileTriangles {
     int tileTriangles[];
+};
+
+layout(std430, binding = 6) buffer Materials {
+    Material materials[];
 };
 
 float ANTIALIASING_SCALE = 0.01;
@@ -74,11 +84,12 @@ void main() {
     float minRadius = 0.00;
     float maxRadius = 0.06;
     
-    float colour = 0.0;
+    vec4 colour = vec4(0.0);
     
     for (int i = start; i < end; i++) {
         int triIdx = tileTriangles[i];
         ProjectedTriangle tri = projectedTriangles[triIdx];
+        Material material = materials[tri.materialIndex];
         
         //if (uv.x < tri.min.x || uv.x > tri.max.x || uv.y < tri.min.y || uv.y > tri.max.y) continue;
         
@@ -88,8 +99,8 @@ void main() {
         
         float inside = smoothstep(0.0, ANTIALIASING_SCALE, w1) * smoothstep(0.0, ANTIALIASING_SCALE, w2) * smoothstep(0.0, ANTIALIASING_SCALE, 1.0 - (w1 + w2));
         inside = clamp(inside, 0.0, 1.0);
-        colour = max(colour, inside);
+        colour = max(colour, material.colour * inside);
     }
     
-    FragColor = vec4(vec3(colour), 1.0);
+    FragColor = colour;
 }

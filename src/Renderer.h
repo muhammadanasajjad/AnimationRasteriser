@@ -25,6 +25,7 @@ class Renderer {
         unsigned int tileOffsetsSSBO;        // binding 3
         unsigned int tileCountersSSBO;       // binding 4
         unsigned int tileTrianglesSSBO;      // binding 5
+        unsigned int materialsSSBO;          // binding 6
         
         // projection compute
         unsigned int projectionProgram;

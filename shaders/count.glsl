@@ -8,7 +8,8 @@ struct ProjectedTriangle {
     vec2 min;
     vec2 max;
 
-    vec2 padding;
+    int materialIndex;
+    float padding;
 };
 
 layout(std430, binding = 0) buffer ProjectedTrianglesBuffer {
