@@ -7,6 +7,8 @@ struct ProjectedTriangle {
 
     vec2 min;
     vec2 max;
+    
+    float depths[3];
 
     int materialIndex;
     float padding;

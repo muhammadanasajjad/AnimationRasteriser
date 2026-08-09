@@ -7,6 +7,8 @@ struct ProjectedTriangle {
 
     vec2 min;
     vec2 max;
+    
+    float depths[3];
 
     int materialIndex;
     float padding;
@@ -71,19 +73,33 @@ void main() {
 
     vec3 verts[3] = vec3[](tri.p1.xyz, tri.p2.xyz, tri.p3.xyz);
     vec2 screenVerts[3];
+    float dists[3];
 
     screenVerts[0] = project(verts[0], cameraRight);
+    dists[0] = distance(cameraPosition, verts[0]);
     
     vec2 minBounds = screenVerts[0];
     vec2 maxBounds = screenVerts[0];
 
     for (int i = 1; i < 3; i++) {
         screenVerts[i] = project(verts[i], cameraRight);
+        dists[i] = distance(cameraPosition, verts[i]);
         minBounds.x = min(screenVerts[i].x, minBounds.x);
         minBounds.y = min(screenVerts[i].y, minBounds.y);
         maxBounds.x = max(screenVerts[i].x, maxBounds.x);
         maxBounds.y = max(screenVerts[i].y, maxBounds.y);
     }
 
-    projectedTriangles[idx] = ProjectedTriangle(screenVerts[0], screenVerts[1], screenVerts[2], minBounds, maxBounds, tri.materialIndex, 0);
+    ProjectedTriangle outTri;
+    outTri.p1 = screenVerts[0];
+    outTri.p2 = screenVerts[1];
+    outTri.p3 = screenVerts[2];
+    outTri.min = minBounds;
+    outTri.max = maxBounds;
+    outTri.depths[0] = dists[0];
+    outTri.depths[1] = dists[1];
+    outTri.depths[2] = dists[2];
+    outTri.materialIndex = tri.materialIndex;
+    outTri.padding = 0.0;
+    projectedTriangles[idx] = outTri;
 }

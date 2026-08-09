@@ -7,6 +7,8 @@ struct ProjectedTriangle {
 
     vec2 min;
     vec2 max;
+    
+    float depths[3];
 
     int materialIndex;
     float padding;
@@ -40,7 +42,7 @@ layout(std430, binding = 6) buffer Materials {
     Material materials[];
 };
 
-float ANTIALIASING_SCALE = 0.01;
+float ANTIALIASING_SCALE = 0.00005;
 
 in vec2 textureCoords;
 
@@ -85,6 +87,7 @@ void main() {
     float maxRadius = 0.06;
     
     vec4 colour = vec4(0.0);
+    float currentDepth = 1e4;
     
     for (int i = start; i < end; i++) {
         int triIdx = tileTriangles[i];
@@ -96,10 +99,19 @@ void main() {
         float w1 = 0;
         float w2 = 0;
         getBarycentric(tri, uv, w1, w2);
+        float w3 = 1.0 - w1 - w2;
         
-        float inside = smoothstep(0.0, ANTIALIASING_SCALE, w1) * smoothstep(0.0, ANTIALIASING_SCALE, w2) * smoothstep(0.0, ANTIALIASING_SCALE, 1.0 - (w1 + w2));
+        float depth =
+            w1 * tri.depths[0] +
+            w2 * tri.depths[1] +
+            w3 * tri.depths[2];
+        
+        float inside = smoothstep(-ANTIALIASING_SCALE, 0.0, w1) * smoothstep(-ANTIALIASING_SCALE, 0.0, w2) * smoothstep(-ANTIALIASING_SCALE, 0.0, w3);
         inside = clamp(inside, 0.0, 1.0);
-        colour = max(colour, material.colour * inside);
+        if (depth < currentDepth && inside > 0) {
+            currentDepth = depth;
+            colour = material.colour * inside;
+        }
     }
     
     FragColor = colour;
