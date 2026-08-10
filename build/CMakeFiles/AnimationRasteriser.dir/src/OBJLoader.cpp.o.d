@@ -1,32 +1,26 @@
-CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp \
- /usr/include/stdc-predef.h \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/glad/glad.h \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/KHR/khrplatform.h \
- /usr/lib/gcc/x86_64-redhat-linux/16/include/stdint.h \
- /usr/include/stdint.h /usr/include/bits/libc-header-start.h \
- /usr/include/features.h /usr/include/features-time64.h \
- /usr/include/bits/wordsize.h /usr/include/bits/timesize.h \
- /usr/include/sys/cdefs.h /usr/include/bits/long-double.h \
- /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
- /usr/include/bits/types.h /usr/include/bits/typesizes.h \
- /usr/include/bits/time64.h /usr/include/bits/wchar.h \
- /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
- /usr/include/bits/stdint-least.h /usr/include/c++/16/iostream \
+CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o: \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/OBJLoader.cpp \
+ /usr/include/stdc-predef.h /usr/include/c++/16/sstream \
  /usr/include/c++/16/bits/requires_hosted.h \
  /usr/include/c++/16/x86_64-redhat-linux/bits/c++config.h \
+ /usr/include/bits/wordsize.h \
  /usr/include/c++/16/x86_64-redhat-linux/bits/os_defines.h \
+ /usr/include/features.h /usr/include/features-time64.h \
+ /usr/include/bits/timesize.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/long-double.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-64.h \
  /usr/include/c++/16/x86_64-redhat-linux/bits/cpu_defines.h \
- /usr/include/c++/16/pstl/pstl_config.h /usr/include/c++/16/ostream \
- /usr/include/c++/16/bits/ostream.h /usr/include/c++/16/ios \
- /usr/include/c++/16/iosfwd /usr/include/c++/16/bits/stringfwd.h \
+ /usr/include/c++/16/pstl/pstl_config.h /usr/include/c++/16/istream \
+ /usr/include/c++/16/ios /usr/include/c++/16/iosfwd \
+ /usr/include/c++/16/bits/stringfwd.h \
  /usr/include/c++/16/bits/memoryfwd.h /usr/include/c++/16/bits/version.h \
  /usr/include/c++/16/bits/postypes.h /usr/include/c++/16/cwchar \
- /usr/include/wchar.h /usr/include/bits/floatn.h \
- /usr/include/bits/floatn-common.h \
+ /usr/include/wchar.h /usr/include/bits/libc-header-start.h \
+ /usr/include/bits/floatn.h /usr/include/bits/floatn-common.h \
  /usr/lib/gcc/x86_64-redhat-linux/16/include/stddef.h \
  /usr/lib/gcc/x86_64-redhat-linux/16/include/stdarg.h \
- /usr/include/bits/types/wint_t.h /usr/include/bits/types/mbstate_t.h \
+ /usr/include/bits/wchar.h /usr/include/bits/types/wint_t.h \
+ /usr/include/bits/types/mbstate_t.h \
  /usr/include/bits/types/__mbstate_t.h /usr/include/bits/types/__FILE.h \
  /usr/include/bits/types/FILE.h /usr/include/bits/types/locale_t.h \
  /usr/include/bits/types/__locale_t.h /usr/include/c++/16/exception \
@@ -51,9 +45,10 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
  /usr/include/c++/16/x86_64-redhat-linux/bits/c++locale.h \
  /usr/include/c++/16/clocale /usr/include/locale.h \
  /usr/include/bits/locale.h /usr/include/c++/16/cctype \
- /usr/include/ctype.h /usr/include/bits/endian.h \
- /usr/include/bits/endianness.h /usr/include/c++/16/bits/ios_base.h \
- /usr/include/c++/16/ext/atomicity.h \
+ /usr/include/ctype.h /usr/include/bits/types.h \
+ /usr/include/bits/typesizes.h /usr/include/bits/time64.h \
+ /usr/include/bits/endian.h /usr/include/bits/endianness.h \
+ /usr/include/c++/16/bits/ios_base.h /usr/include/c++/16/ext/atomicity.h \
  /usr/include/c++/16/x86_64-redhat-linux/bits/gthr.h \
  /usr/include/c++/16/x86_64-redhat-linux/bits/gthr-default.h \
  /usr/include/pthread.h /usr/include/sched.h \
@@ -112,13 +107,13 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
  /usr/include/c++/16/ext/string_conversions.h /usr/include/c++/16/cstdlib \
  /usr/include/stdlib.h /usr/include/bits/waitflags.h \
  /usr/include/bits/waitstatus.h /usr/include/sys/types.h \
- /usr/include/endian.h /usr/include/bits/byteswap.h \
- /usr/include/bits/uintn-identity.h /usr/include/sys/select.h \
- /usr/include/bits/select.h /usr/include/bits/types/sigset_t.h \
- /usr/include/alloca.h /usr/include/bits/stdlib-float.h \
- /usr/include/c++/16/bits/std_abs.h /usr/include/c++/16/cstdio \
- /usr/include/stdio.h /usr/include/bits/types/__fpos_t.h \
- /usr/include/bits/types/__fpos64_t.h \
+ /usr/include/bits/stdint-intn.h /usr/include/endian.h \
+ /usr/include/bits/byteswap.h /usr/include/bits/uintn-identity.h \
+ /usr/include/sys/select.h /usr/include/bits/select.h \
+ /usr/include/bits/types/sigset_t.h /usr/include/alloca.h \
+ /usr/include/bits/stdlib-float.h /usr/include/c++/16/bits/std_abs.h \
+ /usr/include/c++/16/cstdio /usr/include/stdio.h \
+ /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__fpos64_t.h \
  /usr/include/bits/types/struct_FILE.h \
  /usr/include/bits/types/cookie_io_functions_t.h \
  /usr/include/bits/stdio_lim.h /usr/include/c++/16/cerrno \
@@ -144,12 +139,20 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
  /usr/include/c++/16/bits/streambuf_iterator.h \
  /usr/include/c++/16/x86_64-redhat-linux/bits/ctype_inline.h \
  /usr/include/c++/16/bits/locale_facets.tcc \
- /usr/include/c++/16/bits/basic_ios.tcc \
+ /usr/include/c++/16/bits/basic_ios.tcc /usr/include/c++/16/ostream \
+ /usr/include/c++/16/bits/ostream.h \
  /usr/include/c++/16/bits/ostream_print.h \
- /usr/include/c++/16/bits/ostream.tcc /usr/include/c++/16/istream \
- /usr/include/c++/16/bits/istream.tcc /usr/include/c++/16/random \
- /usr/include/c++/16/cmath /usr/include/math.h \
- /usr/include/bits/math-vector.h /usr/include/bits/libm-simd-decl-stubs.h \
+ /usr/include/c++/16/bits/ostream.tcc \
+ /usr/include/c++/16/bits/istream.tcc \
+ /usr/include/c++/16/bits/sstream.tcc \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/OBJLoader.h \
+ /usr/include/c++/16/vector /usr/include/c++/16/bits/stl_uninitialized.h \
+ /usr/include/c++/16/bits/stl_vector.h \
+ /usr/include/c++/16/bits/stl_bvector.h \
+ /usr/include/c++/16/bits/vector.tcc /usr/include/glm/glm.hpp \
+ /usr/include/glm/detail/_fixes.hpp /usr/include/c++/16/cmath \
+ /usr/include/math.h /usr/include/bits/math-vector.h \
+ /usr/include/bits/libm-simd-decl-stubs.h \
  /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
  /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
  /usr/include/bits/mathcalls-helper-functions.h \
@@ -166,24 +169,13 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
  /usr/include/c++/16/tr1/modified_bessel_func.tcc \
  /usr/include/c++/16/tr1/poly_hermite.tcc \
  /usr/include/c++/16/tr1/poly_laguerre.tcc \
- /usr/include/c++/16/tr1/riemann_zeta.tcc /usr/include/c++/16/cstdint \
- /usr/include/c++/16/bits/random.h /usr/include/c++/16/vector \
- /usr/include/c++/16/bits/stl_uninitialized.h \
- /usr/include/c++/16/bits/stl_vector.h \
- /usr/include/c++/16/bits/stl_bvector.h \
- /usr/include/c++/16/bits/vector.tcc \
- /usr/include/c++/16/bits/uniform_int_dist.h \
- /usr/include/c++/16/x86_64-redhat-linux/bits/opt_random.h \
- /usr/include/c++/16/bits/random.tcc /usr/include/c++/16/numeric \
- /usr/include/c++/16/bits/stl_numeric.h \
- /usr/include/c++/16/pstl/glue_numeric_defs.h \
- /usr/include/c++/16/pstl/execution_defs.h \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.h \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.h \
- /usr/include/glm/glm.hpp /usr/include/glm/detail/_fixes.hpp \
+ /usr/include/c++/16/tr1/riemann_zeta.tcc \
  /usr/include/glm/detail/setup.hpp /usr/include/c++/16/cassert \
  /usr/include/assert.h /usr/include/glm/simd/platform.h \
- /usr/include/c++/16/climits \
+ /usr/include/c++/16/cstdint \
+ /usr/lib/gcc/x86_64-redhat-linux/16/include/stdint.h \
+ /usr/include/stdint.h /usr/include/bits/stdint-uintn.h \
+ /usr/include/bits/stdint-least.h /usr/include/c++/16/climits \
  /usr/lib/gcc/x86_64-redhat-linux/16/include/limits.h \
  /usr/lib/gcc/x86_64-redhat-linux/16/include/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
@@ -303,17 +295,4 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
  /usr/include/glm/detail/type_half.inl /usr/include/glm/integer.hpp \
  /usr/include/glm/detail/func_integer.inl \
  /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.h \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/OBJLoader.h \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/RendererStructs.h \
- /usr/include/glm/gtc/matrix_transform.hpp \
- /usr/include/glm/ext/matrix_projection.hpp \
- /usr/include/glm/gtc/constants.hpp \
- /usr/include/glm/ext/scalar_constants.hpp \
- /usr/include/glm/ext/scalar_constants.inl \
- /usr/include/glm/gtc/constants.inl \
- /usr/include/glm/ext/matrix_projection.inl \
- /usr/include/glm/ext/matrix_clip_space.hpp \
- /usr/include/glm/ext/matrix_clip_space.inl \
- /usr/include/glm/ext/matrix_transform.hpp \
- /usr/include/glm/ext/matrix_transform.inl \
- /usr/include/glm/gtc/matrix_transform.inl
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/RendererStructs.h

@@ -6,6 +6,7 @@
 
 #include <Renderer.h>
 #include <FileLoader.h>
+#include <OBJLoader.h>
 #include <Camera.h>
 #include <RendererStructs.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -159,82 +160,14 @@ void Renderer::load() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     
-    glm::mat4 rot = glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    glm::vec3 cubeOffset(-7.4f, 0.0f, 0.0f);
-    std::vector<Triangle> cube = {
-        // Front (z = 0.5)
-        {rot * glm::vec4(-0.5, -0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        {rot * glm::vec4(-0.5, -0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, 0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        // Back  (z = -0.5)
-        {rot * glm::vec4( 0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        {rot * glm::vec4( 0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        // Right (x = 0.5)
-        {rot * glm::vec4( 0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        {rot * glm::vec4( 0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        // Left  (x = -0.5)
-        {rot * glm::vec4(-0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        {rot * glm::vec4(-0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        // Top   (y = 0.5)
-        {rot * glm::vec4(-0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        {rot * glm::vec4(-0.5,  0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5,  0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        // Bottom (y = -0.5)
-        {rot * glm::vec4(-0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-        {rot * glm::vec4(-0.5, -0.5, -0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4( 0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), rot * glm::vec4(-0.5, -0.5,  0.5, 1.0f) + glm::vec4(cubeOffset, 0.0f), 0},
-    };
+    std::vector<Triangle> triangles = OBJLoader::loadTriangles("assets/teapot-120k.obj");
+
     std::vector<Material> materials = {
         {{1.0, 1.0, 1.0, 1.0}, -1},
     };
-    
-    int cubeCount = 10000;
-    std::mt19937 rng(std::random_device{}());
-    std::uniform_real_distribution<float> posDist(-200.0f, 200.0f);
-    std::uniform_real_distribution<float> rotDist(0.0f, 360.0f);
-    std::uniform_real_distribution<float> colour(0.0f, 1.0f);
-    for (int i = 0; i < cubeCount; i++) {
 
-        glm::vec3 offset(posDist(rng), posDist(rng), posDist(rng));
-
-        glm::mat4 rot =
-            glm::rotate(glm::mat4(1.0f), glm::radians(rotDist(rng)), glm::vec3(1,0,0)) *
-            glm::rotate(glm::mat4(1.0f), glm::radians(rotDist(rng)), glm::vec3(0,1,0)) *
-            glm::rotate(glm::mat4(1.0f), glm::radians(rotDist(rng)), glm::vec3(0,0,1));
-
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), offset) * rot;
-
-        auto addTri = [&](glm::vec3 a, glm::vec3 b, glm::vec3 c, int d) {
-            cube.push_back({
-                model * glm::vec4(a, 1.0f),
-                model * glm::vec4(b, 1.0f),
-                model * glm::vec4(c, 1.0f),
-                d
-            });
-        };
-
-        addTri({-0.5,-0.5, 0.5},{ 0.5,-0.5, 0.5},{ 0.5, 0.5, 0.5},i+1);
-        addTri({-0.5,-0.5, 0.5},{ 0.5, 0.5, 0.5},{-0.5, 0.5, 0.5},i+1);
-
-        addTri({ 0.5,-0.5,-0.5},{-0.5,-0.5,-0.5},{-0.5, 0.5,-0.5},i+1);
-        addTri({ 0.5,-0.5,-0.5},{-0.5, 0.5,-0.5},{ 0.5, 0.5,-0.5},i+1);
-
-        addTri({ 0.5,-0.5,-0.5},{ 0.5,-0.5, 0.5},{ 0.5, 0.5, 0.5},i+1);
-        addTri({ 0.5,-0.5,-0.5},{ 0.5, 0.5, 0.5},{ 0.5, 0.5,-0.5},i+1);
-
-        addTri({-0.5,-0.5, 0.5},{-0.5,-0.5,-0.5},{-0.5, 0.5,-0.5},i+1);
-        addTri({-0.5,-0.5, 0.5},{-0.5, 0.5,-0.5},{-0.5, 0.5, 0.5},i+1);
-
-        addTri({-0.5, 0.5, 0.5},{ 0.5, 0.5, 0.5},{ 0.5, 0.5,-0.5},i+1);
-        addTri({-0.5, 0.5, 0.5},{ 0.5, 0.5,-0.5},{-0.5, 0.5,-0.5},i+1);
-
-        addTri({-0.5,-0.5,-0.5},{ 0.5,-0.5,-0.5},{ 0.5,-0.5, 0.5},i+1);
-        addTri({-0.5,-0.5,-0.5},{ 0.5,-0.5, 0.5},{-0.5,-0.5, 0.5},i+1);
-        
-        materials.push_back({
-            {colour(rng), colour(rng), colour(rng), 1.0},
-            -1
-        });
-    }
-
-    worldTriangleCount = cube.size();
+    worldTriangleCount = triangles.size();
+    std::cout << worldTriangleCount << std::endl;
     int materialCount = materials.size();
 
     tileColumns = 32;
@@ -284,8 +217,8 @@ void Renderer::load() {
     glGenBuffers(1, &worldTrianglesSSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, worldTrianglesSSBO);
     glBufferData(GL_SHADER_STORAGE_BUFFER,
-                 cube.size() * sizeof(Triangle),
-                 cube.data(),
+                 triangles.size() * sizeof(Triangle),
+                 triangles.data(),
                  GL_STATIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, worldTrianglesSSBO);
     

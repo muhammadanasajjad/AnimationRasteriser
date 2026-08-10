@@ -201,6 +201,30 @@ src/FileLoader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.s
 .PHONY : src/FileLoader.cpp.s
 
+src/OBJLoader.o: src/OBJLoader.cpp.o
+.PHONY : src/OBJLoader.o
+
+# target to build an object file
+src/OBJLoader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o
+.PHONY : src/OBJLoader.cpp.o
+
+src/OBJLoader.i: src/OBJLoader.cpp.i
+.PHONY : src/OBJLoader.i
+
+# target to preprocess a source file
+src/OBJLoader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.i
+.PHONY : src/OBJLoader.cpp.i
+
+src/OBJLoader.s: src/OBJLoader.cpp.s
+.PHONY : src/OBJLoader.s
+
+# target to generate assembly for a file
+src/OBJLoader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.s
+.PHONY : src/OBJLoader.cpp.s
+
 src/Renderer.o: src/Renderer.cpp.o
 .PHONY : src/Renderer.o
 
@@ -267,6 +291,9 @@ help:
 	@echo "... src/FileLoader.o"
 	@echo "... src/FileLoader.i"
 	@echo "... src/FileLoader.s"
+	@echo "... src/OBJLoader.o"
+	@echo "... src/OBJLoader.i"
+	@echo "... src/OBJLoader.s"
 	@echo "... src/Renderer.o"
 	@echo "... src/Renderer.i"
 	@echo "... src/Renderer.s"

@@ -4,6 +4,7 @@ AnimationRasteriser: \
   /usr/lib/gcc/x86_64-redhat-linux/16/crtbegin.o \
   CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o \
+  CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o \
@@ -75,6 +76,8 @@ AnimationRasteriser: \
 CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o:
 
 CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o:
+
+CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o:
 
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o:
 
