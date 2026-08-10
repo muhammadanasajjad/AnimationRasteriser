@@ -4,14 +4,10 @@ struct ProjectedTriangle {
     vec2 p1;
     vec2 p2;
     vec2 p3;
-
-    vec2 min;
-    vec2 max;
     
     float depths[3];
 
     int materialIndex;
-    float padding;
 };
 
 layout(std430, binding = 0) buffer ProjectedTrianglesBuffer {
@@ -34,10 +30,13 @@ void main() {
 
     ProjectedTriangle tri = projectedTriangles[idx];
 
-    ivec2 minTile = ivec2(max(0, int(ceil(((tri.min.x + 1.0) / 2.0) * tileColumns - 1.0))),
-                          max(0, int(ceil(((1.0 - tri.max.y) / 2.0) * tileRows - 1.0))));
-    ivec2 maxTile = ivec2(min(tileColumns - 1, int(floor(((tri.max.x + 1.0) / 2.0) * tileColumns))),
-                          min(tileRows - 1, int(floor(((1.0 - tri.min.y) / 2.0) * tileRows))));
+    vec2 triMin = min(tri.p1, min(tri.p2, tri.p3));
+    vec2 triMax = max(tri.p1, max(tri.p2, tri.p3));
+
+    ivec2 minTile = ivec2(max(0, int(ceil(((triMin.x + 1.0) / 2.0) * tileColumns - 1.0))),
+                          max(0, int(ceil(((1.0 - triMax.y) / 2.0) * tileRows - 1.0))));
+    ivec2 maxTile = ivec2(min(tileColumns - 1, int(floor(((triMax.x + 1.0) / 2.0) * tileColumns))),
+                          min(tileRows - 1, int(floor(((1.0 - triMin.y) / 2.0) * tileRows))));
 
     for (int ty = minTile.y; ty <= maxTile.y; ty++) {
         for (int tx = minTile.x; tx <= maxTile.x; tx++) {

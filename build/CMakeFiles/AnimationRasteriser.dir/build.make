@@ -44,10 +44,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/sbin/cmake
+CMAKE_COMMAND = /usr/bin/cmake
 
 # The command to remove a file.
-RM = /usr/sbin/cmake -E rm -f
+RM = /usr/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -76,71 +76,71 @@ CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o: CMakeFiles/AnimationRasteri
 CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o: /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.cpp
 CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o: CMakeFiles/AnimationRasteriser.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o -MF CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o.d -o CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o -c /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.cpp
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o -MF CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o.d -o CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o -c /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.cpp
 
 CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.i"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.cpp > CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.cpp > CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.i
 
 CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.s"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.cpp -o CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.cpp -o CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.s
 
 CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o: CMakeFiles/AnimationRasteriser.dir/flags.make
 CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o: /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.cpp
 CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o: CMakeFiles/AnimationRasteriser.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o -MF CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o.d -o CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o -c /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.cpp
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o -MF CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o.d -o CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o -c /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.cpp
 
 CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.i"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.cpp > CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.cpp > CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.i
 
 CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.s"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.cpp -o CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.cpp -o CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.s
 
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: CMakeFiles/AnimationRasteriser.dir/flags.make
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: CMakeFiles/AnimationRasteriser.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o -MF CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o.d -o CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o -c /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o -MF CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o.d -o CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o -c /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp
 
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.i"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp > CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp > CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.i
 
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.s"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp -o CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp -o CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.s
 
 CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: CMakeFiles/AnimationRasteriser.dir/flags.make
 CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp
 CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: CMakeFiles/AnimationRasteriser.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o -MF CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o.d -o CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o -c /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o -MF CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o.d -o CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o -c /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp
 
 CMakeFiles/AnimationRasteriser.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AnimationRasteriser.dir/src/main.cpp.i"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp > CMakeFiles/AnimationRasteriser.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp > CMakeFiles/AnimationRasteriser.dir/src/main.cpp.i
 
 CMakeFiles/AnimationRasteriser.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AnimationRasteriser.dir/src/main.cpp.s"
-	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp -o CMakeFiles/AnimationRasteriser.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp -o CMakeFiles/AnimationRasteriser.dir/src/main.cpp.s
 
 CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o: CMakeFiles/AnimationRasteriser.dir/flags.make
 CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o: /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/src/glad.c
 CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o: CMakeFiles/AnimationRasteriser.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o"
-	/usr/sbin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o -MF CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o.d -o CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o -c /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/src/glad.c
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o -MF CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o.d -o CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o -c /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/src/glad.c
 
 CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.i"
-	/usr/sbin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/src/glad.c > CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/src/glad.c > CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.i
 
 CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.s"
-	/usr/sbin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/src/glad.c -o CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/src/glad.c -o CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.s
 
 # Object files for target AnimationRasteriser
 AnimationRasteriser_OBJECTS = \

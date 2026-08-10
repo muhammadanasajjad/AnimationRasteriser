@@ -7,13 +7,9 @@ struct ProjectedTriangle {
     glm::vec2 p2;
     glm::vec2 p3;
     
-    glm::vec2 minBounds;
-    glm::vec2 maxBounds;
-    
     glm::vec3 depths;
     
     int materialIndex;
-    float padding[2];
 };
 
 struct Triangle {

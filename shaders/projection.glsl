@@ -4,14 +4,10 @@ struct ProjectedTriangle {
     vec2 p1;
     vec2 p2;
     vec2 p3;
-
-    vec2 min;
-    vec2 max;
     
     float depths[3];
 
     int materialIndex;
-    float padding;
 };
 
 struct WorldTriangle {
@@ -103,13 +99,10 @@ void writeProjectedTriangle(vec2 p1, vec2 p2, vec2 p3, float d1, float d2, float
     outTri.p1 = p1;
     outTri.p2 = p2;
     outTri.p3 = p3;
-    outTri.min = min(p1, min(p2, p3));
-    outTri.max = max(p1, max(p2, p3));
     outTri.depths[0] = d1;
     outTri.depths[1] = d2;
     outTri.depths[2] = d3;
     outTri.materialIndex = material;
-    outTri.padding = 0.0;
     projectedTriangles[slot] = outTri;
 }
 

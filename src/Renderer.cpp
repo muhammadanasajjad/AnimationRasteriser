@@ -185,9 +185,9 @@ void Renderer::load() {
         {{1.0, 1.0, 1.0, 1.0}, -1},
     };
     
-    int cubeCount = 1000;
+    int cubeCount = 10000;
     std::mt19937 rng(std::random_device{}());
-    std::uniform_real_distribution<float> posDist(-20.0f, 20.0f);
+    std::uniform_real_distribution<float> posDist(-200.0f, 200.0f);
     std::uniform_real_distribution<float> rotDist(0.0f, 360.0f);
     std::uniform_real_distribution<float> colour(0.0f, 1.0f);
     for (int i = 0; i < cubeCount; i++) {
