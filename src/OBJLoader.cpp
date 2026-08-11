@@ -19,7 +19,8 @@ std::vector<glm::vec3> OBJLoader::loadVertices(std::string path) {
         lineStream >> token;
 
         if (token == "v") {
-            glm::vec3 vertex = {vertex.x, vertex.z * - 1, vertex.y};
+            glm::vec3 vertex;
+            lineStream >> vertex.x >> vertex.z >> vertex.y;
             vertices.push_back(vertex);
         }
     }
@@ -57,20 +58,21 @@ std::vector<glm::uvec3> OBJLoader::loadFaces(std::string path) {
     return faces;
 }
 
-std::vector<Triangle> OBJLoader::loadTriangles(std::string path) {
+Object OBJLoader::loadObject(std::string path, int materialIndex) {
     std::vector<glm::vec3> vertices = loadVertices(path);
     std::vector<glm::uvec3> faces = loadFaces(path);
 
-    std::vector<Triangle> triangles;
-    triangles.reserve(faces.size());
+    Object object;
+    object.materialIndex = materialIndex;
+    object.triangles.reserve(faces.size());
     for (glm::uvec3 face : faces) {
-        triangles.push_back({
+        object.triangles.push_back({
             glm::vec4(vertices[face.x - 1], 1.0f),
             glm::vec4(vertices[face.y - 1], 1.0f),
             glm::vec4(vertices[face.z - 1], 1.0f),
-            0
+            materialIndex
         });
     }
 
-    return triangles;
+    return object;
 }

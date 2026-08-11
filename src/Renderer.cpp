@@ -6,7 +6,6 @@
 
 #include <Renderer.h>
 #include <FileLoader.h>
-#include <OBJLoader.h>
 #include <Camera.h>
 #include <RendererStructs.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -33,7 +32,7 @@ void checkShaderProgramLink(unsigned int shaderProgram, std::string errorMessage
     }
 }
 
-void Renderer::load() {
+void Renderer::load(const std::vector<Triangle>& triangles, const std::vector<Material>& materials) {
     FileLoader fileLoader = FileLoader();
     
     // projection compute setup
@@ -160,12 +159,6 @@ void Renderer::load() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     
-    std::vector<Triangle> triangles = OBJLoader::loadTriangles("assets/teapot-120k.obj");
-
-    std::vector<Material> materials = {
-        {{1.0, 1.0, 1.0, 1.0}, -1},
-    };
-
     worldTriangleCount = triangles.size();
     std::cout << worldTriangleCount << std::endl;
     int materialCount = materials.size();

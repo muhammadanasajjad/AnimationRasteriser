@@ -295,4 +295,7 @@ CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o: \
  /usr/include/glm/detail/type_half.inl /usr/include/glm/integer.hpp \
  /usr/include/glm/detail/func_integer.inl \
  /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.h \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/RendererStructs.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/RendererStructs.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/World.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.h

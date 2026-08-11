@@ -1,10 +1,13 @@
 #pragma once
 
+#include <vector>
+
 #include <Camera.h>
+#include <RendererStructs.h>
 
 class Renderer {
     public:
-        void load();
+        void load(const std::vector<Triangle>& triangles, const std::vector<Material>& materials);
         void render();
         void offload();
         

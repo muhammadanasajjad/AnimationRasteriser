@@ -13,6 +13,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.cpp" "CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o.d"
   "/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/OBJLoader.cpp" "CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o.d"
   "/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp" "CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o.d"
+  "/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/World.cpp" "CMakeFiles/AnimationRasteriser.dir/src/World.cpp.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/src/World.cpp.o.d"
   "/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/main.cpp" "CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o" "gcc" "CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o.d"
   "" "AnimationRasteriser" "gcc" "CMakeFiles/AnimationRasteriser.dir/link.d"
   )

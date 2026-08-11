@@ -6,6 +6,7 @@ AnimationRasteriser: \
   CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o \
+  CMakeFiles/AnimationRasteriser.dir/src/World.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o \
   /usr/lib64/libglfw.so.3.4 \
@@ -80,6 +81,8 @@ CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o:
 CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o:
 
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o:
+
+CMakeFiles/AnimationRasteriser.dir/src/World.cpp.o:
 
 CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o:
 

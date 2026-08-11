@@ -12,6 +12,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o.d"
   "CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o"
   "CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o.d"
+  "CMakeFiles/AnimationRasteriser.dir/src/World.cpp.o"
+  "CMakeFiles/AnimationRasteriser.dir/src/World.cpp.o.d"
   "CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o"
   "CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o.d"
 )

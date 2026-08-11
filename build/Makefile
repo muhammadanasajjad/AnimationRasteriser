@@ -249,6 +249,30 @@ src/Renderer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.s
 .PHONY : src/Renderer.cpp.s
 
+src/World.o: src/World.cpp.o
+.PHONY : src/World.o
+
+# target to build an object file
+src/World.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/World.cpp.o
+.PHONY : src/World.cpp.o
+
+src/World.i: src/World.cpp.i
+.PHONY : src/World.i
+
+# target to preprocess a source file
+src/World.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/World.cpp.i
+.PHONY : src/World.cpp.i
+
+src/World.s: src/World.cpp.s
+.PHONY : src/World.s
+
+# target to generate assembly for a file
+src/World.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/World.cpp.s
+.PHONY : src/World.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -297,6 +321,9 @@ help:
 	@echo "... src/Renderer.o"
 	@echo "... src/Renderer.i"
 	@echo "... src/Renderer.s"
+	@echo "... src/World.o"
+	@echo "... src/World.i"
+	@echo "... src/World.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

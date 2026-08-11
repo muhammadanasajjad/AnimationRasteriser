@@ -7,6 +7,7 @@
 
 #include <FileLoader.h>
 #include <RendererStructs.h>
+#include <World.h>
 
 class OBJLoader {
     public:
@@ -14,7 +15,7 @@ class OBJLoader {
 
         static std::vector<glm::vec3> loadVertices(std::string path);
         static std::vector<glm::uvec3> loadFaces(std::string path);
-        static std::vector<Triangle> loadTriangles(std::string path);
+        static Object loadObject(std::string path, int materialIndex = 0);
 
     private:
         static FileLoader fileLoader;

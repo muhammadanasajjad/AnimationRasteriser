@@ -23,6 +23,10 @@ uniform vec3 cameraPosition;
 uniform vec3 cameraForward;
 uniform vec3 cameraUp;
 
+const float nearPlane = 0.1;
+const float clipEpsilon = 0.00001;
+const float clipEpsilon2 = 0.01;
+
 layout(std430, binding=0) buffer ProjectedTrianglesBuffer {
     ProjectedTriangle projectedTriangles[];
 };
@@ -59,39 +63,44 @@ vec2 project(vec3 point, vec3 cameraRight) {
     return vec2(x, y);
 }
 
-void clipTriangle(vec3 v0, vec3 v1, vec3 v2, out vec3 c0, out vec3 c1, out vec3 c2, out vec3 c3, out int count) {
-    float nearPlane = 0.1;
+int clipTriangle(vec3 n, float d, inout vec3 v0, inout vec3 v1, inout vec3 v2, out vec3 v3) {
+    vec3 dist = vec3(dot(v0, n) - d, dot(v1, n) - d, dot(v2, n) - d);
 
-    vec3 verts[3] = vec3[](v0, v1, v2);
-    float dists[3];
-    for (int i = 0; i < 3; i++) {
-        dists[i] = dot(verts[i] - cameraPosition, cameraForward) - nearPlane;
+    if (!any(greaterThanEqual(dist, vec3(clipEpsilon2)))) {
+        return 0;
     }
 
-    vec3 outVerts[4] = vec3[](vec3(0.0), vec3(0.0), vec3(0.0), vec3(0.0));
-    int outCount = 0;
-    for (int i = 0; i < 3; i++) {
-        vec3 a = verts[i];
-        vec3 b = verts[(i + 1) % 3];
-        float da = dists[i];
-        float db = dists[(i + 1) % 3];
-
-        if (da >= 0.0) {
-            outVerts[outCount] = a;
-            outCount++;
-        }
-        if ((da >= 0.0) != (db >= 0.0)) {
-            float t = da / (da - db);
-            outVerts[outCount] = a + t * (b - a);
-            outCount++;
-        }
+    if (all(greaterThanEqual(dist, vec3(-clipEpsilon)))) {
+        v3 = v0;
+        return 3;
     }
 
-    count = outCount;
-    c0 = outVerts[0];
-    c1 = outVerts[1];
-    c2 = outVerts[2];
-    c3 = outVerts[3];
+    bvec3 above = greaterThanEqual(dist, vec3(0.0));
+    bool nextIsAbove;
+
+    if (above[1] && !above[0]) {
+        nextIsAbove = above[2];
+        v3 = v0; v0 = v1; v1 = v2; v2 = v3;
+        dist = dist.yzx;
+    } else if (above[2] && !above[1]) {
+        nextIsAbove = above[0];
+        v3 = v2; v2 = v1; v1 = v0; v0 = v3;
+        dist = dist.zxy;
+    } else {
+        nextIsAbove = above[1];
+    }
+
+    v3 = mix(v0, v2, dist[0] / (dist[0] - dist[2]));
+
+    if (nextIsAbove) {
+        v2 = mix(v1, v2, dist[1] / (dist[1] - dist[2]));
+        return 4;
+    } else {
+        v1 = mix(v0, v1, dist[0] / (dist[0] - dist[1]));
+        v2 = v3;
+        v3 = v0;
+        return 3;
+    }
 }
 
 void writeProjectedTriangle(vec2 p1, vec2 p2, vec2 p3, float d1, float d2, float d3, int material, uint slot) {
@@ -116,13 +125,16 @@ void main() {
     if (idx >= triangleCount) return;
 
     WorldTriangle tri = worldTriangles[idx];
-    vec3 cameraRight = normalize(cross(cameraForward, cameraUp));
 
-    vec3 verts[3] = vec3[](tri.p1.xyz, tri.p2.xyz, tri.p3.xyz);
+    vec3 v0 = tri.p1.xyz;
+    vec3 v1 = tri.p2.xyz;
+    vec3 v2 = tri.p3.xyz;
+    vec3 v3;
 
-    vec3 cv0, cv1, cv2, cv3;
-    int clipCount;
-    clipTriangle(verts[0], verts[1], verts[2], cv0, cv1, cv2, cv3, clipCount);
+    vec3 n = cameraForward;
+    float d = dot(cameraPosition, cameraForward) + nearPlane;
+
+    int clipCount = clipTriangle(n, d, v0, v1, v2, v3);
 
     uint slot0 = idx * 2;
     uint slot1 = idx * 2 + 1;
@@ -133,15 +145,15 @@ void main() {
         return;
     }
 
-    vec2 s0 = project(cv0, cameraRight);
-    vec2 s1 = project(cv1, cameraRight);
-    vec2 s2 = project(cv2, cameraRight);
-    vec2 s3 = project(cv3, cameraRight);
+    vec3 cameraRight = normalize(cross(cameraForward, cameraUp));
 
-    float dd0 = distance(cameraPosition, cv0);
-    float dd1 = distance(cameraPosition, cv1);
-    float dd2 = distance(cameraPosition, cv2);
-    float dd3 = distance(cameraPosition, cv3);
+    vec2 s0 = project(v0, cameraRight);
+    vec2 s1 = project(v1, cameraRight);
+    vec2 s2 = project(v2, cameraRight);
+
+    float dd0 = distance(cameraPosition, v0);
+    float dd1 = distance(cameraPosition, v1);
+    float dd2 = distance(cameraPosition, v2);
 
     vec2 minB = min(s0, min(s1, s2));
     vec2 maxB = max(s0, max(s1, s2));
@@ -152,6 +164,9 @@ void main() {
     }
 
     if (clipCount == 4) {
+        vec2 s3 = project(v3, cameraRight);
+        float dd3 = distance(cameraPosition, v3);
+
         vec2 minB2 = min(s0, min(s2, s3));
         vec2 maxB2 = max(s0, max(s2, s3));
         if (offScreen(minB2, maxB2)) {

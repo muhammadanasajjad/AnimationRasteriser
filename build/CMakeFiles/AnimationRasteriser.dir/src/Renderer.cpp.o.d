@@ -302,9 +302,8 @@ CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: \
  /usr/include/glm/detail/type_half.hpp \
  /usr/include/glm/detail/type_half.inl /usr/include/glm/integer.hpp \
  /usr/include/glm/detail/func_integer.inl \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.h \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/OBJLoader.h \
  /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/RendererStructs.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/FileLoader.h \
  /usr/include/glm/gtc/matrix_transform.hpp \
  /usr/include/glm/ext/matrix_projection.hpp \
  /usr/include/glm/gtc/constants.hpp \
