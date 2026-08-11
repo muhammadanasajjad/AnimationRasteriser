@@ -62,11 +62,23 @@ void getBarycentric(ProjectedTriangle tri, vec2 P, inout float w1, inout float w
     vec2 B = tri.p2;
     vec2 C = tri.p3;
 
-    w1 = A.x * (C.y - A.y) + (P.y - A.y) * (C.x - A.x) - P.x * (C.y - A.y);
-    w1 *= 1.0 / ( (B.y - A.y) * (C.x - A.x) - (B.x - A.x) * (C.y - A.y) );
+    vec2 v0 = B - A;
+    vec2 v1 = C - A;
+    vec2 v2 = P - A;
 
-    w2 = P.y - A.y - w1 * (B.y - A.y);
-    w2 *= 1.0 / ( C.y - A.y );
+    float denom = v0.x * v1.y - v0.y * v1.x;
+    if (denom == 0.0) {
+        w1 = -1.0;
+        w2 = -1.0;
+        return;
+    }
+    float invDenom = 1.0 / denom;
+
+    float wB = (v2.x * v1.y - v2.y * v1.x) * invDenom;
+    float wC = (v0.x * v2.y - v0.y * v2.x) * invDenom;
+
+    w1 = 1.0 - wB - wC;
+    w2 = wB;
 }
 
 void main() {
@@ -97,10 +109,12 @@ void main() {
         getBarycentric(tri, uv, w1, w2);
         float w3 = 1.0 - w1 - w2;
         
-        float depth =
-            w1 * tri.depths[0] +
-            w2 * tri.depths[1] +
-            w3 * tri.depths[2];
+        float invDepth =
+            w1 / tri.depths[0] +
+            w2 / tri.depths[1] +
+            w3 / tri.depths[2];
+
+        float depth = 1.0 / invDepth;
         
         float inside = smoothstep(-ANTIALIASING_SCALE, 0.0, w1) * smoothstep(-ANTIALIASING_SCALE, 0.0, w2) * smoothstep(-ANTIALIASING_SCALE, 0.0, w3);
         inside = clamp(inside, 0.0, 1.0);

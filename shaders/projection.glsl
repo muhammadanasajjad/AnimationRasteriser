@@ -151,9 +151,9 @@ void main() {
     vec2 s1 = project(v1, cameraRight);
     vec2 s2 = project(v2, cameraRight);
 
-    float dd0 = distance(cameraPosition, v0);
-    float dd1 = distance(cameraPosition, v1);
-    float dd2 = distance(cameraPosition, v2);
+    float dd0 = dot(v0 - cameraPosition, cameraForward);
+    float dd1 = dot(v1 - cameraPosition, cameraForward);
+    float dd2 = dot(v2 - cameraPosition, cameraForward);
 
     vec2 minB = min(s0, min(s1, s2));
     vec2 maxB = max(s0, max(s1, s2));
@@ -165,7 +165,7 @@ void main() {
 
     if (clipCount == 4) {
         vec2 s3 = project(v3, cameraRight);
-        float dd3 = distance(cameraPosition, v3);
+        float dd3 = dot(v3 - cameraPosition, cameraForward);
 
         vec2 minB2 = min(s0, min(s2, s3));
         vec2 maxB2 = max(s0, max(s2, s3));
