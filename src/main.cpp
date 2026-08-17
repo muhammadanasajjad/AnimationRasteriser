@@ -9,10 +9,8 @@ int main() {
         return -1;
     }
 
-    Object car = OBJLoader::loadObject("assets/car.obj");
+    Object car = OBJLoader::loadObject("assets/car.obj", "assets/car.mtl");
     world.addObject(car);
-
-    world.addMaterial({{1.0, 1.0, 1.0, 1.0}, -1});
 
     world.run();
     world.cleanup();

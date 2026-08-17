@@ -118,11 +118,16 @@ void World::buildWorld() {
         model = glm::rotate(model, glm::radians(transform.rotation.z), glm::vec3(0, 0, 1));
         model = glm::scale(model, transform.scale);
 
+        int materialBase = (int)materials.size();
+        for (const Material& material : object.materials) {
+            materials.push_back(material);
+        }
+
         for (Triangle triangle : object.triangles) {
             triangle.p1 = model * triangle.p1;
             triangle.p2 = model * triangle.p2;
             triangle.p3 = model * triangle.p3;
-            triangle.materialIndex = object.materialIndex;
+            triangle.materialIndex = object.materials.empty() ? object.materialIndex : materialBase + triangle.materialIndex;
             worldTriangles.push_back(triangle);
         }
     }

@@ -20,6 +20,7 @@ struct Object {
     std::vector<Triangle> triangles;
     Transform transform;
     int materialIndex = 0;
+    std::vector<Material> materials;
 };
 
 class World {
