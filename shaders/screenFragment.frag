@@ -45,10 +45,10 @@ layout(std430, binding = 6) buffer Materials {
     Material materials[];
 };
 
-#define MAX_TEXTURES 16
+#define MAX_TEXTURES 64
 uniform sampler2D textures[MAX_TEXTURES];
 
-float ANTIALIASING_SCALE = 0.00005;
+float ANTIALIASING_SCALE = 0.0000001;
 
 in vec2 textureCoords;
 
