@@ -20,6 +20,7 @@ find_path(GLM_INCLUDE_DIR glm/glm.hpp)
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/glad/include
+    ${CMAKE_SOURCE_DIR}/vendor
     ${GLM_INCLUDE_DIR}
 )
 

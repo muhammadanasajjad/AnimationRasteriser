@@ -105,8 +105,13 @@ void World::addMaterial(const Material& material) {
     materials.push_back(material);
 }
 
+void World::addGlobalLight(const glm::vec3& direction) {
+    lightDirection = glm::normalize(direction);
+}
+
 void World::buildWorld() {
     std::vector<Triangle> worldTriangles;
+    std::vector<TextureData> worldTextures;
 
     for (const Object& object : objects) {
         const Transform& transform = object.transform;
@@ -118,15 +123,25 @@ void World::buildWorld() {
         model = glm::rotate(model, glm::radians(transform.rotation.z), glm::vec3(0, 0, 1));
         model = glm::scale(model, transform.scale);
 
+        glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
+
         int materialBase = (int)materials.size();
         for (const Material& material : object.materials) {
             materials.push_back(material);
+        }
+        for (const TextureData& tex : object.textures) {
+            worldTextures.push_back(tex);
         }
 
         for (Triangle triangle : object.triangles) {
             triangle.p1 = model * triangle.p1;
             triangle.p2 = model * triangle.p2;
             triangle.p3 = model * triangle.p3;
+
+            triangle.n1 = glm::vec4(normalMatrix * glm::vec3(triangle.n1), 0.0f);
+            triangle.n2 = glm::vec4(normalMatrix * glm::vec3(triangle.n2), 0.0f);
+            triangle.n3 = glm::vec4(normalMatrix * glm::vec3(triangle.n3), 0.0f);
+
             triangle.materialIndex = object.materials.empty() ? object.materialIndex : materialBase + triangle.materialIndex;
             worldTriangles.push_back(triangle);
         }
@@ -136,7 +151,8 @@ void World::buildWorld() {
         materials.push_back({{1.0, 1.0, 1.0, 1.0}, -1});
     }
 
-    renderer.load(worldTriangles, materials);
+    renderer.lightDirection = lightDirection;
+    renderer.load(worldTriangles, materials, worldTextures);
 }
 
 void World::processInput(float dt) {

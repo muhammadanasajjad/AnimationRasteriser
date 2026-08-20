@@ -606,6 +606,7 @@ CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o: /home/muhammadanasajjad/
   /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.h \
   /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/RendererStructs.h \
   /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/World.h \
+  /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/vendor/stb_image.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
   /usr/include/asm-generic/errno-base.h \
@@ -801,15 +802,18 @@ CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o: /home/muhammadanasajjad/
   /usr/include/c++/16/initializer_list \
   /usr/include/c++/16/ios \
   /usr/include/c++/16/iosfwd \
+  /usr/include/c++/16/iostream \
   /usr/include/c++/16/istream \
   /usr/include/c++/16/limits \
   /usr/include/c++/16/map \
+  /usr/include/c++/16/math.h \
   /usr/include/c++/16/new \
   /usr/include/c++/16/numbers \
   /usr/include/c++/16/ostream \
   /usr/include/c++/16/pstl/pstl_config.h \
   /usr/include/c++/16/sstream \
   /usr/include/c++/16/stdexcept \
+  /usr/include/c++/16/stdlib.h \
   /usr/include/c++/16/streambuf \
   /usr/include/c++/16/string \
   /usr/include/c++/16/string_view \
@@ -996,6 +1000,8 @@ CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o: /home/muhammadanasajjad/
   /usr/include/stdint.h \
   /usr/include/stdio.h \
   /usr/include/stdlib.h \
+  /usr/include/string.h \
+  /usr/include/strings.h \
   /usr/include/sys/cdefs.h \
   /usr/include/sys/select.h \
   /usr/include/sys/single_threaded.h \
@@ -1003,12 +1009,16 @@ CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o: /home/muhammadanasajjad/
   /usr/include/time.h \
   /usr/include/wchar.h \
   /usr/include/wctype.h \
+  /usr/lib/gcc/x86_64-redhat-linux/16/include/emmintrin.h \
   /usr/lib/gcc/x86_64-redhat-linux/16/include/float.h \
   /usr/lib/gcc/x86_64-redhat-linux/16/include/limits.h \
+  /usr/lib/gcc/x86_64-redhat-linux/16/include/mm_malloc.h \
+  /usr/lib/gcc/x86_64-redhat-linux/16/include/mmintrin.h \
   /usr/lib/gcc/x86_64-redhat-linux/16/include/stdarg.h \
   /usr/lib/gcc/x86_64-redhat-linux/16/include/stddef.h \
   /usr/lib/gcc/x86_64-redhat-linux/16/include/stdint.h \
-  /usr/lib/gcc/x86_64-redhat-linux/16/include/syslimits.h
+  /usr/lib/gcc/x86_64-redhat-linux/16/include/syslimits.h \
+  /usr/lib/gcc/x86_64-redhat-linux/16/include/xmmintrin.h
 
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o: /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.cpp \
   /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include/KHR/khrplatform.h \
@@ -2276,11 +2286,21 @@ CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: /home/muhammadanasajjad/Docum
 
 /usr/include/c++/16/numeric:
 
-/usr/include/c++/16/iostream:
-
 /usr/include/c++/16/bits/random.tcc:
 
+/usr/lib/gcc/x86_64-redhat-linux/16/include/mmintrin.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/16/include/mm_malloc.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/16/include/emmintrin.h:
+
 /usr/include/c++/16/vector:
+
+/usr/include/c++/16/math.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/16/include/xmmintrin.h:
+
+/usr/include/c++/16/iostream:
 
 /usr/include/c++/16/bits/stl_uninitialized.h:
 
@@ -2291,6 +2311,8 @@ CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o: /home/muhammadanasajjad/Docum
 /usr/include/c++/16/bits/sstream.tcc:
 
 /usr/include/c++/16/bits/node_handle.h:
+
+/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/vendor/stb_image.h:
 
 /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/World.h:
 
@@ -2617,6 +2639,8 @@ CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o:
 /usr/include/glm/ext/matrix_float3x3_precision.hpp:
 
 /usr/lib/gcc/x86_64-redhat-linux/16/include/stdint.h:
+
+/usr/include/c++/16/stdlib.h:
 
 /usr/include/bits/byteswap.h:
 

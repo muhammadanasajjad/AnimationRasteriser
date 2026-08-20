@@ -5,13 +5,13 @@
 # compile CXX with /usr/bin/c++
 C_DEFINES = 
 
-C_INCLUDES = -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include
+C_INCLUDES = -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/vendor
 
 C_FLAGS = 
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include
+CXX_INCLUDES = -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/vendor
 
 CXX_FLAGS = 
 

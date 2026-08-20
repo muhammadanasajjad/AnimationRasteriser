@@ -4,9 +4,13 @@ struct ProjectedTriangle {
     vec2 p1;
     vec2 p2;
     vec2 p3;
-    
+    vec2 uv1;
+    vec2 uv2;
+    vec2 uv3;
+    vec4 n1;
+    vec4 n2;
+    vec4 n3;
     float depths[3];
-
     int materialIndex;
 };
 
@@ -18,6 +22,9 @@ struct Material {
 uniform int projectedTriangleCount;
 uniform int tileRows;
 uniform int tileColumns;
+uniform vec3 lightDir;
+uniform int textureCount;
+
 layout(std430, binding=0) buffer ProjectedTrianglesBuffer {
     ProjectedTriangle projectedTriangles[];
 };
@@ -38,24 +45,14 @@ layout(std430, binding = 6) buffer Materials {
     Material materials[];
 };
 
+#define MAX_TEXTURES 16
+uniform sampler2D textures[MAX_TEXTURES];
+
 float ANTIALIASING_SCALE = 0.00005;
 
 in vec2 textureCoords;
 
 out vec4 FragColor;
-
-
-// 1 -> true, 0 -> false
-float rightOfLine(vec2 p1, vec2 p2, vec2 point) {
-    vec2 perpendicular = p2 - p1;
-    perpendicular = vec2(-perpendicular.y, perpendicular.x);
-    vec2 diff = point - p1;
-
-    float aaScale = perpendicular.x*perpendicular.x + perpendicular.y*perpendicular.y;
-    aaScale *= ANTIALIASING_SCALE;
-    aaScale = clamp(aaScale, 0.1, 0.00001);
-    return clamp(dot(perpendicular, diff) * (1.0 / ANTIALIASING_SCALE) + 0.5, 0.0, 1.0);
-}
 
 void getBarycentric(ProjectedTriangle tri, vec2 P, inout float w1, inout float w2) {
     vec2 A = tri.p1;
@@ -90,39 +87,55 @@ void main() {
     int countInTile = tileCounts[tileIdx];
     int start = tileOffsets[tileIdx];
     int end = tileOffsets[tileIdx + 1];
-    
-    float minRadius = 0.00;
-    float maxRadius = 0.06;
-    
+
     vec4 colour = vec4(0.0);
     float currentDepth = 1e4;
-    
+
     for (int i = start; i < end; i++) {
         int triIdx = tileTriangles[i];
         ProjectedTriangle tri = projectedTriangles[triIdx];
         Material material = materials[tri.materialIndex];
-        
-        //if (uv.x < tri.min.x || uv.x > tri.max.x || uv.y < tri.min.y || uv.y > tri.max.y) continue;
-        
+
         float w1 = 0;
         float w2 = 0;
         getBarycentric(tri, uv, w1, w2);
         float w3 = 1.0 - w1 - w2;
-        
+
         float invDepth =
             w1 / tri.depths[0] +
             w2 / tri.depths[1] +
             w3 / tri.depths[2];
 
         float depth = 1.0 / invDepth;
-        
+
         float inside = smoothstep(-ANTIALIASING_SCALE, 0.0, w1) * smoothstep(-ANTIALIASING_SCALE, 0.0, w2) * smoothstep(-ANTIALIASING_SCALE, 0.0, w3);
         inside = clamp(inside, 0.0, 1.0);
         if (depth < currentDepth && inside > 0) {
             currentDepth = depth;
-            colour = material.colour * inside;
+
+            float q1 = w1 / tri.depths[0];
+            float q2 = w2 / tri.depths[1];
+            float q3 = w3 / tri.depths[2];
+            float qSum = q1 + q2 + q3;
+
+            vec2 interpUV = (q1 * tri.uv1 + q2 * tri.uv2 + q3 * tri.uv3) / qSum;
+            vec3 interpNormal = normalize(
+                (q1 * tri.n1.xyz + q2 * tri.n2.xyz + q3 * tri.n3.xyz) / qSum);
+
+            float NdotL = max(dot(interpNormal, lightDir), 0.0);
+            float ambient = 0.15;
+            float lighting = ambient + (1.0 - ambient) * NdotL;
+
+            vec4 baseColour;
+            if (material.textureIndex >= 0 && material.textureIndex < textureCount) {
+                baseColour = texture(textures[material.textureIndex], interpUV) * material.colour;
+            } else {
+                baseColour = material.colour;
+            }
+
+            colour = vec4(baseColour.rgb * lighting, baseColour.a) * inside;
         }
     }
-    
+
     FragColor = colour;
 }

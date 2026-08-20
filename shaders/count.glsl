@@ -4,9 +4,13 @@ struct ProjectedTriangle {
     vec2 p1;
     vec2 p2;
     vec2 p3;
-    
+    vec2 uv1;
+    vec2 uv2;
+    vec2 uv3;
+    vec4 n1;
+    vec4 n2;
+    vec4 n3;
     float depths[3];
-
     int materialIndex;
 };
 

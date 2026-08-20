@@ -149,7 +149,7 @@ CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o: \
  /usr/include/c++/16/ext/aligned_buffer.h \
  /usr/include/c++/16/bits/node_handle.h \
  /usr/include/c++/16/bits/stl_map.h \
- /usr/include/c++/16/bits/stl_multimap.h \
+ /usr/include/c++/16/bits/stl_multimap.h /usr/include/c++/16/iostream \
  /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/OBJLoader.h \
  /usr/include/c++/16/vector /usr/include/c++/16/bits/stl_uninitialized.h \
  /usr/include/c++/16/bits/stl_vector.h \
@@ -303,4 +303,11 @@ CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o: \
  /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/RendererStructs.h \
  /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/World.h \
  /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Renderer.h \
- /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.h
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src/Camera.h \
+ /home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/vendor/stb_image.h \
+ /usr/include/c++/16/stdlib.h /usr/include/string.h \
+ /usr/include/strings.h /usr/include/c++/16/math.h \
+ /usr/lib/gcc/x86_64-redhat-linux/16/include/emmintrin.h \
+ /usr/lib/gcc/x86_64-redhat-linux/16/include/xmmintrin.h \
+ /usr/lib/gcc/x86_64-redhat-linux/16/include/mmintrin.h \
+ /usr/lib/gcc/x86_64-redhat-linux/16/include/mm_malloc.h

@@ -19,6 +19,6 @@ class OBJLoader {
         static Object loadObject(std::string path, std::string mtlPath);
 
     private:
-        static void parseMTL(std::string mtlPath, std::vector<Material>& materials, std::vector<std::string>& names);
+        static void parseMTL(std::string mtlPath, std::vector<Material>& materials, std::vector<std::string>& names, std::vector<std::string>& texturePaths);
         static FileLoader fileLoader;
 };

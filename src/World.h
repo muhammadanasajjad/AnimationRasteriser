@@ -21,6 +21,7 @@ struct Object {
     Transform transform;
     int materialIndex = 0;
     std::vector<Material> materials;
+    std::vector<TextureData> textures;
 };
 
 class World {
@@ -34,6 +35,7 @@ class World {
 
         Object& addObject(const Object& object);
         void addMaterial(const Material& material);
+        void addGlobalLight(const glm::vec3& direction);
 
     private:
         void buildWorld();
@@ -46,6 +48,7 @@ class World {
         GLFWwindow* window;
         std::vector<Object> objects;
         std::vector<Material> materials;
+        glm::vec3 lightDirection = glm::normalize(glm::vec3(0.5f, 1.0f, 0.3f));
 
         static bool firstMouse;
         static double lastMouseX;
