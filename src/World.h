@@ -2,11 +2,14 @@
 
 #include <string>
 #include <vector>
+#include <deque>
+#include <functional>
 
 #include <glm/glm.hpp>
 
 #include <Renderer.h>
 #include <RendererStructs.h>
+#include <Animation.h>
 
 struct GLFWwindow;
 
@@ -22,6 +25,8 @@ struct Object {
     int materialIndex = 0;
     std::vector<Material> materials;
     std::vector<TextureData> textures;
+    bool visible = true;
+    int materialBase = 0;
 };
 
 class World {
@@ -37,8 +42,13 @@ class World {
         void addMaterial(const Material& material);
         void addGlobalLight(const glm::vec3& direction);
 
+        Timeline& getTimeline();
+        void onUpdate(std::function<void(float dt, float totalTime)> callback);
+        void enableVideoExport(const std::string& outputPath, int fps = 30);
+
     private:
         void buildWorld();
+        void updateTriangles();
         void processInput(float dt);
 
         static void mouseCallback(GLFWwindow* window, double xpos, double ypos);
@@ -46,9 +56,20 @@ class World {
 
         Renderer renderer;
         GLFWwindow* window;
-        std::vector<Object> objects;
+        std::deque<Object> objects;
         std::vector<Material> materials;
         glm::vec3 lightDirection = glm::normalize(glm::vec3(0.5f, 1.0f, 0.3f));
+
+        Timeline timeline;
+        std::function<void(float, float)> updateCallback;
+        unsigned int maxTriangleCount = 0;
+
+        bool videoExportEnabled = false;
+        std::string videoOutputPath;
+        int videoFps = 30;
+        FILE* ffmpegProcess = nullptr;
+        int windowWidth = 800;
+        int windowHeight = 800;
 
         static bool firstMouse;
         static double lastMouseX;

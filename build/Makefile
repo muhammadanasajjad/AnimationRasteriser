@@ -153,6 +153,30 @@ glad/src/glad.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.s
 .PHONY : glad/src/glad.c.s
 
+src/Animation.o: src/Animation.cpp.o
+.PHONY : src/Animation.o
+
+# target to build an object file
+src/Animation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Animation.cpp.o
+.PHONY : src/Animation.cpp.o
+
+src/Animation.i: src/Animation.cpp.i
+.PHONY : src/Animation.i
+
+# target to preprocess a source file
+src/Animation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Animation.cpp.i
+.PHONY : src/Animation.cpp.i
+
+src/Animation.s: src/Animation.cpp.s
+.PHONY : src/Animation.s
+
+# target to generate assembly for a file
+src/Animation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Animation.cpp.s
+.PHONY : src/Animation.cpp.s
+
 src/Camera.o: src/Camera.cpp.o
 .PHONY : src/Camera.o
 
@@ -225,6 +249,30 @@ src/OBJLoader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.s
 .PHONY : src/OBJLoader.cpp.s
 
+src/PGNLoader.o: src/PGNLoader.cpp.o
+.PHONY : src/PGNLoader.o
+
+# target to build an object file
+src/PGNLoader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/PGNLoader.cpp.o
+.PHONY : src/PGNLoader.cpp.o
+
+src/PGNLoader.i: src/PGNLoader.cpp.i
+.PHONY : src/PGNLoader.i
+
+# target to preprocess a source file
+src/PGNLoader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/PGNLoader.cpp.i
+.PHONY : src/PGNLoader.cpp.i
+
+src/PGNLoader.s: src/PGNLoader.cpp.s
+.PHONY : src/PGNLoader.s
+
+# target to generate assembly for a file
+src/PGNLoader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/PGNLoader.cpp.s
+.PHONY : src/PGNLoader.cpp.s
+
 src/Renderer.o: src/Renderer.cpp.o
 .PHONY : src/Renderer.o
 
@@ -273,6 +321,30 @@ src/World.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/World.cpp.s
 .PHONY : src/World.cpp.s
 
+src/chessSimpleAnimation.o: src/chessSimpleAnimation.cpp.o
+.PHONY : src/chessSimpleAnimation.o
+
+# target to build an object file
+src/chessSimpleAnimation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/chessSimpleAnimation.cpp.o
+.PHONY : src/chessSimpleAnimation.cpp.o
+
+src/chessSimpleAnimation.i: src/chessSimpleAnimation.cpp.i
+.PHONY : src/chessSimpleAnimation.i
+
+# target to preprocess a source file
+src/chessSimpleAnimation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/chessSimpleAnimation.cpp.i
+.PHONY : src/chessSimpleAnimation.cpp.i
+
+src/chessSimpleAnimation.s: src/chessSimpleAnimation.cpp.s
+.PHONY : src/chessSimpleAnimation.s
+
+# target to generate assembly for a file
+src/chessSimpleAnimation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/chessSimpleAnimation.cpp.s
+.PHONY : src/chessSimpleAnimation.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -309,6 +381,9 @@ help:
 	@echo "... glad/src/glad.o"
 	@echo "... glad/src/glad.i"
 	@echo "... glad/src/glad.s"
+	@echo "... src/Animation.o"
+	@echo "... src/Animation.i"
+	@echo "... src/Animation.s"
 	@echo "... src/Camera.o"
 	@echo "... src/Camera.i"
 	@echo "... src/Camera.s"
@@ -318,12 +393,18 @@ help:
 	@echo "... src/OBJLoader.o"
 	@echo "... src/OBJLoader.i"
 	@echo "... src/OBJLoader.s"
+	@echo "... src/PGNLoader.o"
+	@echo "... src/PGNLoader.i"
+	@echo "... src/PGNLoader.s"
 	@echo "... src/Renderer.o"
 	@echo "... src/Renderer.i"
 	@echo "... src/Renderer.s"
 	@echo "... src/World.o"
 	@echo "... src/World.i"
 	@echo "... src/World.s"
+	@echo "... src/chessSimpleAnimation.o"
+	@echo "... src/chessSimpleAnimation.i"
+	@echo "... src/chessSimpleAnimation.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

@@ -2,11 +2,14 @@ AnimationRasteriser: \
   /usr/lib/gcc/x86_64-redhat-linux/16/../../../../lib64/crt1.o \
   /usr/lib/gcc/x86_64-redhat-linux/16/../../../../lib64/crti.o \
   /usr/lib/gcc/x86_64-redhat-linux/16/crtbegin.o \
+  CMakeFiles/AnimationRasteriser.dir/src/Animation.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o \
+  CMakeFiles/AnimationRasteriser.dir/src/PGNLoader.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/World.cpp.o \
+  CMakeFiles/AnimationRasteriser.dir/src/chessSimpleAnimation.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/glad/src/glad.c.o \
   /usr/lib64/libglfw.so.3.4 \
@@ -74,15 +77,21 @@ AnimationRasteriser: \
 
 /usr/lib/gcc/x86_64-redhat-linux/16/crtbegin.o:
 
+CMakeFiles/AnimationRasteriser.dir/src/Animation.cpp.o:
+
 CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o:
 
 CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o:
 
 CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o:
 
+CMakeFiles/AnimationRasteriser.dir/src/PGNLoader.cpp.o:
+
 CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o:
 
 CMakeFiles/AnimationRasteriser.dir/src/World.cpp.o:
+
+CMakeFiles/AnimationRasteriser.dir/src/chessSimpleAnimation.cpp.o:
 
 CMakeFiles/AnimationRasteriser.dir/src/main.cpp.o:
 

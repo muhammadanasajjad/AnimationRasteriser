@@ -139,7 +139,7 @@ void Renderer::load(const std::vector<Triangle>& triangles, const std::vector<Ma
 
     checkShaderProgramLink(mainShaderProgram, "Error linking main shader program");
 
-    camera = Camera({-25, 0, 0}, {+1, 0, 0});
+    camera = Camera({0, -35, -25}, {0, 1, 0.9f});
 
     glUseProgram(mainShaderProgram);
 
@@ -216,7 +216,7 @@ void Renderer::load(const std::vector<Triangle>& triangles, const std::vector<Ma
     glBufferData(GL_SHADER_STORAGE_BUFFER,
                  triangles.size() * sizeof(Triangle),
                  triangles.data(),
-                 GL_STATIC_DRAW);
+                 GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, worldTrianglesSSBO);
 
     glUseProgram(projectionProgram);
@@ -306,6 +306,15 @@ void Renderer::load(const std::vector<Triangle>& triangles, const std::vector<Ma
                  mats.data(),
                  GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 6, materialsSSBO);
+}
+
+void Renderer::updateTriangles(const std::vector<Triangle>& triangles) {
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, worldTrianglesSSBO);
+    glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, triangles.size() * sizeof(Triangle), triangles.data());
+
+    worldTriangleCount = triangles.size();
+    glUseProgram(projectionProgram);
+    glUniform1i(worldTriangleCountLoc, worldTriangleCount);
 }
 
 void Renderer::render() {

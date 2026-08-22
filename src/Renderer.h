@@ -9,6 +9,7 @@
 class Renderer {
     public:
         void load(const std::vector<Triangle>& triangles, const std::vector<Material>& materials, const std::vector<TextureData>& textures);
+        void updateTriangles(const std::vector<Triangle>& triangles);
         void render();
         void offload();
 

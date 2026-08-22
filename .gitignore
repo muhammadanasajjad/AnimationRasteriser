@@ -1,2 +1,5 @@
 /test/
 /testgl/
+/tools/ffmpeg
+/build/
+output.mp4

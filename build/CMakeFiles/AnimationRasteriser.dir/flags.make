@@ -7,11 +7,11 @@ C_DEFINES =
 
 C_INCLUDES = -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/vendor
 
-C_FLAGS = 
+C_FLAGS = -O3 -DNDEBUG
 
 CXX_DEFINES = 
 
 CXX_INCLUDES = -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/src -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/glad/include -I/home/muhammadanasajjad/Documents/Programming/AnimationRasteriser/vendor
 
-CXX_FLAGS = 
+CXX_FLAGS = -O3 -DNDEBUG
 

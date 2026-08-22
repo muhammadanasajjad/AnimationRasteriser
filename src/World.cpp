@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
+#include <cstring>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -23,6 +25,9 @@ bool World::init(int width, int height, const std::string& title) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+    windowWidth = width;
+    windowHeight = height;
 
     window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
     if (window == NULL) {
@@ -52,16 +57,48 @@ bool World::init(int width, int height, const std::string& title) {
 void World::run() {
     buildWorld();
 
-    float lastTime = glfwGetTime();
+    float totalTime = 0.0f;
     int frameCount = 0;
     float fpsTimer = 0.0f;
-    int captureFrames = 30;
+
+    if (videoExportEnabled) {
+        glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
+        std::string cmd = "./tools/ffmpeg -y -f rawvideo -pix_fmt rgb24 -s " +
+                          std::to_string(windowWidth) + "x" + std::to_string(windowHeight) +
+                          " -r " + std::to_string(videoFps) +
+                          " -i pipe:0 -c:v libx264 -pix_fmt yuv420p -crf 18 " +
+                          videoOutputPath;
+        std::cout << "ffmpeg: " << cmd << std::endl;
+        ffmpegProcess = popen(cmd.c_str(), "w");
+        if (!ffmpegProcess) {
+            std::cerr << "Failed to launch ./tools/ffmpeg" << std::endl;
+            videoExportEnabled = false;
+        } else {
+            std::cout << "Recording " << windowWidth << "x" << windowHeight
+                      << " to " << videoOutputPath << " at " << videoFps << " FPS" << std::endl;
+        }
+    }
+
+    float lastTime = glfwGetTime();
+
     while (!glfwWindowShouldClose(window)) {
-        float currentTime = glfwGetTime();
-        float dt = currentTime - lastTime;
-        lastTime = currentTime;
+        float dt;
+        if (videoExportEnabled) {
+            dt = 1.0f / (float)videoFps;
+        } else {
+            float currentTime = glfwGetTime();
+            dt = currentTime - lastTime;
+            lastTime = currentTime;
+        }
+        totalTime += dt;
 
         processInput(dt);
+
+        timeline.update(dt);
+        if (updateCallback) {
+            updateCallback(dt, totalTime);
+        }
+        updateTriangles();
 
         fpsTimer += dt;
         frameCount++;
@@ -74,17 +111,33 @@ void World::run() {
         glClear(GL_COLOR_BUFFER_BIT);
         renderer.render();
 
-        if (--captureFrames == 0) {
-            std::vector<unsigned char> pixels(800 * 800 * 3);
-            glReadPixels(0, 0, 800, 800, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
-            std::ofstream out("/tmp/render_before.ppm", std::ios::binary);
-            out << "P6\n" << 800 << " " << 800 << "\n255\n";
-            out.write((const char*)pixels.data(), (std::streamsize)pixels.size());
-            std::cout << "captured" << std::endl;
+        if (videoExportEnabled && ffmpegProcess) {
+            glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
+            std::vector<unsigned char> pixels(windowWidth * windowHeight * 3);
+            glReadPixels(0, 0, windowWidth, windowHeight, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
+
+            int rowBytes = windowWidth * 3;
+            std::vector<unsigned char> row(rowBytes);
+            for (int y = 0; y < windowHeight / 2; y++) {
+                unsigned char* top = pixels.data() + y * rowBytes;
+                unsigned char* bot = pixels.data() + (windowHeight - 1 - y) * rowBytes;
+                memcpy(row.data(), top, rowBytes);
+                memcpy(top, bot, rowBytes);
+                memcpy(bot, row.data(), rowBytes);
+            }
+
+            fwrite(pixels.data(), 1, pixels.size(), ffmpegProcess);
+            fflush(ffmpegProcess);
         }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+    }
+
+    if (ffmpegProcess) {
+        pclose(ffmpegProcess);
+        std::cout << "Video saved to " << videoOutputPath << std::endl;
+        ffmpegProcess = nullptr;
     }
 }
 
@@ -109,11 +162,25 @@ void World::addGlobalLight(const glm::vec3& direction) {
     lightDirection = glm::normalize(direction);
 }
 
+Timeline& World::getTimeline() {
+    return timeline;
+}
+
+void World::onUpdate(std::function<void(float dt, float totalTime)> callback) {
+    updateCallback = callback;
+}
+
+void World::enableVideoExport(const std::string& outputPath, int fps) {
+    videoExportEnabled = true;
+    videoOutputPath = outputPath;
+    videoFps = fps;
+}
+
 void World::buildWorld() {
     std::vector<Triangle> worldTriangles;
     std::vector<TextureData> worldTextures;
 
-    for (const Object& object : objects) {
+    for (Object& object : objects) {
         const Transform& transform = object.transform;
 
         glm::mat4 model = glm::mat4(1.0f);
@@ -126,6 +193,7 @@ void World::buildWorld() {
         glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
 
         int materialBase = (int)materials.size();
+        object.materialBase = materialBase;
         for (const Material& material : object.materials) {
             materials.push_back(material);
         }
@@ -151,8 +219,58 @@ void World::buildWorld() {
         materials.push_back({{1.0, 1.0, 1.0, 1.0}, -1});
     }
 
+    maxTriangleCount = worldTriangles.size();
+
     renderer.lightDirection = lightDirection;
     renderer.load(worldTriangles, materials, worldTextures);
+}
+
+void World::updateTriangles() {
+    std::vector<Triangle> worldTriangles;
+    worldTriangles.reserve(maxTriangleCount);
+
+    for (const Object& object : objects) {
+        if (!object.visible) continue;
+
+        const Transform& transform = object.transform;
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, transform.position);
+        model = glm::rotate(model, glm::radians(transform.rotation.x), glm::vec3(1, 0, 0));
+        model = glm::rotate(model, glm::radians(transform.rotation.y), glm::vec3(0, 1, 0));
+        model = glm::rotate(model, glm::radians(transform.rotation.z), glm::vec3(0, 0, 1));
+        model = glm::scale(model, transform.scale);
+
+        glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
+
+        for (Triangle triangle : object.triangles) {
+            triangle.p1 = model * triangle.p1;
+            triangle.p2 = model * triangle.p2;
+            triangle.p3 = model * triangle.p3;
+
+            triangle.n1 = glm::vec4(normalMatrix * glm::vec3(triangle.n1), 0.0f);
+            triangle.n2 = glm::vec4(normalMatrix * glm::vec3(triangle.n2), 0.0f);
+            triangle.n3 = glm::vec4(normalMatrix * glm::vec3(triangle.n3), 0.0f);
+
+            triangle.materialIndex = object.materials.empty() ? object.materialIndex : object.materialBase + triangle.materialIndex;
+            worldTriangles.push_back(triangle);
+        }
+    }
+
+    // pad with degenerate triangles so the GPU buffer is always maxTriangleCount
+    if (worldTriangles.size() < maxTriangleCount) {
+        Triangle degenerate = {};
+        degenerate.p1 = glm::vec4(0.0f);
+        degenerate.p2 = glm::vec4(0.0f);
+        degenerate.p3 = glm::vec4(0.0f);
+        degenerate.n1 = glm::vec4(0, 1, 0, 0);
+        degenerate.n2 = glm::vec4(0, 1, 0, 0);
+        degenerate.n3 = glm::vec4(0, 1, 0, 0);
+        degenerate.materialIndex = 0;
+        worldTriangles.resize(maxTriangleCount, degenerate);
+    }
+
+    renderer.updateTriangles(worldTriangles);
 }
 
 void World::processInput(float dt) {
@@ -190,5 +308,8 @@ void World::mouseCallback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 void World::resizeCallback(GLFWwindow* window, int width, int height) {
+    World* world = static_cast<World*>(glfwGetWindowUserPointer(window));
+    world->windowWidth = width;
+    world->windowHeight = height;
     glViewport(0, 0, width, height);
 }
