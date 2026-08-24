@@ -26,6 +26,8 @@ struct Object {
     std::vector<Material> materials;
     std::vector<TextureData> textures;
     bool visible = true;
+    float opacity = 1.0f;
+    float lastOpacity = -1.0f;
     int materialBase = 0;
 };
 

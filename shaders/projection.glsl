@@ -32,6 +32,7 @@ uniform int triangleCount;
 uniform vec3 cameraPosition;
 uniform vec3 cameraForward;
 uniform vec3 cameraUp;
+uniform float aspectRatio;
 
 const float nearPlane = 0.1;
 const float clipEpsilon = 0.00001;
@@ -70,7 +71,7 @@ vec2 project(vec3 point, vec3 cameraRight) {
     float y = -cosAngle * r;
     float x = dot(normalizeDiff, cameraRight) * r;
 
-    return vec2(x, y);
+    return vec2(x / aspectRatio, y);
 }
 
 int clipTriangle(vec3 n, float d,

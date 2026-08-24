@@ -10,6 +10,8 @@ class Renderer {
     public:
         void load(const std::vector<Triangle>& triangles, const std::vector<Material>& materials, const std::vector<TextureData>& textures);
         void updateTriangles(const std::vector<Triangle>& triangles);
+        void setMaterialAlpha(int index, float alpha);
+        void setAspectRatio(float aspect);
         void render();
         void offload();
 
@@ -32,6 +34,7 @@ class Renderer {
         unsigned int tileCountersSSBO;       // binding 4
         unsigned int tileTrianglesSSBO;      // binding 5
         unsigned int materialsSSBO;          // binding 6
+        std::vector<Material> materialsCPU;
 
         // textures
         std::vector<unsigned int> texturesGPU;
@@ -43,6 +46,7 @@ class Renderer {
         unsigned int worldTriangleCount;
         unsigned int worldTriangleCountLoc;
         unsigned int camPosLoc, camFwdLoc, camUpLoc;
+        unsigned int aspectRatioLoc;
 
         // count compute
         unsigned int countProgram;

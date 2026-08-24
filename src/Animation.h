@@ -64,6 +64,16 @@ struct VisibilityEvent {
     bool visible;
 };
 
+struct FadeEvent {
+    float startTime;
+    Object* target;
+    float from;
+    float to;
+    float duration;
+    EasingFunc easing;
+    bool started = false;
+};
+
 class Timeline {
 public:
     Timeline& move(Object& obj, const glm::vec3& to, float duration, EasingFunc easing = Easing::linear);
@@ -72,6 +82,8 @@ public:
     Timeline& wait(float duration);
     Timeline& hide(Object& obj);
     Timeline& show(Object& obj);
+    Timeline& fadeIn(Object& obj, float duration, EasingFunc easing = Easing::linear);
+    Timeline& fadeOut(Object& obj, float duration, EasingFunc easing = Easing::linear);
     void parallel(std::function<void(Timeline&)> fn);
 
     void update(float dt);
@@ -86,4 +98,5 @@ private:
     float cursor = 0.0f;
     std::vector<TimelineEntry> entries;
     std::vector<VisibilityEvent> visibilityEvents;
+    std::vector<FadeEvent> fadeEvents;
 };

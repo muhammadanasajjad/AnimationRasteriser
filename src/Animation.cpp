@@ -31,6 +31,16 @@ Timeline& Timeline::show(Object& obj) {
     return *this;
 }
 
+Timeline& Timeline::fadeIn(Object& obj, float duration, EasingFunc easing) {
+    fadeEvents.push_back({ cursor, &obj, obj.opacity, 1.0f, duration, easing, false });
+    return *this;
+}
+
+Timeline& Timeline::fadeOut(Object& obj, float duration, EasingFunc easing) {
+    fadeEvents.push_back({ cursor, &obj, obj.opacity, 0.0f, duration, easing, false });
+    return *this;
+}
+
 void Timeline::parallel(std::function<void(Timeline&)> fn) {
     Timeline sub;
     fn(sub);
@@ -47,6 +57,10 @@ void Timeline::parallel(std::function<void(Timeline&)> fn) {
     for (auto& evt : sub.visibilityEvents) {
         evt.time = cursor;
         visibilityEvents.push_back(evt);
+    }
+    for (auto& fade : sub.fadeEvents) {
+        fade.startTime = cursor;
+        fadeEvents.push_back(fade);
     }
     cursor = maxEnd > cursor ? maxEnd : cursor;
 }
@@ -81,6 +95,21 @@ void Timeline::update(float dt) {
             evt.target->visible = evt.visible;
         }
     }
+
+    for (auto& fade : fadeEvents) {
+        if (currentTime < fade.startTime) continue;
+        if (!fade.started) {
+            fade.from = fade.target->opacity;
+            fade.target->visible = true;
+            fade.started = true;
+        }
+        float t = glm::clamp((currentTime - fade.startTime) / fade.duration, 0.0f, 1.0f);
+        float eased = fade.easing(t);
+        fade.target->opacity = glm::mix(fade.from, fade.to, eased);
+        if (fade.to <= 0.0f && t >= 1.0f) {
+            fade.target->visible = false;
+        }
+    }
 }
 
 void Timeline::reset() {
@@ -88,6 +117,7 @@ void Timeline::reset() {
     cursor = 0.0f;
     entries.clear();
     visibilityEvents.clear();
+    fadeEvents.clear();
 }
 
 float Timeline::getTime() const { return currentTime; }
@@ -96,6 +126,10 @@ float Timeline::getDuration() const {
     float maxEnd = cursor;
     for (const auto& e : entries) {
         float end = e.startTime + e.duration;
+        if (end > maxEnd) maxEnd = end;
+    }
+    for (const auto& f : fadeEvents) {
+        float end = f.startTime + f.duration;
         if (end > maxEnd) maxEnd = end;
     }
     return maxEnd;

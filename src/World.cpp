@@ -29,11 +29,23 @@ bool World::init(int width, int height, const std::string& title) {
     windowWidth = width;
     windowHeight = height;
 
-    window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    if (monitor) {
+        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+        windowWidth = mode->width;
+        windowHeight = mode->height;
+    }
+
+    window = glfwCreateWindow(windowWidth, windowHeight, title.c_str(), NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return false;
+    }
+
+    if (monitor) {
+        glfwMaximizeWindow(window);
+        glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
     }
     glfwMakeContextCurrent(window);
     glfwSwapInterval(0);
@@ -44,7 +56,7 @@ bool World::init(int width, int height, const std::string& title) {
         return false;
     }
 
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, windowWidth, windowHeight);
     glfwSetFramebufferSizeCallback(window, resizeCallback);
 
     glfwSetWindowUserPointer(window, this);
@@ -62,6 +74,15 @@ void World::run() {
     float fpsTimer = 0.0f;
 
     if (videoExportEnabled) {
+        glfwSetWindowAttrib(window, GLFW_RESIZABLE, GLFW_FALSE);
+
+        // locking size can trigger an async reconfigure (un-maximize) in the WM;
+        // let it settle before querying the size ffmpeg will be locked to
+        double settleDeadline = glfwGetTime() + 0.25;
+        while (glfwGetTime() < settleDeadline) {
+            glfwPollEvents();
+        }
+
         glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
         std::string cmd = "./tools/ffmpeg -y -f rawvideo -pix_fmt rgb24 -s " +
                           std::to_string(windowWidth) + "x" + std::to_string(windowHeight) +
@@ -112,7 +133,6 @@ void World::run() {
         renderer.render();
 
         if (videoExportEnabled && ffmpegProcess) {
-            glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
             std::vector<unsigned char> pixels(windowWidth * windowHeight * 3);
             glReadPixels(0, 0, windowWidth, windowHeight, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
 
@@ -223,6 +243,9 @@ void World::buildWorld() {
 
     renderer.lightDirection = lightDirection;
     renderer.load(worldTriangles, materials, worldTextures);
+    if (windowHeight > 0) {
+        renderer.setAspectRatio((float)windowWidth / (float)windowHeight);
+    }
 }
 
 void World::updateTriangles() {
@@ -270,6 +293,19 @@ void World::updateTriangles() {
         worldTriangles.resize(maxTriangleCount, degenerate);
     }
 
+    for (Object& object : objects) {
+        if (object.opacity == object.lastOpacity) continue;
+
+        for (size_t j = 0; j < object.materials.size(); j++) {
+            int materialIdx = object.materialBase + (int)j;
+            if (materialIdx >= (int)materials.size()) continue;
+            float alpha = materials[materialIdx].colour.a * object.opacity;
+            renderer.setMaterialAlpha(materialIdx, alpha);
+        }
+
+        object.lastOpacity = object.opacity;
+    }
+
     renderer.updateTriangles(worldTriangles);
 }
 
@@ -312,4 +348,7 @@ void World::resizeCallback(GLFWwindow* window, int width, int height) {
     world->windowWidth = width;
     world->windowHeight = height;
     glViewport(0, 0, width, height);
+    if (height > 0) {
+        world->renderer.setAspectRatio((float)width / (float)height);
+    }
 }

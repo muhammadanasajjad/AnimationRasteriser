@@ -147,14 +147,14 @@ void chessPGNAnimation(World& world, const std::string& pgnPath) {
         } else {
             if (isCapture && !isEnPassant) {
                 if (grid[toFile][toRank]) {
-                    tl.hide(*grid[toFile][toRank]);
+                    tl.fadeOut(*grid[toFile][toRank], moveDuration, Easing::easeInQuad);
                 }
             }
 
             if (isEnPassant) {
                 int capturedRank = fromRank;
                 if (grid[toFile][capturedRank]) {
-                    tl.hide(*grid[toFile][capturedRank]);
+                    tl.fadeOut(*grid[toFile][capturedRank], moveDuration, Easing::easeInQuad);
                     grid[toFile][capturedRank] = nullptr;
                 }
             }

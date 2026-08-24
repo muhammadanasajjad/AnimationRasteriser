@@ -223,6 +223,9 @@ void Renderer::load(const std::vector<Triangle>& triangles, const std::vector<Ma
     worldTriangleCountLoc = glGetUniformLocation(projectionProgram, "triangleCount");
     glUniform1i(worldTriangleCountLoc, worldTriangleCount);
 
+    aspectRatioLoc = glGetUniformLocation(projectionProgram, "aspectRatio");
+    glUniform1f(aspectRatioLoc, 1.0f);
+
     glGenBuffers(1, &projectedTrianglesSSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, projectedTrianglesSSBO);
     glBufferData(GL_SHADER_STORAGE_BUFFER,
@@ -306,6 +309,8 @@ void Renderer::load(const std::vector<Triangle>& triangles, const std::vector<Ma
                  mats.data(),
                  GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 6, materialsSSBO);
+
+    materialsCPU = mats;
 }
 
 void Renderer::updateTriangles(const std::vector<Triangle>& triangles) {
@@ -315,6 +320,22 @@ void Renderer::updateTriangles(const std::vector<Triangle>& triangles) {
     worldTriangleCount = triangles.size();
     glUseProgram(projectionProgram);
     glUniform1i(worldTriangleCountLoc, worldTriangleCount);
+}
+
+void Renderer::setMaterialAlpha(int index, float alpha) {
+    if (index < 0 || index >= (int)materialsCPU.size()) return;
+
+    materialsCPU[index].colour.a = alpha;
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, materialsSSBO);
+    glBufferSubData(GL_SHADER_STORAGE_BUFFER,
+                    index * sizeof(Material),
+                    sizeof(Material),
+                    &materialsCPU[index]);
+}
+
+void Renderer::setAspectRatio(float aspect) {
+    glUseProgram(projectionProgram);
+    glUniform1f(aspectRatioLoc, aspect);
 }
 
 void Renderer::render() {
