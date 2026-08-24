@@ -46,6 +46,59 @@ namespace Easing {
 
 using EasingFunc = float(*)(float);
 
+struct PathTrack {
+    std::vector<glm::vec3> points;
+    std::vector<glm::vec3> samples;
+    std::vector<float> cumulative;
+    float totalLength = 0.0f;
+
+    void build() {
+        samples.clear();
+        cumulative.clear();
+        totalLength = 0.0f;
+        if (points.size() < 3) return;
+
+        size_t segments = (points.size() - 1) / 2;
+        const int STEPS = 32;
+        glm::vec3 previous(0.0f);
+        for (size_t s = 0; s < segments; s++) {
+            const glm::vec3& a = points[s * 2];
+            const glm::vec3& c = points[s * 2 + 1];
+            const glm::vec3& b = points[s * 2 + 2];
+            for (int k = (s == 0 ? 0 : 1); k <= STEPS; k++) {
+                float t = static_cast<float>(k) / STEPS;
+                float mt = 1.0f - t;
+                glm::vec3 p = mt * mt * a + 2.0f * mt * t * c + t * t * b;
+                if (!samples.empty()) {
+                    totalLength += glm::length(p - previous);
+                }
+                samples.push_back(p);
+                cumulative.push_back(totalLength);
+                previous = p;
+            }
+        }
+    }
+
+    glm::vec3 sample(float u) const {
+        if (samples.empty()) return glm::vec3(0.0f);
+        if (totalLength <= 0.0f || samples.size() < 2) return samples.front();
+        u = glm::clamp(u, 0.0f, 1.0f);
+        float target = u * totalLength;
+
+        size_t lo = 0;
+        size_t hi = cumulative.size() - 1;
+        while (lo + 1 < hi) {
+            size_t mid = (lo + hi) / 2;
+            if (cumulative[mid] <= target) lo = mid;
+            else hi = mid;
+        }
+
+        float span = cumulative[hi] - cumulative[lo];
+        float f = span > 0.0f ? (target - cumulative[lo]) / span : 0.0f;
+        return glm::mix(samples[lo], samples[hi], f);
+    }
+};
+
 struct TimelineEntry {
     float startTime;
     Object* target;
@@ -56,6 +109,7 @@ struct TimelineEntry {
     bool started = false;
 
     enum Property { Position, Rotation, Scale } property;
+    PathTrack path;
 };
 
 struct VisibilityEvent {
@@ -74,9 +128,18 @@ struct FadeEvent {
     bool started = false;
 };
 
+struct DrawEvent {
+    float startTime;
+    Object* target;
+    float duration;
+    EasingFunc easing;
+    bool started = false;
+};
+
 class Timeline {
 public:
     Timeline& move(Object& obj, const glm::vec3& to, float duration, EasingFunc easing = Easing::linear);
+    Timeline& move(Object& obj, const std::vector<glm::vec3>& path, float duration, EasingFunc easing = Easing::linear);
     Timeline& rotate(Object& obj, const glm::vec3& to, float duration, EasingFunc easing = Easing::linear);
     Timeline& scale(Object& obj, const glm::vec3& to, float duration, EasingFunc easing = Easing::linear);
     Timeline& wait(float duration);
@@ -84,11 +147,13 @@ public:
     Timeline& show(Object& obj);
     Timeline& fadeIn(Object& obj, float duration, EasingFunc easing = Easing::linear);
     Timeline& fadeOut(Object& obj, float duration, EasingFunc easing = Easing::linear);
+    Timeline& draw(Object& obj, float duration, EasingFunc easing = Easing::linear);
     void parallel(std::function<void(Timeline&)> fn);
 
     void update(float dt);
     void reset();
     float getTime() const;
+    float getCursor() const;
     float getDuration() const;
 
 private:
@@ -99,4 +164,5 @@ private:
     std::vector<TimelineEntry> entries;
     std::vector<VisibilityEvent> visibilityEvents;
     std::vector<FadeEvent> fadeEvents;
+    std::vector<DrawEvent> drawEvents;
 };

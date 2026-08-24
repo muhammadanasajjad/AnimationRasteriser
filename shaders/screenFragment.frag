@@ -12,6 +12,7 @@ struct ProjectedTriangle {
     vec4 n3;
     float depths[3];
     int materialIndex;
+    int layerIndex;
 };
 
 struct Material {
@@ -49,6 +50,8 @@ layout(std430, binding = 6) buffer Materials {
 uniform sampler2D textures[MAX_TEXTURES];
 
 #define MAX_LAYERS 16
+
+const float DEPTH_TIE_EPSILON = 0.01;
 
 float ANTIALIASING_SCALE = 0.0000001;
 
@@ -118,9 +121,37 @@ void main() {
         bool full = layerCount >= MAX_LAYERS;
         int count = full ? MAX_LAYERS : layerCount;
         int pos = count;
-        while (pos > 0 && layerDepth[pos - 1] < depth) pos--;
+        while (pos > 0) {
+            float prevDepth = layerDepth[pos - 1];
+            if (abs(prevDepth - depth) <= DEPTH_TIE_EPSILON) {
+                if (projectedTriangles[layerTri[pos - 1]].layerIndex > tri.layerIndex) {
+                    pos--;
+                    continue;
+                }
+                if (projectedTriangles[layerTri[pos - 1]].layerIndex == tri.layerIndex &&
+                    layerTri[pos - 1] > triIdx) {
+                    pos--;
+                    continue;
+                }
+                break;
+            }
+            if (prevDepth < depth) {
+                pos--;
+                continue;
+            }
+            break;
+        }
 
-        if (full && pos == count) continue;
+        if (full) {
+            if (depth > layerDepth[0]) continue;
+            for (int j = 0; j < MAX_LAYERS - 1; j++) {
+                layerDepth[j] = layerDepth[j + 1];
+                layerTri[j] = layerTri[j + 1];
+                layerW1[j] = layerW1[j + 1];
+                layerW2[j] = layerW2[j + 1];
+            }
+            pos--;
+        }
 
         for (int j = full ? MAX_LAYERS - 1 : count; j > pos; j--) {
             layerDepth[j] = layerDepth[j - 1];
@@ -141,6 +172,7 @@ void main() {
     for (int i = 0; i < layerCount; i++) {
         ProjectedTriangle tri = projectedTriangles[layerTri[i]];
         Material material = materials[tri.materialIndex];
+        if (material.colour.a <= 0.001) continue;
 
         float w1 = layerW1[i];
         float w2 = layerW2[i];
@@ -155,7 +187,7 @@ void main() {
         vec3 interpNormal = normalize(
             (q1 * tri.n1.xyz + q2 * tri.n2.xyz + q3 * tri.n3.xyz) / qSum);
 
-        float NdotL = max(dot(interpNormal, lightDir), 0.0);
+        float NdotL = max(abs(dot(interpNormal, lightDir)), 0.0);
         float ambient = 0.15;
         float lighting = ambient + (1.0 - ambient) * NdotL;
 

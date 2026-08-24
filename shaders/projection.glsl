@@ -12,6 +12,7 @@ struct ProjectedTriangle {
     vec4 n3;
     float depths[3];
     int materialIndex;
+    int layerIndex;
 };
 
 struct WorldTriangle {
@@ -25,7 +26,7 @@ struct WorldTriangle {
     vec2 uv2;
     vec2 uv3;
     int materialIndex;
-    float _pad;
+    int layerIndex;
 };
 
 uniform int triangleCount;
@@ -138,7 +139,7 @@ int clipTriangle(vec3 n, float d,
 void writeProjectedTriangle(vec2 p1, vec2 p2, vec2 p3,
     vec2 uv1, vec2 uv2, vec2 uv3,
     vec3 n1, vec3 n2, vec3 n3,
-    float d1, float d2, float d3, int material, uint slot) {
+    float d1, float d2, float d3, int material, int layer, uint slot) {
     ProjectedTriangle outTri;
     outTri.p1 = p1;
     outTri.p2 = p2;
@@ -153,6 +154,7 @@ void writeProjectedTriangle(vec2 p1, vec2 p2, vec2 p3,
     outTri.depths[1] = d2;
     outTri.depths[2] = d3;
     outTri.materialIndex = material;
+    outTri.layerIndex = layer;
     projectedTriangles[slot] = outTri;
 }
 
@@ -191,8 +193,8 @@ void main() {
     uint slot1 = idx * 2 + 1;
 
     if (clipCount == 0) {
-        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), vec2(0.0), vec2(0.0), vec2(0.0), vec3(0.0), vec3(0.0), vec3(0.0), 0.0, 0.0, 0.0, tri.materialIndex, slot0);
-        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), vec2(0.0), vec2(0.0), vec2(0.0), vec3(0.0), vec3(0.0), vec3(0.0), 0.0, 0.0, 0.0, tri.materialIndex, slot1);
+        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), vec2(0.0), vec2(0.0), vec2(0.0), vec3(0.0), vec3(0.0), vec3(0.0), 0.0, 0.0, 0.0, tri.materialIndex, tri.layerIndex, slot0);
+        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), vec2(0.0), vec2(0.0), vec2(0.0), vec3(0.0), vec3(0.0), vec3(0.0), 0.0, 0.0, 0.0, tri.materialIndex, tri.layerIndex, slot1);
         return;
     }
 
@@ -209,9 +211,9 @@ void main() {
     vec2 minB = min(s0, min(s1, s2));
     vec2 maxB = max(s0, max(s1, s2));
     if (offScreen(minB, maxB)) {
-        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), vec2(0.0), vec2(0.0), vec2(0.0), vec3(0.0), vec3(0.0), vec3(0.0), 0.0, 0.0, 0.0, tri.materialIndex, slot0);
+        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), vec2(0.0), vec2(0.0), vec2(0.0), vec3(0.0), vec3(0.0), vec3(0.0), 0.0, 0.0, 0.0, tri.materialIndex, tri.layerIndex, slot0);
     } else {
-        writeProjectedTriangle(s0, s1, s2, u0, u1, u2, nm0, nm1, nm2, dd0, dd1, dd2, tri.materialIndex, slot0);
+        writeProjectedTriangle(s0, s1, s2, u0, u1, u2, nm0, nm1, nm2, dd0, dd1, dd2, tri.materialIndex, tri.layerIndex, slot0);
     }
 
     if (clipCount == 4) {
@@ -221,11 +223,11 @@ void main() {
         vec2 minB2 = min(s0, min(s2, s3));
         vec2 maxB2 = max(s0, max(s2, s3));
         if (offScreen(minB2, maxB2)) {
-            writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), vec2(0.0), vec2(0.0), vec2(0.0), vec3(0.0), vec3(0.0), vec3(0.0), 0.0, 0.0, 0.0, tri.materialIndex, slot1);
+            writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), vec2(0.0), vec2(0.0), vec2(0.0), vec3(0.0), vec3(0.0), vec3(0.0), 0.0, 0.0, 0.0, tri.materialIndex, tri.layerIndex, slot1);
         } else {
-            writeProjectedTriangle(s0, s2, s3, u0, u2, u3, nm0, nm2, nm3, dd0, dd2, dd3, tri.materialIndex, slot1);
+            writeProjectedTriangle(s0, s2, s3, u0, u2, u3, nm0, nm2, nm3, dd0, dd2, dd3, tri.materialIndex, tri.layerIndex, slot1);
         }
     } else {
-        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), vec2(0.0), vec2(0.0), vec2(0.0), vec3(0.0), vec3(0.0), vec3(0.0), 0.0, 0.0, 0.0, tri.materialIndex, slot1);
+        writeProjectedTriangle(vec2(2.0), vec2(2.0), vec2(2.0), vec2(0.0), vec2(0.0), vec2(0.0), vec3(0.0), vec3(0.0), vec3(0.0), 0.0, 0.0, 0.0, tri.materialIndex, tri.layerIndex, slot1);
     }
 }

@@ -119,6 +119,12 @@ void World::run() {
         if (updateCallback) {
             updateCallback(dt, totalTime);
         }
+
+        if (videoExportEnabled && timeline.getDuration() > 0.0f &&
+            timeline.getTime() >= timeline.getDuration()) {
+            glfwSetWindowShouldClose(window, GLFW_TRUE);
+        }
+
         updateTriangles();
 
         fpsTimer += dt;
@@ -135,7 +141,6 @@ void World::run() {
         if (videoExportEnabled && ffmpegProcess) {
             std::vector<unsigned char> pixels(windowWidth * windowHeight * 3);
             glReadPixels(0, 0, windowWidth, windowHeight, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
-
             int rowBytes = windowWidth * 3;
             std::vector<unsigned char> row(rowBytes);
             for (int y = 0; y < windowHeight / 2; y++) {
@@ -174,8 +179,19 @@ Object& World::addObject(const Object& object) {
     return objects.back();
 }
 
+Object* World::findObject(const std::string& name) {
+    for (Object& object : objects) {
+        if (object.name == name) return &object;
+    }
+    return nullptr;
+}
+
 void World::addMaterial(const Material& material) {
     materials.push_back(material);
+}
+
+void World::useCanvasCamera() {
+    canvasCamera = true;
 }
 
 void World::addGlobalLight(const glm::vec3& direction) {
@@ -231,6 +247,7 @@ void World::buildWorld() {
             triangle.n3 = glm::vec4(normalMatrix * glm::vec3(triangle.n3), 0.0f);
 
             triangle.materialIndex = object.materials.empty() ? object.materialIndex : materialBase + triangle.materialIndex;
+            triangle.layerIndex = object.layer;
             worldTriangles.push_back(triangle);
         }
     }
@@ -243,6 +260,9 @@ void World::buildWorld() {
 
     renderer.lightDirection = lightDirection;
     renderer.load(worldTriangles, materials, worldTextures);
+    if (canvasCamera) {
+        renderer.camera = Camera();
+    }
     if (windowHeight > 0) {
         renderer.setAspectRatio((float)windowWidth / (float)windowHeight);
     }
@@ -266,7 +286,15 @@ void World::updateTriangles() {
 
         glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
 
-        for (Triangle triangle : object.triangles) {
+        size_t triangleLimit = object.triangles.size();
+        if (object.drawProgress < 1.0f) {
+            float progress = glm::clamp(object.drawProgress, 0.0f, 1.0f);
+            triangleLimit = (size_t)(object.triangles.size() * progress + 0.5f);
+            triangleLimit -= triangleLimit % 2;
+        }
+
+        for (size_t i = 0; i < triangleLimit; i++) {
+            Triangle triangle = object.triangles[i];
             triangle.p1 = model * triangle.p1;
             triangle.p2 = model * triangle.p2;
             triangle.p3 = model * triangle.p3;
@@ -276,6 +304,7 @@ void World::updateTriangles() {
             triangle.n3 = glm::vec4(normalMatrix * glm::vec3(triangle.n3), 0.0f);
 
             triangle.materialIndex = object.materials.empty() ? object.materialIndex : object.materialBase + triangle.materialIndex;
+            triangle.layerIndex = object.layer;
             worldTriangles.push_back(triangle);
         }
     }

@@ -225,6 +225,54 @@ src/FileLoader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.s
 .PHONY : src/FileLoader.cpp.s
 
+src/Irt.o: src/Irt.cpp.o
+.PHONY : src/Irt.o
+
+# target to build an object file
+src/Irt.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Irt.cpp.o
+.PHONY : src/Irt.cpp.o
+
+src/Irt.i: src/Irt.cpp.i
+.PHONY : src/Irt.i
+
+# target to preprocess a source file
+src/Irt.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Irt.cpp.i
+.PHONY : src/Irt.cpp.i
+
+src/Irt.s: src/Irt.cpp.s
+.PHONY : src/Irt.s
+
+# target to generate assembly for a file
+src/Irt.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/Irt.cpp.s
+.PHONY : src/Irt.cpp.s
+
+src/IrtRuntime.o: src/IrtRuntime.cpp.o
+.PHONY : src/IrtRuntime.o
+
+# target to build an object file
+src/IrtRuntime.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/IrtRuntime.cpp.o
+.PHONY : src/IrtRuntime.cpp.o
+
+src/IrtRuntime.i: src/IrtRuntime.cpp.i
+.PHONY : src/IrtRuntime.i
+
+# target to preprocess a source file
+src/IrtRuntime.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/IrtRuntime.cpp.i
+.PHONY : src/IrtRuntime.cpp.i
+
+src/IrtRuntime.s: src/IrtRuntime.cpp.s
+.PHONY : src/IrtRuntime.s
+
+# target to generate assembly for a file
+src/IrtRuntime.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AnimationRasteriser.dir/build.make CMakeFiles/AnimationRasteriser.dir/src/IrtRuntime.cpp.s
+.PHONY : src/IrtRuntime.cpp.s
+
 src/OBJLoader.o: src/OBJLoader.cpp.o
 .PHONY : src/OBJLoader.o
 
@@ -390,6 +438,12 @@ help:
 	@echo "... src/FileLoader.o"
 	@echo "... src/FileLoader.i"
 	@echo "... src/FileLoader.s"
+	@echo "... src/Irt.o"
+	@echo "... src/Irt.i"
+	@echo "... src/Irt.s"
+	@echo "... src/IrtRuntime.o"
+	@echo "... src/IrtRuntime.i"
+	@echo "... src/IrtRuntime.s"
 	@echo "... src/OBJLoader.o"
 	@echo "... src/OBJLoader.i"
 	@echo "... src/OBJLoader.s"

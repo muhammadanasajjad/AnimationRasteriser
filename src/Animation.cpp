@@ -6,6 +6,17 @@ Timeline& Timeline::move(Object& obj, const glm::vec3& to, float duration, Easin
     return *this;
 }
 
+Timeline& Timeline::move(Object& obj, const std::vector<glm::vec3>& pathPoints, float duration, EasingFunc easing) {
+    entries.push_back({ cursor, &obj, obj.transform.position, glm::vec3(0.0f),
+                        duration, easing, false, TimelineEntry::Position });
+    PathTrack track;
+    track.points = pathPoints;
+    track.build();
+    entries.back().path = std::move(track);
+    cursor += duration;
+    return *this;
+}
+
 Timeline& Timeline::rotate(Object& obj, const glm::vec3& to, float duration, EasingFunc easing) {
     addInterpolation(obj, TimelineEntry::Rotation, to, duration, easing);
     return *this;
@@ -41,11 +52,16 @@ Timeline& Timeline::fadeOut(Object& obj, float duration, EasingFunc easing) {
     return *this;
 }
 
+Timeline& Timeline::draw(Object& obj, float duration, EasingFunc easing) {
+    drawEvents.push_back({ cursor, &obj, duration, easing, false });
+    return *this;
+}
+
 void Timeline::parallel(std::function<void(Timeline&)> fn) {
     Timeline sub;
     fn(sub);
 
-    if (sub.entries.empty() && sub.visibilityEvents.empty()) return;
+    if (sub.entries.empty() && sub.visibilityEvents.empty() && sub.fadeEvents.empty() && sub.drawEvents.empty()) return;
 
     float maxEnd = 0.0f;
     for (auto& entry : sub.entries) {
@@ -61,6 +77,12 @@ void Timeline::parallel(std::function<void(Timeline&)> fn) {
     for (auto& fade : sub.fadeEvents) {
         fade.startTime = cursor;
         fadeEvents.push_back(fade);
+    }
+    for (auto& drawn : sub.drawEvents) {
+        drawn.startTime = cursor;
+        drawEvents.push_back(drawn);
+        float end = drawn.startTime + drawn.duration;
+        if (end > maxEnd) maxEnd = end;
     }
     cursor = maxEnd > cursor ? maxEnd : cursor;
 }
@@ -81,7 +103,13 @@ void Timeline::update(float dt) {
         float t = (currentTime - e.startTime) / e.duration;
         t = glm::clamp(t, 0.0f, 1.0f);
         float eased = e.easing(t);
-        glm::vec3 value = glm::mix(e.from, e.to, eased);
+
+        glm::vec3 value;
+        if (!e.path.points.empty()) {
+            value = e.path.sample(eased);
+        } else {
+            value = glm::mix(e.from, e.to, eased);
+        }
 
         switch (e.property) {
             case TimelineEntry::Position: e.target->transform.position = value; break;
@@ -110,6 +138,17 @@ void Timeline::update(float dt) {
             fade.target->visible = false;
         }
     }
+
+    for (auto& drawn : drawEvents) {
+        if (currentTime < drawn.startTime) continue;
+        if (!drawn.started) {
+            drawn.started = true;
+            drawn.target->visible = true;
+            drawn.target->drawProgress = 0.0f;
+        }
+        float t = glm::clamp((currentTime - drawn.startTime) / drawn.duration, 0.0f, 1.0f);
+        drawn.target->drawProgress = drawn.easing(t);
+    }
 }
 
 void Timeline::reset() {
@@ -118,9 +157,12 @@ void Timeline::reset() {
     entries.clear();
     visibilityEvents.clear();
     fadeEvents.clear();
+    drawEvents.clear();
 }
 
 float Timeline::getTime() const { return currentTime; }
+
+float Timeline::getCursor() const { return cursor; }
 
 float Timeline::getDuration() const {
     float maxEnd = cursor;
@@ -130,6 +172,10 @@ float Timeline::getDuration() const {
     }
     for (const auto& f : fadeEvents) {
         float end = f.startTime + f.duration;
+        if (end > maxEnd) maxEnd = end;
+    }
+    for (const auto& d : drawEvents) {
+        float end = d.startTime + d.duration;
         if (end > maxEnd) maxEnd = end;
     }
     return maxEnd;

@@ -1,0 +1,12 @@
+scene HelloWorld {
+    obj ferrari {
+        path: "../ferrari/ferrari.obj"
+        mtlPath: "../ferrari/ferrari.mtl"
+        position: (0, 0)
+        scale: (1.6, 1.6, 1.6)
+    }
+
+    timeline { rotate ferrari to (0, 0, 360) over 8s easing linear }
+}
+
+play HelloWorld

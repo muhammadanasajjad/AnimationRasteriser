@@ -33,6 +33,7 @@ class Renderer {
         unsigned int tileOffsetsSSBO;        // binding 3
         unsigned int tileCountersSSBO;       // binding 4
         unsigned int tileTrianglesSSBO;      // binding 5
+        size_t tileTrianglesCapacity = 0;
         unsigned int materialsSSBO;          // binding 6
         std::vector<Material> materialsCPU;
 

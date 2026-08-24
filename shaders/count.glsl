@@ -12,6 +12,7 @@ struct ProjectedTriangle {
     vec4 n3;
     float depths[3];
     int materialIndex;
+    int layerIndex;
 };
 
 layout(std430, binding = 0) buffer ProjectedTrianglesBuffer {

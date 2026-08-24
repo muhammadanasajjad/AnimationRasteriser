@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include <vector>
 
+inline constexpr size_t PROJECTED_TRIANGLE_GPU_STRIDE = 128;
+
 struct ProjectedTriangle {
     glm::vec2 p1;
     glm::vec2 p2;
@@ -19,6 +21,10 @@ struct ProjectedTriangle {
     float depths[3];
 
     int materialIndex;
+    int layerIndex;
+    int gpuPadding0;
+    int gpuPadding1;
+    int gpuPadding2;
 };
 
 struct Triangle {
@@ -32,7 +38,7 @@ struct Triangle {
     glm::vec2 uv2;
     glm::vec2 uv3;
     int materialIndex;
-    float _pad;
+    int layerIndex = 0;
 };
 
 struct Material {

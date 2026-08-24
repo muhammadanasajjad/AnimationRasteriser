@@ -1,0 +1,21 @@
+scene LayerDemo {
+    square blue {
+        position: (1, 1)
+        size: 6
+        fill: (0, 0.4, 1)
+        layer: 1
+    }
+    square red {
+        position: (-1, -1)
+        size: 6
+        fill: (1, 0, 0)
+        layer: 2
+    }
+    text title {
+        content: "HIGHER LAYER WINS WHEN DEPTHS TIE"
+        position: (0, -6.5)
+        colour: (1, 1, 1)
+    }
+    timeline { draw blue over 600ms; wait; draw red over 600ms; wait }
+}
+play LayerDemo

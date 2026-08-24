@@ -20,6 +20,7 @@ struct Transform {
 };
 
 struct Object {
+    std::string name;
     std::vector<Triangle> triangles;
     Transform transform;
     int materialIndex = 0;
@@ -28,7 +29,9 @@ struct Object {
     bool visible = true;
     float opacity = 1.0f;
     float lastOpacity = -1.0f;
+    float drawProgress = 1.0f;
     int materialBase = 0;
+    int layer = 0;
 };
 
 class World {
@@ -41,8 +44,10 @@ class World {
         void cleanup();
 
         Object& addObject(const Object& object);
+        Object* findObject(const std::string& name);
         void addMaterial(const Material& material);
         void addGlobalLight(const glm::vec3& direction);
+        void useCanvasCamera();
 
         Timeline& getTimeline();
         void onUpdate(std::function<void(float dt, float totalTime)> callback);
@@ -65,6 +70,7 @@ class World {
         Timeline timeline;
         std::function<void(float, float)> updateCallback;
         unsigned int maxTriangleCount = 0;
+        bool canvasCamera = false;
 
         bool videoExportEnabled = false;
         std::string videoOutputPath;

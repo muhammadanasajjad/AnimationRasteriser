@@ -1,0 +1,33 @@
+scene ShapesDemo {
+    sphere s {
+        radius: 1.5
+        segments: 48
+        fill: (0.85, 0.15, 0.15, 1)
+        position: (-5, 1)
+    }
+
+    cylinder c {
+        radius: 1
+        height: 3
+        segments: 48
+        fill: (0.15, 0.75, 0.25, 1)
+        position: (0, -0.5)
+    }
+
+    obj piece {
+        path: "../chess/pieces/white_pawn.obj"
+        position: (5, -0.5)
+        scale: (1.2, 1.2, 1.2)
+    }
+
+    timeline {
+        wait 200ms
+        serial {
+            fade s in over 500ms easing quadOut
+            fade c in over 500ms easing quadOut
+        }
+        rotate c to (30, 0, 360) over 1200ms easing quadOut
+    }
+}
+
+play ShapesDemo

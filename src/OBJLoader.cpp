@@ -172,12 +172,18 @@ Object OBJLoader::loadObject(std::string path, std::string mtlPath) {
     object.materials = materials;
     object.textures.resize(materials.size());
 
+    Material noMaterial;
+    noMaterial.colour = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    int unassignedMaterial = (int)object.materials.size();
+    object.materials.push_back(noMaterial);
+    object.textures.push_back(TextureData());
+
     fileLoader.loadFile(path);
     std::string fileString = fileLoader.getFileAsString();
     std::stringstream fileStream(fileString);
     std::string line;
 
-    int currentMaterial = 0;
+    int currentMaterial = unassignedMaterial;
     while (getline(fileStream, line)) {
         std::stringstream lineStream(line);
         std::string token;
@@ -199,7 +205,7 @@ Object OBJLoader::loadObject(std::string path, std::string mtlPath) {
             std::string name;
             lineStream >> name;
             std::map<std::string, int>::iterator it = nameToIndex.find(name);
-            currentMaterial = (it != nameToIndex.end()) ? it->second : 0;
+            currentMaterial = (it != nameToIndex.end()) ? it->second : unassignedMaterial;
         } else if (token == "f") {
             std::vector<std::string> faceEntries;
             std::string entry;

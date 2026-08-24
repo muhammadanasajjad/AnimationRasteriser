@@ -5,6 +5,8 @@ AnimationRasteriser: \
   CMakeFiles/AnimationRasteriser.dir/src/Animation.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o \
+  CMakeFiles/AnimationRasteriser.dir/src/Irt.cpp.o \
+  CMakeFiles/AnimationRasteriser.dir/src/IrtRuntime.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/PGNLoader.cpp.o \
   CMakeFiles/AnimationRasteriser.dir/src/Renderer.cpp.o \
@@ -82,6 +84,10 @@ CMakeFiles/AnimationRasteriser.dir/src/Animation.cpp.o:
 CMakeFiles/AnimationRasteriser.dir/src/Camera.cpp.o:
 
 CMakeFiles/AnimationRasteriser.dir/src/FileLoader.cpp.o:
+
+CMakeFiles/AnimationRasteriser.dir/src/Irt.cpp.o:
+
+CMakeFiles/AnimationRasteriser.dir/src/IrtRuntime.cpp.o:
 
 CMakeFiles/AnimationRasteriser.dir/src/OBJLoader.cpp.o:
 

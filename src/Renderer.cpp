@@ -11,7 +11,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 static_assert(sizeof(Triangle) == 128, "Triangle must be 128 bytes for std430 alignment");
-static_assert(sizeof(ProjectedTriangle) == 112, "ProjectedTriangle must be 112 bytes for std430 alignment");
+static_assert(sizeof(ProjectedTriangle) == PROJECTED_TRIANGLE_GPU_STRIDE,
+              "ProjectedTriangle must match the GPU std430 array stride");
 
 void checkShaderCompilation(unsigned int shader, std::string errorMessage) {
     int success;
@@ -197,11 +198,9 @@ void Renderer::load(const std::vector<Triangle>& triangles, const std::vector<Ma
 
     glGenBuffers(1, &tileTrianglesSSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileTrianglesSSBO);
-    glBufferData(GL_SHADER_STORAGE_BUFFER,
-                 tileCount * worldTriangleCount * 2 * sizeof(int),
-                 NULL,
-                 GL_DYNAMIC_DRAW);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, 0, NULL, GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, tileTrianglesSSBO);
+    tileTrianglesCapacity = 0;
 
     glGenBuffers(1, &materialsSSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, materialsSSBO);
@@ -229,7 +228,7 @@ void Renderer::load(const std::vector<Triangle>& triangles, const std::vector<Ma
     glGenBuffers(1, &projectedTrianglesSSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, projectedTrianglesSSBO);
     glBufferData(GL_SHADER_STORAGE_BUFFER,
-                 worldTriangleCount * 2 * sizeof(ProjectedTriangle),
+                 worldTriangleCount * 2 * PROJECTED_TRIANGLE_GPU_STRIDE,
                  NULL,
                  GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, projectedTrianglesSSBO);
@@ -368,6 +367,23 @@ void Renderer::render() {
     glUniform1i(prefixTileCountLoc, tileCount);
     glDispatchCompute(1, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileOffsetsSSBO);
+    int totalTileTriangles = 0;
+    glGetBufferSubData(GL_SHADER_STORAGE_BUFFER,
+                       tileCount * sizeof(int),
+                       sizeof(int),
+                       &totalTileTriangles);
+    if (totalTileTriangles < 0) totalTileTriangles = 0;
+    if ((size_t)totalTileTriangles > tileTrianglesCapacity) {
+        tileTrianglesCapacity = (size_t)totalTileTriangles + totalTileTriangles / 2 + 4096;
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileTrianglesSSBO);
+        glBufferData(GL_SHADER_STORAGE_BUFFER,
+                     tileTrianglesCapacity * sizeof(int),
+                     NULL,
+                     GL_DYNAMIC_DRAW);
+    }
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, tileTrianglesSSBO);
 
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileCountersSSBO);
     glClearBufferSubData(GL_SHADER_STORAGE_BUFFER, GL_R32I, 0, tileCount * sizeof(int), GL_RED_INTEGER, GL_INT, &zero);

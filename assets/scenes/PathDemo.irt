@@ -1,0 +1,15 @@
+scene PathDemo {
+    circle ball {
+        radius: 0.8
+        fill: (0.95, 0.3, 0.1, 1)
+        layer: 2
+    }
+
+    path weave {
+        (-5, -2, -4), (0, 3, 3), (5, -2, -3)
+    }
+
+    timeline { move ball to weave over 4s easing linear }
+}
+
+play PathDemo
