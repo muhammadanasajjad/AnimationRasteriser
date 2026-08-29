@@ -225,6 +225,9 @@ void Renderer::load(const std::vector<Triangle>& triangles, const std::vector<Ma
     aspectRatioLoc = glGetUniformLocation(projectionProgram, "aspectRatio");
     glUniform1f(aspectRatioLoc, 1.0f);
 
+    cameraZoomLoc = glGetUniformLocation(projectionProgram, "cameraZoom");
+    applyCameraZoom(camera.zoom);
+
     glGenBuffers(1, &projectedTrianglesSSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, projectedTrianglesSSBO);
     glBufferData(GL_SHADER_STORAGE_BUFFER,
@@ -337,6 +340,11 @@ void Renderer::setAspectRatio(float aspect) {
     glUniform1f(aspectRatioLoc, aspect);
 }
 
+void Renderer::applyCameraZoom(float zoom) {
+    glUseProgram(projectionProgram);
+    glUniform1f(cameraZoomLoc, zoom);
+}
+
 void Renderer::render() {
     frame++;
 
@@ -344,6 +352,7 @@ void Renderer::render() {
     glUniform3fv(camPosLoc, 1, &camera.position[0]);
     glUniform3fv(camFwdLoc, 1, &camera.forward[0]);
     glUniform3fv(camUpLoc, 1, &camera.up[0]);
+    glUniform1f(cameraZoomLoc, camera.zoom);
     glDispatchCompute((worldTriangleCount / 64) + 1, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 

@@ -319,9 +319,9 @@ private:
         object.kind = consumeIdentifier("object kind");
         if (object.kind != "text" && object.kind != "circle" && object.kind != "square" &&
             object.kind != "axes" && object.kind != "graph" && object.kind != "sphere" &&
-            object.kind != "cylinder" && object.kind != "obj") {
+            object.kind != "cylinder" && object.kind != "obj" && object.kind != "camera") {
             error(start, "unknown object kind '" + object.kind + "' in scene '" + sceneName +
-                             "' (expected text/circle/square/axes/graph/sphere/cylinder/obj)");
+                             "' (expected text/circle/square/axes/graph/sphere/cylinder/obj/camera)");
         }
 
         object.name = consumeIdentifier("object name");
@@ -476,9 +476,49 @@ private:
             }
             command.destination = std::move(destination);
 
+            if (peek().type == TokenType::Identifier && peek().text == "oriented") {
+                if (!command.destinationIsPath) {
+                    error(peek(), "'oriented' requires a path destination");
+                }
+                advance();
+                command.oriented = true;
+            }
+
             const Token& overToken = peek();
             if (overToken.type != TokenType::Identifier || overToken.text != "over") {
                 error(overToken, "expected 'over <duration>' after move destination");
+            }
+            advance();
+
+            command.duration = parseDuration();
+            parseEasingClause(command);
+        } else if (start.text == "look") {
+            advance();
+            command.kind = TimelineCmd::Kind::Look;
+
+            const Token& cameraToken = peek();
+            if (cameraToken.type != TokenType::Identifier || cameraToken.text != "camera") {
+                error(cameraToken, "expected 'camera' after 'look'");
+            }
+            advance();
+            command.target = "camera";
+
+            const Token& atToken = peek();
+            if (atToken.type != TokenType::Identifier || atToken.text != "at") {
+                error(atToken, "expected 'at' after 'look camera'");
+            }
+            advance();
+
+            ExprPtr destination = parseExpression();
+            if (destination->kind != ExprKind::Tuple ||
+                destination->items.size() < 2 || destination->items.size() > 3) {
+                error(atToken, "look camera requires a tuple like '(x, y)' or '(x, y, z)'");
+            }
+            command.destination = std::move(destination);
+
+            const Token& overToken = peek();
+            if (overToken.type != TokenType::Identifier || overToken.text != "over") {
+                error(overToken, "expected 'over <duration>' after look camera at tuple");
             }
             advance();
 
@@ -499,7 +539,7 @@ private:
             parseEasingClause(command);
         } else {
             error(start, "unknown timeline command '" + start.text +
-                             "' (expected fade/wait/remove/rotate/draw/move/serial)");
+                             "' (expected fade/wait/remove/rotate/draw/move/look/serial)");
         }
 
         return command;

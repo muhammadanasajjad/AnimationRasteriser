@@ -7,12 +7,55 @@ Timeline& Timeline::move(Object& obj, const glm::vec3& to, float duration, Easin
 }
 
 Timeline& Timeline::move(Object& obj, const std::vector<glm::vec3>& pathPoints, float duration, EasingFunc easing) {
+    return move(obj, pathPoints, duration, easing, false);
+}
+
+Timeline& Timeline::move(Object& obj, const std::vector<glm::vec3>& pathPoints, float duration, EasingFunc easing, bool oriented) {
     entries.push_back({ cursor, &obj, obj.transform.position, glm::vec3(0.0f),
                         duration, easing, false, TimelineEntry::Position });
     PathTrack track;
     track.points = pathPoints;
     track.build();
     entries.back().path = std::move(track);
+    entries.back().orientAlongPath = oriented;
+    cursor += duration;
+    return *this;
+}
+
+Timeline& Timeline::moveCamera(Camera& camera, const glm::vec3& to, float duration, EasingFunc easing) {
+    cameraAnims.push_back({ cursor, &camera, duration, easing, false, CameraAnim::Move,
+                            camera.position, to, PathTrack(), false });
+    cursor += duration;
+    return *this;
+}
+
+Timeline& Timeline::moveCamera(Camera& camera, const std::vector<glm::vec3>& pathPoints, float duration, EasingFunc easing) {
+    return moveCamera(camera, pathPoints, duration, easing, false);
+}
+
+Timeline& Timeline::moveCamera(Camera& camera, const std::vector<glm::vec3>& pathPoints, float duration, EasingFunc easing, bool oriented) {
+    CameraAnim anim;
+    anim.startTime = cursor;
+    anim.camera = &camera;
+    anim.duration = duration;
+    anim.easing = easing;
+    anim.started = false;
+    anim.kind = CameraAnim::Move;
+    anim.from = camera.position;
+    anim.to = glm::vec3(0.0f);
+    anim.orientAlongPath = oriented;
+    PathTrack track;
+    track.points = pathPoints;
+    track.build();
+    anim.path = std::move(track);
+    cameraAnims.push_back(std::move(anim));
+    cursor += duration;
+    return *this;
+}
+
+Timeline& Timeline::lookCamera(Camera& camera, const glm::vec3& at, float duration, EasingFunc easing) {
+    cameraAnims.push_back({ cursor, &camera, duration, easing, false, CameraAnim::Look,
+                            camera.position, at, PathTrack(), false });
     cursor += duration;
     return *this;
 }
@@ -61,13 +104,19 @@ void Timeline::parallel(std::function<void(Timeline&)> fn) {
     Timeline sub;
     fn(sub);
 
-    if (sub.entries.empty() && sub.visibilityEvents.empty() && sub.fadeEvents.empty() && sub.drawEvents.empty()) return;
+    if (sub.entries.empty() && sub.cameraAnims.empty() && sub.visibilityEvents.empty() && sub.fadeEvents.empty() && sub.drawEvents.empty()) return;
 
     float maxEnd = 0.0f;
     for (auto& entry : sub.entries) {
         entry.startTime = cursor;
         entries.push_back(entry);
         float end = entry.startTime + entry.duration;
+        if (end > maxEnd) maxEnd = end;
+    }
+    for (auto& anim : sub.cameraAnims) {
+        anim.startTime = cursor;
+        cameraAnims.push_back(anim);
+        float end = anim.startTime + anim.duration;
         if (end > maxEnd) maxEnd = end;
     }
     for (auto& evt : sub.visibilityEvents) {
@@ -116,6 +165,37 @@ void Timeline::update(float dt) {
             case TimelineEntry::Rotation: e.target->transform.rotation = value; break;
             case TimelineEntry::Scale:    e.target->transform.scale = value; break;
         }
+
+        if (e.orientAlongPath && e.property == TimelineEntry::Position && !e.path.points.empty()) {
+            PathOrient orient = e.path.sampleOrientation(eased);
+            e.target->transform.rotation = rotationFromOrientation(orient);
+        }
+    }
+
+    for (auto& a : cameraAnims) {
+        if (currentTime < a.startTime) continue;
+        if (!a.started) {
+            a.from = a.camera->position;
+            a.started = true;
+        }
+        float t = glm::clamp((currentTime - a.startTime) / a.duration, 0.0f, 1.0f);
+        float eased = a.easing(t);
+
+        if (a.kind == CameraAnim::Look) {
+            a.camera->lookAt(a.to);
+        } else {
+            glm::vec3 value;
+            if (!a.path.points.empty()) {
+                value = a.path.sample(eased);
+            } else {
+                value = glm::mix(a.from, a.to, eased);
+            }
+            a.camera->position = value;
+            if (a.orientAlongPath && !a.path.points.empty()) {
+                PathOrient orient = a.path.sampleOrientation(eased);
+                a.camera->setOrientation(orient.forward, orient.bank);
+            }
+        }
     }
 
     for (auto& evt : visibilityEvents) {
@@ -155,6 +235,7 @@ void Timeline::reset() {
     currentTime = 0.0f;
     cursor = 0.0f;
     entries.clear();
+    cameraAnims.clear();
     visibilityEvents.clear();
     fadeEvents.clear();
     drawEvents.clear();
@@ -168,6 +249,10 @@ float Timeline::getDuration() const {
     float maxEnd = cursor;
     for (const auto& e : entries) {
         float end = e.startTime + e.duration;
+        if (end > maxEnd) maxEnd = end;
+    }
+    for (const auto& a : cameraAnims) {
+        float end = a.startTime + a.duration;
         if (end > maxEnd) maxEnd = end;
     }
     for (const auto& f : fadeEvents) {

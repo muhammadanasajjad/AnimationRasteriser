@@ -85,6 +85,7 @@ struct TimelineCmd {
         Rotate,
         Draw,
         Move,
+        Look,
         Serial
     };
 
@@ -97,6 +98,7 @@ struct TimelineCmd {
     ExprPtr rotation;
     ExprPtr destination;
     bool destinationIsPath = false;
+    bool oriented = false;
     std::vector<TimelineCmd> children;
     int line = 0;
 };

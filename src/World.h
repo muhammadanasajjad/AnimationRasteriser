@@ -48,6 +48,8 @@ class World {
         void addMaterial(const Material& material);
         void addGlobalLight(const glm::vec3& direction);
         void useCanvasCamera();
+        void setSceneCamera(const Camera& camera);
+        Camera* activeCamera();
 
         Timeline& getTimeline();
         void onUpdate(std::function<void(float dt, float totalTime)> callback);
@@ -71,6 +73,8 @@ class World {
         std::function<void(float, float)> updateCallback;
         unsigned int maxTriangleCount = 0;
         bool canvasCamera = false;
+        Camera sceneCameraOverride;
+        bool hasSceneCamera = false;
 
         bool videoExportEnabled = false;
         std::string videoOutputPath;

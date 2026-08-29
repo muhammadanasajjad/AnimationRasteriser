@@ -22,10 +22,13 @@ char selectDemo() {
               << "  D) Layered 2D shapes (assets/scenes/LayerDemo.irt)\n"
               << "  E) 3D shapes: sphere, cylinder, OBJ (assets/scenes/ShapesDemo.irt)\n"
               << "  F) Square + parametric curve (assets/scenes/someScene.irt)\n"
-              << "  G) Bezier path follow with depth (assets/scenes/PathDemo.irt)\n";
+              << "  G) Bezier path follow with depth (assets/scenes/PathDemo.irt)\n"
+              << "  H) Chess scene with camera (assets/scenes/chess.irt)\n"
+              << "  I) Camera system demo (assets/scenes/CameraDemo.irt)\n"
+              << "  J) Path-oriented motion demo (assets/scenes/PathOriented.irt)\n";
 
     while (true) {
-        std::cout << "Select a demo [A-G] (A): " << std::flush;
+        std::cout << "Select a demo [A-J] (A): " << std::flush;
 
         std::string line;
         if (!std::getline(std::cin, line)) return 'A';
@@ -34,9 +37,9 @@ char selectDemo() {
         if (choice.empty()) return 'A';
 
         char option = static_cast<char>(std::toupper(static_cast<unsigned char>(choice[0])));
-        if (option >= 'A' && option <= 'G') return option;
+        if (option >= 'A' && option <= 'J') return option;
 
-        std::cout << "Unknown demo '" << choice << "', please choose A to G.\n";
+        std::cout << "Unknown demo '" << choice << "', please choose A to J.\n";
     }
 }
 
@@ -81,6 +84,12 @@ int main(int argc, char* argv[]) {
             scenePath = "assets/scenes/someScene.irt";
         } else if (demo == 'G') {
             scenePath = "assets/scenes/PathDemo.irt";
+        } else if (demo == 'H') {
+            scenePath = "assets/scenes/chess.irt";
+        } else if (demo == 'I') {
+            scenePath = "assets/scenes/CameraDemo.irt";
+        } else if (demo == 'J') {
+            scenePath = "assets/scenes/PathOriented.irt";
         }
     }
 

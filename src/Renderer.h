@@ -12,6 +12,7 @@ class Renderer {
         void updateTriangles(const std::vector<Triangle>& triangles);
         void setMaterialAlpha(int index, float alpha);
         void setAspectRatio(float aspect);
+        void applyCameraZoom(float zoom);
         void render();
         void offload();
 
@@ -48,6 +49,7 @@ class Renderer {
         unsigned int worldTriangleCountLoc;
         unsigned int camPosLoc, camFwdLoc, camUpLoc;
         unsigned int aspectRatioLoc;
+        unsigned int cameraZoomLoc;
 
         // count compute
         unsigned int countProgram;

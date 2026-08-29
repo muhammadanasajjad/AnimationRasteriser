@@ -33,10 +33,6 @@ glm::vec3 canvasPoint(float u, float v) {
 }
 
 glm::vec3 scenePoint(float x, float y, float z) {
-    if (z >= CANVAS_DISTANCE - 1.0f) {
-        throw std::runtime_error("irt: depth coordinate must stay below CANVAS_DISTANCE - 1 "
-                                 "(object would reach the camera)");
-    }
     return glm::vec3(CANVAS_DISTANCE - z, -x, -y);
 }
 
@@ -241,6 +237,10 @@ private:
                 graphDecls.push_back(&decl);
                 continue;
             }
+            if (decl.kind == "camera") {
+                world.setSceneCamera(buildCamera(decl));
+                continue;
+            }
             Object* object = buildObject(decl, scene);
             objectRefs[decl.name] = object;
         }
@@ -321,6 +321,46 @@ private:
         object.name = decl.name;
         Object& stored = world.addObject(object);
         return &stored;
+    }
+
+    Camera buildCamera(const ObjectDecl& decl) {
+        validateProperties(decl, {"position", "lookAt", "zoom"});
+
+        Camera camera;
+        camera.position = propertyPositionWorld(decl);
+
+        glm::vec3 look = glm::vec3(0.0f);
+        bool haveLook = false;
+        for (const Property& property : decl.properties) {
+            if (property.key != "lookAt") continue;
+            const Expr& value = *property.value;
+            if (value.kind == ExprKind::Tuple && !value.items.empty()) {
+                float x = static_cast<float>(evaluateNumber(*value.items[0]));
+                float y = value.items.size() > 1 ? static_cast<float>(evaluateNumber(*value.items[1])) : 0.0f;
+                float z = value.items.size() > 2 ? static_cast<float>(evaluateNumber(*value.items[2])) : 0.0f;
+                look = scenePoint(x, y, z);
+                haveLook = true;
+            }
+        }
+        if (!haveLook) look = scenePoint(0.0f, 0.0f, 0.0f);
+
+        camera.zoom = static_cast<float>(propertyNumber(decl, "zoom", 1.0));
+        camera.lookAt(look);
+        return camera;
+    }
+
+    glm::vec3 propertyPositionWorld(const ObjectDecl& decl) {
+        for (const Property& property : decl.properties) {
+            if (property.key != "position") continue;
+            const Expr& value = *property.value;
+            if (value.kind == ExprKind::Tuple && !value.items.empty()) {
+                float x = static_cast<float>(evaluateNumber(*value.items[0]));
+                float y = value.items.size() > 1 ? static_cast<float>(evaluateNumber(*value.items[1])) : 0.0f;
+                float z = value.items.size() > 2 ? static_cast<float>(evaluateNumber(*value.items[2])) : 0.0f;
+                return scenePoint(x, y, z);
+            }
+        }
+        return scenePoint(0.0f, 0.0f, 0.0f);
     }
 
     glm::vec4 propertyColour(const ObjectDecl& decl, const std::string& key, glm::vec4 fallback) {
@@ -801,13 +841,19 @@ private:
                      const std::map<std::string, Object*>& objectRefs,
                      const std::map<std::string, std::vector<glm::vec3>>& pathRefs) {
         Object* target = nullptr;
+        Camera* camTarget = nullptr;
+        bool cameraCommand = command.target == "camera";
         if (command.kind != TimelineCmd::Kind::Wait && command.kind != TimelineCmd::Kind::Serial) {
-            auto it = objectRefs.find(command.target);
-            if (it == objectRefs.end()) {
-                throw std::runtime_error("irt: timeline references unknown object '" + command.target +
-                                         "' at line " + std::to_string(command.line));
+            if (!cameraCommand) {
+                auto it = objectRefs.find(command.target);
+                if (it == objectRefs.end()) {
+                    throw std::runtime_error("irt: timeline references unknown object '" + command.target +
+                                             "' at line " + std::to_string(command.line));
+                }
+                target = it->second;
+            } else {
+                camTarget = world.activeCamera();
             }
-            target = it->second;
         }
 
         EasingFunc easing = resolveEasing(command);
@@ -849,15 +895,34 @@ private:
                                                  command.destination->text + "' at line " +
                                                  std::to_string(command.line));
                     }
-                    timeline.move(*target, pathIt->second, command.duration, easing);
+                    if (cameraCommand) {
+                        timeline.moveCamera(*camTarget, pathIt->second, command.duration, easing, command.oriented);
+                    } else {
+                        timeline.move(*target, pathIt->second, command.duration, easing, command.oriented);
+                    }
                 } else {
                     glm::vec3 destination(0.0f);
                     size_t count = std::min(command.destination->items.size(), size_t(3));
                     for (size_t i = 0; i < count; i++) {
                         destination[i] = static_cast<float>(evaluateNumber(*command.destination->items[i]));
                     }
-                    timeline.move(*target, scenePoint(destination.x, destination.y, destination.z), command.duration, easing);
+                    glm::vec3 world = scenePoint(destination.x, destination.y, destination.z);
+                    if (cameraCommand) {
+                        timeline.moveCamera(*camTarget, world, command.duration, easing);
+                    } else {
+                        timeline.move(*target, world, command.duration, easing);
+                    }
                 }
+                break;
+            }
+            case TimelineCmd::Kind::Look: {
+                glm::vec3 destination(0.0f);
+                size_t count = std::min(command.destination->items.size(), size_t(3));
+                for (size_t i = 0; i < count; i++) {
+                    destination[i] = static_cast<float>(evaluateNumber(*command.destination->items[i]));
+                }
+                timeline.lookCamera(*camTarget, scenePoint(destination.x, destination.y, destination.z),
+                                    command.duration, easing);
                 break;
             }
             case TimelineCmd::Kind::Serial:

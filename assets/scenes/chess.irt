@@ -1,0 +1,247 @@
+scene Chess {
+    camera cam {
+        position: (0, 35, -30)
+        lookAt: (0, 0, 0)
+        zoom: 1
+    }
+
+    obj board {
+        path: "../chess/board.obj"
+        mtlPath: "../chess/board.mtl"
+        position: (0, 0, 0)
+        scale: (4.2, 4.2, 4.2)
+    }
+
+    obj white_rook_a1 {
+        path: "../chess/pieces/white_rook.obj"
+        mtlPath: "../chess/pieces/white_rook.mtl"
+        position: (-20, 5, -20)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_knight_b1 {
+        path: "../chess/pieces/white_knight.obj"
+        mtlPath: "../chess/pieces/white_knight.mtl"
+        position: (-14.2857, 5, -20)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_bishop_c1 {
+        path: "../chess/pieces/white_bishop.obj"
+        mtlPath: "../chess/pieces/white_bishop.mtl"
+        position: (-8.5714, 5, -20)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_queen_d1 {
+        path: "../chess/pieces/white_queen.obj"
+        mtlPath: "../chess/pieces/white_queen.mtl"
+        position: (-2.8571, 5, -20)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_king_e1 {
+        path: "../chess/pieces/white_king.obj"
+        mtlPath: "../chess/pieces/white_king.mtl"
+        position: (2.8571, 5, -20)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_bishop_f1 {
+        path: "../chess/pieces/white_bishop.obj"
+        mtlPath: "../chess/pieces/white_bishop.mtl"
+        position: (8.5714, 5, -20)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_knight_g1 {
+        path: "../chess/pieces/white_knight.obj"
+        mtlPath: "../chess/pieces/white_knight.mtl"
+        position: (14.2857, 5, -20)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_rook_h1 {
+        path: "../chess/pieces/white_rook.obj"
+        mtlPath: "../chess/pieces/white_rook.mtl"
+        position: (20, 5, -20)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_pawn_a2 {
+        path: "../chess/pieces/white_pawn.obj"
+        mtlPath: "../chess/pieces/white_pawn.mtl"
+        position: (-20, 5, -14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_pawn_b2 {
+        path: "../chess/pieces/white_pawn.obj"
+        mtlPath: "../chess/pieces/white_pawn.mtl"
+        position: (-14.2857, 5, -14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_pawn_c2 {
+        path: "../chess/pieces/white_pawn.obj"
+        mtlPath: "../chess/pieces/white_pawn.mtl"
+        position: (-8.5714, 5, -14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_pawn_d2 {
+        path: "../chess/pieces/white_pawn.obj"
+        mtlPath: "../chess/pieces/white_pawn.mtl"
+        position: (-2.8571, 5, -14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_pawn_e2 {
+        path: "../chess/pieces/white_pawn.obj"
+        mtlPath: "../chess/pieces/white_pawn.mtl"
+        position: (2.8571, 5, -14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_pawn_f2 {
+        path: "../chess/pieces/white_pawn.obj"
+        mtlPath: "../chess/pieces/white_pawn.mtl"
+        position: (8.5714, 5, -14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_pawn_g2 {
+        path: "../chess/pieces/white_pawn.obj"
+        mtlPath: "../chess/pieces/white_pawn.mtl"
+        position: (14.2857, 5, -14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj white_pawn_h2 {
+        path: "../chess/pieces/white_pawn.obj"
+        mtlPath: "../chess/pieces/white_pawn.mtl"
+        position: (20, 5, -14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_rook_a8 {
+        path: "../chess/pieces/black_rook.obj"
+        mtlPath: "../chess/pieces/black_rook.mtl"
+        position: (-20, 5, 20)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_knight_b8 {
+        path: "../chess/pieces/black_knight.obj"
+        mtlPath: "../chess/pieces/black_knight.mtl"
+        position: (-14.2857, 5, 20)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_bishop_c8 {
+        path: "../chess/pieces/black_bishop.obj"
+        mtlPath: "../chess/pieces/black_bishop.mtl"
+        position: (-8.5714, 5, 20)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_queen_d8 {
+        path: "../chess/pieces/black_queen.obj"
+        mtlPath: "../chess/pieces/black_queen.mtl"
+        position: (-2.8571, 5, 20)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_king_e8 {
+        path: "../chess/pieces/black_king.obj"
+        mtlPath: "../chess/pieces/black_king.mtl"
+        position: (2.8571, 5, 20)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_bishop_f8 {
+        path: "../chess/pieces/black_bishop.obj"
+        mtlPath: "../chess/pieces/black_bishop.mtl"
+        position: (8.5714, 5, 20)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_knight_g8 {
+        path: "../chess/pieces/black_knight.obj"
+        mtlPath: "../chess/pieces/black_knight.mtl"
+        position: (14.2857, 5, 20)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_rook_h8 {
+        path: "../chess/pieces/black_rook.obj"
+        mtlPath: "../chess/pieces/black_rook.mtl"
+        position: (20, 5, 20)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_pawn_a7 {
+        path: "../chess/pieces/black_pawn.obj"
+        mtlPath: "../chess/pieces/black_pawn.mtl"
+        position: (-20, 5, 14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_pawn_b7 {
+        path: "../chess/pieces/black_pawn.obj"
+        mtlPath: "../chess/pieces/black_pawn.mtl"
+        position: (-14.2857, 5, 14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_pawn_c7 {
+        path: "../chess/pieces/black_pawn.obj"
+        mtlPath: "../chess/pieces/black_pawn.mtl"
+        position: (-8.5714, 5, 14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_pawn_d7 {
+        path: "../chess/pieces/black_pawn.obj"
+        mtlPath: "../chess/pieces/black_pawn.mtl"
+        position: (-2.8571, 5, 14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_pawn_e7 {
+        path: "../chess/pieces/black_pawn.obj"
+        mtlPath: "../chess/pieces/black_pawn.mtl"
+        position: (2.8571, 5, 14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_pawn_f7 {
+        path: "../chess/pieces/black_pawn.obj"
+        mtlPath: "../chess/pieces/black_pawn.mtl"
+        position: (8.5714, 5, 14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_pawn_g7 {
+        path: "../chess/pieces/black_pawn.obj"
+        mtlPath: "../chess/pieces/black_pawn.mtl"
+        position: (14.2857, 5, 14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    obj black_pawn_h7 {
+        path: "../chess/pieces/black_pawn.obj"
+        mtlPath: "../chess/pieces/black_pawn.mtl"
+        position: (20, 5, 14.2857)
+        rotation: (180, 0, 0)
+    }
+
+    timeline {
+        wait 1s
+        move white_pawn_e2 to (2.8571, 5, -2.8571) over 1s easing sineInOut
+        wait 500ms
+    }
+
+}
+
+play Chess

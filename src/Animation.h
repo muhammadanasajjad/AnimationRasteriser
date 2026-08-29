@@ -3,9 +3,11 @@
 #include <functional>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 #include <glm/glm.hpp>
 
 class Object;
+class Camera;
 
 namespace Easing {
     inline float linear(float t) { return t; }
@@ -46,15 +48,33 @@ namespace Easing {
 
 using EasingFunc = float(*)(float);
 
+struct PathOrient {
+    glm::vec3 forward = glm::vec3(1.0f, 0.0f, 0.0f);
+    glm::vec3 up = glm::vec3(0.0f, 0.0f, 1.0f);
+    float bank = 0.0f;
+};
+
+inline glm::vec3 rotationFromOrientation(const PathOrient& orient) {
+    glm::vec3 f = glm::length(orient.forward) > 1e-6f ? glm::normalize(orient.forward)
+                                                      : glm::vec3(1.0f, 0.0f, 0.0f);
+    float yaw = glm::degrees(std::atan2(f.y, f.x));
+    float pitch = glm::degrees(std::asin(glm::clamp(f.z, -1.0f, 1.0f)));
+    return glm::vec3(pitch, yaw, orient.bank);
+}
+
 struct PathTrack {
     std::vector<glm::vec3> points;
     std::vector<glm::vec3> samples;
     std::vector<float> cumulative;
+    std::vector<glm::vec3> tangents;
+    std::vector<float> banks;
     float totalLength = 0.0f;
 
     void build() {
         samples.clear();
         cumulative.clear();
+        tangents.clear();
+        banks.clear();
         totalLength = 0.0f;
         if (points.size() < 3) return;
 
@@ -77,6 +97,33 @@ struct PathTrack {
                 previous = p;
             }
         }
+
+        size_t n = samples.size();
+        tangents.resize(n);
+        banks.resize(n, 0.0f);
+        if (n == 0) return;
+        if (n == 1) {
+            tangents[0] = glm::vec3(1.0f, 0.0f, 0.0f);
+            return;
+        }
+        for (size_t i = 0; i < n; i++) {
+            size_t ip = i + 1 < n ? i + 1 : n - 1;
+            size_t im = i > 0 ? i - 1 : 0;
+            glm::vec3 diff = samples[ip] - samples[im];
+            tangents[i] = glm::length(diff) > 1e-6f ? glm::normalize(diff) : glm::vec3(1.0f, 0.0f, 0.0f);
+        }
+        glm::vec3 up(0.0f, 0.0f, 1.0f);
+        for (size_t i = 1; i + 1 < n; i++) {
+            size_t im = i - 1, ip = i + 1;
+            float ds = cumulative[ip] - cumulative[im];
+            glm::vec3 tPrev = tangents[im] != tangents[ip] ? tangents[im] : tangents[i];
+            float angle = std::atan2(glm::length(glm::cross(tPrev, tangents[ip])),
+                                     glm::dot(tPrev, tangents[ip]));
+            float curv = ds > 1e-6f ? angle / ds : 0.0f;
+            float sign = glm::dot(glm::cross(tPrev, tangents[ip]), up);
+            if (sign < 0.0f) curv = -curv;
+            banks[i] = glm::clamp(std::atan(curv * 2.4f), -0.7f, 0.7f);
+        }
     }
 
     glm::vec3 sample(float u) const {
@@ -97,6 +144,55 @@ struct PathTrack {
         float f = span > 0.0f ? (target - cumulative[lo]) / span : 0.0f;
         return glm::mix(samples[lo], samples[hi], f);
     }
+
+    glm::vec3 sampleTangent(float u) const {
+        if (tangents.empty()) return glm::vec3(1.0f, 0.0f, 0.0f);
+        if (totalLength <= 0.0f || cumulative.size() < 2 || tangents.size() != cumulative.size())
+            return tangents.front();
+        u = glm::clamp(u, 0.0f, 1.0f);
+        float target = u * totalLength;
+
+        size_t lo = 0;
+        size_t hi = cumulative.size() - 1;
+        while (lo + 1 < hi) {
+            size_t mid = (lo + hi) / 2;
+            if (cumulative[mid] <= target) lo = mid;
+            else hi = mid;
+        }
+
+        float span = cumulative[hi] - cumulative[lo];
+        float f = span > 0.0f ? (target - cumulative[lo]) / span : 0.0f;
+        return glm::normalize(glm::mix(tangents[lo], tangents[hi], f));
+    }
+
+    PathOrient sampleOrientation(float u) const {
+        PathOrient orient;
+        if (tangents.empty() || banks.empty()) {
+            orient.forward = glm::vec3(1.0f, 0.0f, 0.0f);
+            orient.up = glm::vec3(0.0f, 0.0f, 1.0f);
+            orient.bank = 0.0f;
+            return orient;
+        }
+        orient.forward = sampleTangent(u);
+        if (totalLength <= 0.0f || cumulative.size() < 2 || banks.size() != cumulative.size()) {
+            orient.bank = banks.front();
+        } else {
+            u = glm::clamp(u, 0.0f, 1.0f);
+            float target = u * totalLength;
+            size_t lo = 0;
+            size_t hi = cumulative.size() - 1;
+            while (lo + 1 < hi) {
+                size_t mid = (lo + hi) / 2;
+                if (cumulative[mid] <= target) lo = mid;
+                else hi = mid;
+            }
+            float span = cumulative[hi] - cumulative[lo];
+            float f = span > 0.0f ? (target - cumulative[lo]) / span : 0.0f;
+            orient.bank = glm::mix(banks[lo], banks[hi], f);
+        }
+        orient.up = glm::vec3(0.0f, 0.0f, 1.0f);
+        return orient;
+    }
 };
 
 struct TimelineEntry {
@@ -110,6 +206,21 @@ struct TimelineEntry {
 
     enum Property { Position, Rotation, Scale } property;
     PathTrack path;
+    bool orientAlongPath = false;
+};
+
+struct CameraAnim {
+    float startTime;
+    Camera* camera;
+    float duration;
+    EasingFunc easing;
+    bool started = false;
+
+    enum Kind { Move, Look } kind;
+    glm::vec3 from;
+    glm::vec3 to;
+    PathTrack path;
+    bool orientAlongPath = false;
 };
 
 struct VisibilityEvent {
@@ -140,6 +251,11 @@ class Timeline {
 public:
     Timeline& move(Object& obj, const glm::vec3& to, float duration, EasingFunc easing = Easing::linear);
     Timeline& move(Object& obj, const std::vector<glm::vec3>& path, float duration, EasingFunc easing = Easing::linear);
+    Timeline& move(Object& obj, const std::vector<glm::vec3>& path, float duration, EasingFunc easing, bool oriented);
+    Timeline& moveCamera(Camera& camera, const glm::vec3& to, float duration, EasingFunc easing = Easing::linear);
+    Timeline& moveCamera(Camera& camera, const std::vector<glm::vec3>& path, float duration, EasingFunc easing = Easing::linear);
+    Timeline& moveCamera(Camera& camera, const std::vector<glm::vec3>& path, float duration, EasingFunc easing, bool oriented);
+    Timeline& lookCamera(Camera& camera, const glm::vec3& at, float duration, EasingFunc easing = Easing::linear);
     Timeline& rotate(Object& obj, const glm::vec3& to, float duration, EasingFunc easing = Easing::linear);
     Timeline& scale(Object& obj, const glm::vec3& to, float duration, EasingFunc easing = Easing::linear);
     Timeline& wait(float duration);
@@ -162,6 +278,7 @@ private:
     float currentTime = 0.0f;
     float cursor = 0.0f;
     std::vector<TimelineEntry> entries;
+    std::vector<CameraAnim> cameraAnims;
     std::vector<VisibilityEvent> visibilityEvents;
     std::vector<FadeEvent> fadeEvents;
     std::vector<DrawEvent> drawEvents;

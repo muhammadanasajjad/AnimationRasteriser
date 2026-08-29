@@ -76,8 +76,6 @@ void World::run() {
     if (videoExportEnabled) {
         glfwSetWindowAttrib(window, GLFW_RESIZABLE, GLFW_FALSE);
 
-        // locking size can trigger an async reconfigure (un-maximize) in the WM;
-        // let it settle before querying the size ffmpeg will be locked to
         double settleDeadline = glfwGetTime() + 0.25;
         while (glfwGetTime() < settleDeadline) {
             glfwPollEvents();
@@ -194,6 +192,15 @@ void World::useCanvasCamera() {
     canvasCamera = true;
 }
 
+void World::setSceneCamera(const Camera& camera) {
+    sceneCameraOverride = camera;
+    hasSceneCamera = true;
+}
+
+Camera* World::activeCamera() {
+    return &renderer.camera;
+}
+
 void World::addGlobalLight(const glm::vec3& direction) {
     lightDirection = glm::normalize(direction);
 }
@@ -260,9 +267,12 @@ void World::buildWorld() {
 
     renderer.lightDirection = lightDirection;
     renderer.load(worldTriangles, materials, worldTextures);
-    if (canvasCamera) {
+    if (hasSceneCamera) {
+        renderer.camera = sceneCameraOverride;
+    } else if (canvasCamera) {
         renderer.camera = Camera();
     }
+    renderer.applyCameraZoom(renderer.camera.zoom);
     if (windowHeight > 0) {
         renderer.setAspectRatio((float)windowWidth / (float)windowHeight);
     }
@@ -309,7 +319,6 @@ void World::updateTriangles() {
         }
     }
 
-    // pad with degenerate triangles so the GPU buffer is always maxTriangleCount
     if (worldTriangles.size() < maxTriangleCount) {
         Triangle degenerate = {};
         degenerate.p1 = glm::vec4(0.0f);
